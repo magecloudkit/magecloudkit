@@ -1,0 +1,103 @@
+{
+  "variables": {
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "ssh_username": "ubuntu"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key` }}",
+      "region": "us-east-1",
+      "source_ami": "ami-e6d5d2f1",
+      "instance_type": "c4.xlarge",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ami_name": "magecloudkit-app {{timestamp}}",
+      "associate_public_ip_address": true,
+      "ena_support": true,
+      "tags": {
+        "Name": "MageCloudKitApp"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo {{user `ssh_username`}} | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+      "inline": [
+        "mkdir -p /ops",
+        "chmod a+w /ops"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "ssh_keys",
+      "destination": "/ops"
+    },
+    {
+      "type": "file",
+      "source": "packer/app/root",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "packer/app/scripts/start.sh"
+      ],
+      "execute_command": "echo ubuntu | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo {{user `ssh_username`}} | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+      "inline": [
+        "cat /ops/ssh_keys/* >> /home/ubuntu/.ssh/authorized_keys",
+        "chmod +x /usr/local/bin/bootstrap",
+        "chmod +x /usr/local/bin/if-addr",
+        "chmod +x /usr/local/bin/db-backup"
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "packer/app/scripts/base.sh"
+      ],
+      "execute_command": "echo ubuntu | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "packer/app/scripts/ixgbevf.sh"
+      ],
+      "execute_command": "echo ubuntu | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "packer/app/scripts/bootstrap.sh"
+      ],
+      "execute_command": "echo ubuntu | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "packer/app/scripts/docker.sh"
+      ],
+      "execute_command": "echo ubuntu | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "packer/app/scripts/ecs.sh"
+      ],
+      "execute_command": "echo ubuntu | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "packer/app/scripts/stop.sh"
+      ],
+      "execute_command": "echo ubuntu | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    }
+  ]
+}
