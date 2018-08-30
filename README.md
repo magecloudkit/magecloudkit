@@ -13,12 +13,12 @@ This repository serves as placeholder for the next version of MageCloudKit.
 
 ## Modules
 
- * app-cluster
- * cache
- * database
- * deploy
- * load-balancer
- * monitoring
+ * `app-cluster`
+ * `cache`
+ * `database`
+ * `deploy`
+ * `load-balancer`
+ * `monitoring`
 
 ## Problems with MageCloudKit v1
 
