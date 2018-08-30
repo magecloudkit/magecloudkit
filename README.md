@@ -28,6 +28,6 @@ You can find the source code in the `v1-legacy` directory.
 
 Historically, v1 suffers from:
 
- * Lack of Terraform modules
- * Hard-coded `${terraform.workspace}` references
+ * Lack of Terraform modules.
+ * Hard-coded `${terraform.workspace}` references.
  * Hard-coded view of how the 'world' should appear.
