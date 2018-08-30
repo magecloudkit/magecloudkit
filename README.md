@@ -19,6 +19,8 @@ This repository serves as placeholder for the next version of MageCloudKit.
  * `deploy`
  * `load-balancer`
  * `monitoring`
+ * `network`
+ * `security`
 
 ## Problems with MageCloudKit v1
 
