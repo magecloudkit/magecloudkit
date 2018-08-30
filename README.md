@@ -9,8 +9,13 @@ This repository serves as placeholder for the next version of MageCloudKit.
  * All logic should be encapsulated in modules where-ever possible.
  * A module may consist of Terraform, Packer, Bash, Python or Go code.
  * Be sure to run `terraform fmt` on all Terraform code and `packer validate` on all Packer templates.
+ * Prefer MIT-licensed software where-ever possible.
 
 ## Modules
 
- * load-balancer
+ * app-cluster
  * cache
+ * database
+ * deploy
+ * load-balancer
+ * monitoring
