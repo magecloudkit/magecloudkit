@@ -1,0 +1,7 @@
+Brightfame License
+
+Copyright (c) 2018 Brightfame
+
+This code is the property of Brightfame. In the Software Development Agreement signed by both Brightfame and your
+company, Brightfame grants you a limited license to use, modify, and create derivative works of this code. Please
+consult the Software Development Agreement for the complete terms under which you may use this code.
