@@ -1,0 +1,95 @@
+#!/bin/bash
+
+set -e
+
+# Log the given message at the given level. All logs are written to stderr with a timestamp.
+function log {
+  local readonly level="$1"
+  local readonly message="$2"
+  local readonly timestamp=$(date +"%Y-%m-%d %H:%M:%S")
+  local readonly script_name="$(basename "$0")"
+  >&2 echo -e "${timestamp} [${level}] [$script_name] ${message}"
+}
+
+# Log the given message at INFO level. All logs are written to stderr with a timestamp.
+function log_info {
+  local readonly message="$1"
+  log "INFO" "$message"
+}
+
+# Log the given message at ERROR level. All logs are written to stderr with a timestamp.
+function log_error {
+  local readonly message="$1"
+  log "ERROR" "$message"
+}
+
+# Returns true (0) if this is an Ubuntu server at the given version or false (1) otherwise. The version number
+# can use regex. If you don't care about the version, leave it unspecified.
+function os_is_ubuntu {
+  local readonly version="$1"
+  grep -q "Ubuntu $version" /etc/*release
+}
+
+function print_usage {
+  echo
+  echo "Usage: install-jenkins [options]"
+  echo
+  echo "This script can be used to install Jenkins and its dependencies. This script only supports Ubuntu 16.04."
+  echo
+  echo "Example:"
+  echo
+  echo "  install-jenkins"
+}
+
+function install_jenkins_on_ubuntu {
+    log_info "Installing Jenkins on Ubuntu"
+
+    wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+    echo "deb https://pkg.jenkins.io/debian-stable binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list
+
+    sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y jenkins default-jdk
+
+    #log_info "Installing Node.JS and Yarn"
+    #curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+    #sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
+    
+    #curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    #echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    #sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y yarn
+    #export PATH=$PATH:/home/ubuntu/.yarn/bin
+
+    log_info "Done."
+}
+
+function install {
+  while [[ $# > 0 ]]; do
+    local key="$1"
+
+    case "$key" in
+      --help)
+        print_usage
+        exit
+        ;;
+      *)
+        log_error "Unrecognized argument: $key"
+        print_usage
+        exit 1
+        ;;
+    esac
+
+    shift
+  done
+
+  log_info "Starting Jenkins install..."
+
+  if os_is_ubuntu "16.04"; then
+    install_jenkins_on_ubuntu "$git_hash"
+  else
+    log_error "This script only supports Ubuntu 16.04."
+    exit 1
+  fi
+
+  log_info "Jenkins installed successfully!"
+}
+
+install "$@"

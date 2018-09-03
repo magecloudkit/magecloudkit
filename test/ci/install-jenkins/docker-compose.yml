@@ -1,0 +1,13 @@
+# This file can be used with Docker and Docker Compose to run this Jenkins example locally. This is solely meant to
+# make testing and iterating faster and easier.
+
+version: '3'
+services:
+  jenkins: &jenkins_config
+    image: brightfame/ubuntu-dev:16.04
+    entrypoint: ["/entrypoint/entrypoint.sh"]
+    container_name: ${CONTAINER_BASE_NAME}
+
+    volumes:
+      - ../../../modules/ci/install-jenkins:/opt/install-jenkins
+      - ./entrypoint.sh:/entrypoint/entrypoint.sh
