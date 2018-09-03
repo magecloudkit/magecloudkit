@@ -29,6 +29,38 @@ jobs:
           root: .
           paths: .
 
+  test:
+    <<: *terraform
+    steps:
+      - checkout
+      # The weird way you have to set PATH in Circle 2.0
+      - run: echo 'export PATH=$HOME/.local/bin:$HOME/terraform:$HOME/packer:$PATH' >> $BASH_ENV
+      # Install HashiCorp dependencies
+      - restore_cache:
+          keys:
+            - v1-external-dep
+            - v1-dep-{{ checksum "test/Gopkg.lock" }}
+      # go test needs an empty main.go file otherwise it will complain
+      - run:
+          name: Foo
+          command: |
+            cat > main.go << EOF
+            package main
+            func main() {
+            }
+            EOF
+      - save_cache:
+          key: v1-external-dep
+          paths:
+            - $HOME/terraform
+            - $HOME/packer
+      - save_cache:
+          key: v1-dep-{{ checksum "test/Gopkg.lock" }}
+          paths:
+            - $HOME/.go_workspace/src/github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/test/vendor
+      # Run the tests
+      - run: cd test; go test -v -timeout 60m
+
 workflows:
   version: 2
   build:
