@@ -33,3 +33,7 @@ Historically, v1 suffers from:
  * Lack of Terraform modules.
  * Hard-coded `${terraform.workspace}` references.
  * Hard-coded view of how the 'world' should appear.
+
+## Getting Started
+
+The root folder of this repository contains an oppinionated stack for launching MageCloudKit.
