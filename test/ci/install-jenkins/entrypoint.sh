@@ -6,3 +6,4 @@ set -e
 /opt/install-jenkins/install-jenkins
 
 # Start Jenkins
+sudo /etc/init.d/jenkins start

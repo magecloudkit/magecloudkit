@@ -1,1 +1,61 @@
-# TODO
+#!/bin/bash
+
+set -e
+
+# Send the log output from this script to user-data.log, syslog, and the console
+# From: https://alestic.com/2010/12/ec2-user-data-output/
+exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+
+source "/opt/brightfame/run-jenkins/mount-volume.sh"
+
+function mount_volumes {
+  local readonly data_volume_device_name="$1"
+  local readonly data_volume_mount_point="$2"
+  local readonly volume_owner="$3"
+
+  echo "Mounting EBS Volume for the data directory"
+  mount_volume "$data_volume_device_name" "$data_volume_mount_point" "$volume_owner"
+}
+
+function update_jenkins_home {
+  local readonly data_volume_mount_point="$1"
+
+  echo "Stopping Jenkins"
+  systemctl stop jenkins
+
+  # We need to copy the Jenkins data files if its the first time mounting the volume
+  if [ ! -f $data_volume_mount_point/config.xml ]; then
+    echo "Moving Jenkins data files"
+    rsync -a /var/lib/jenkins/ $data_volume_mount_point
+  fi
+
+  echo "Updating JENKINS_HOME"
+  sed -i.bak "s@JENKINS_HOME=/var/lib/\$$NAME@JENKINS_HOME=$data_volume_mount_point@g" /etc/default/jenkins
+}
+
+function run_jenkins {
+  local readonly http_port="$1"
+  local readonly data_dir="$2"
+
+  echo "Starting Jenkins"
+  systemctl restart jenkins
+}
+
+function run {
+  # TODO - support HTTP port configuration
+  local readonly http_port="$1"
+  local readonly data_volume_device_name="$2"
+  local readonly data_volume_mount_point="$3"
+  local readonly volume_owner="$4"
+
+  mount_volumes "$data_volume_device_name" "$data_volume_mount_point" "$volume_owner"
+  update_jenkins_home "$data_volume_mount_point"
+  run_jenkins "$http_port" "$data_volume_mount_point"
+}
+
+# The variables below are filled in via Terraform interpolation
+run \
+  "${http_port}" \
+  "${data_volume_device_name}" \
+  "${data_volume_mount_point}" \
+  "${volume_owner}"

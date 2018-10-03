@@ -3,7 +3,7 @@
 
 version: '3'
 services:
-  jenkins: &jenkins_config
+  jenkins:
     image: brightfame/ubuntu-dev:16.04
     entrypoint: ["/entrypoint/entrypoint.sh"]
     container_name: ${CONTAINER_BASE_NAME}
