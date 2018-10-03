@@ -1,106 +1,88 @@
+# ---------------------------------------------------------------------------------------------------------------------
+# DEFINE MINIMUM TERRAFORM VERSION
+# ---------------------------------------------------------------------------------------------------------------------
+
 terraform {
-  required_version = ">= 0.10.3" # introduction of Local Values configuration language feature
+  required_version = ">= 0.10.3"
 }
 
-// attach an elastic ip
-resource "aws_eip" "bastion" {
-  instance = "${aws_instance.bastion.id}"
+# ---------------------------------------------------------------------------------------------------------------------
+# CREATE AN ELASTIC IP
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_eip" "eip" {
+  instance = "${aws_instance.instance.id}"
   vpc      = true
 }
 
-// create the ec2 instance
-resource "aws_instance" "main" {
-  ami           = "${lookup(var.amis, var.aws_region)}"
-  instance_type = "t2.micro"
+# ---------------------------------------------------------------------------------------------------------------------
+# CREATE THE EC2 INSTANCE TO RUN THE BASTION NODE
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_instance" "instance" {
+  # used the supplied AMI or fallback to a recent Ubuntu 16.04 image.
+  ami = "${coalesce(var.ami_id, data.aws_ami.ubuntu.id)}"
+  instance_type = "${var.instance_type}"
 
   # deploy the instance into the first availability zone
-  subnet_id = "${aws_subnet.public_az1.id}"
+  subnet_id = "${var.subnet_id}"
 
   # add security groups to allow ssh & vpn access
   vpc_security_group_ids = ["${aws_security_group.bastion.id}"]
 
-  key_name          = "${aws_key_pair.deployer.key_name}"
+  key_name          = "${var.ssh_key_name}"
+  user_data     = "${var.user_data}"
   source_dest_check = false
 
-  connection {
-    user        = "ubuntu"
-    private_key = "${file("ssh_keys/private/deployer.pem")}"
-  }
-
-  # Copies the SSH keys
-  provisioner "file" {
-    source      = "ssh_keys/public"
-    destination = "/tmp"
-  }
-
-  # provision the instance (we run openvpn using Docker)
-  provisioner "remote-exec" {
-    inline = [
-      # provision ssh keys
-      "cat /tmp/public/* >> /home/ubuntu/.ssh/authorized_keys",
-
-      # update apt packages
-      "sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y",
-
-      # configure networking
-      "sudo iptables -t nat -A POSTROUTING -j MASQUERADE",
-
-      "echo '1' | sudo tee /proc/sys/net/ipv4/ip_forward",
-
-      # hardening
-      "sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libpam-cracklib fail2ban",
-
-      # unattended upgrades - sudo dpkg-reconfigure -plow unattended-upgrades
-      # install Docker
-      "curl -sSL https://get.docker.com/ | sudo sh",
-
-      # init openvpn data container
-      "sudo mkdir -p /etc/openvpn",
-
-      "sudo docker run --name ovpn-data -v /etc/openvpn busybox",
-
-      # generate openvpn server config
-      "sudo docker run --volumes-from ovpn-data --rm kylemanna/openvpn ovpn_genconfig -p ${var.vpc_cidr} -n ${var.amazon_dns_server} -u udp://${aws_instance.bastion.public_ip}",
-    ]
-  }
-
   # add tags
-  tags {
-    Name        = "${terraform.workspace}-bastion01"
-    Environment = "${terraform.workspace}"
-    DDMetrics   = "true"
-  }
+  #tags = [
+  #  {
+  #    key                 = "Name"
+  #    value               = "${var.name}"
+  #    propagate_at_launch = true
+  #  },
+  #  "${var.tags}",
+  #]
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# CREATE A SECURITY GROUP TO CONTROL WHAT REQUESTS CAN GO IN AND OUT OF EACH EC2 INSTANCE
+# We export the ID of the security group as an output variable so users can attach custom rules.
+# ---------------------------------------------------------------------------------------------------------------------
+
 resource "aws_security_group" "bastion" {
-  name        = "sg_${terraform.workspace}_bastion"
-  description = "Security group for bastion instances that allows SSH and VPN traffic from internet"
-  vpc_id      = "${aws_vpc.default.id}"
+  name_prefix = "${var.name}"
+  description = "Security group for the Bastion instance"
+  vpc_id      = "${var.vpc_id}"
+}
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+resource "aws_security_group_rule" "allow_ssh_inbound" {
+  count       = "${length(var.allowed_ssh_cidr_blocks) >= 1 ? 1 : 0}"
+  type        = "ingress"
+  from_port   = "${var.ssh_port}"
+  to_port     = "${var.ssh_port}"
+  protocol    = "tcp"
+  cidr_blocks = ["${var.allowed_ssh_cidr_blocks}"]
 
-  ingress {
-    from_port   = 1194
-    to_port     = 1194
-    protocol    = "udp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  security_group_id = "${aws_security_group.bastion.id}"
+}
 
-  egress {
-    from_port   = "0"
-    to_port     = "0"
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-    self        = true
-  }
+# ---------------------------------------------------------------------------------------------------------------------
+# LOOKUP THE LATEST UBUNTU 16.04 AMI
+# ---------------------------------------------------------------------------------------------------------------------
 
-  tags {
-    Name        = "sg-${terraform.workspace}-bastion"
-    Environment = "${terraform.workspace}"
-  }
+data "aws_ami" "ubuntu" {
+    most_recent = true
+
+    filter {
+        name   = "name"
+        values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
+    }
+
+    filter {
+        name   = "virtualization-type"
+        values = ["hvm"]
+    }
+
+    owners = ["099720109477"] # Canonical
 }
