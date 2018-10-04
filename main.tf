@@ -73,3 +73,15 @@ data "aws_vpc" "default" {
 data "aws_subnet_ids" "default" {
   vpc_id = "${data.aws_vpc.default.id}"
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY THE REDIS CLUSTER IN THE DEFAULT VPC
+# ---------------------------------------------------------------------------------------------------------------------
+module "redis" {
+  source = "./modules/cache/aws/redis"
+
+  cluster_id = "redis-production"
+
+  vpc_id    = "${data.aws_vpc.default.id}"
+  subnet_id = "${element(data.aws_subnet_ids.default.ids, 0)}"
+}
