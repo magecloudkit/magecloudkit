@@ -15,6 +15,7 @@ This repository serves as placeholder for the next version of MageCloudKit.
 
  * `app-cluster`
  * `cache/redis`
+ * `cache/memcached`
  * `database`
  * `deploy`
  * `load-balancer`

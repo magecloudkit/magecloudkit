@@ -85,3 +85,15 @@ module "redis" {
   vpc_id    = "${data.aws_vpc.default.id}"
   subnet_id = "${element(data.aws_subnet_ids.default.ids, 0)}"
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY THE MEMCACHED CLUSTER IN THE DEFAULT VPC
+# ---------------------------------------------------------------------------------------------------------------------
+module "memcached" {
+  source = "./modules/cache/aws/memcached"
+
+  cluster_id = "memcached-production"
+
+  vpc_id    = "${data.aws_vpc.default.id}"
+  subnet_id = "${element(data.aws_subnet_ids.default.ids, 0)}"
+}
