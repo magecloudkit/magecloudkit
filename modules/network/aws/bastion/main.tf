@@ -41,6 +41,10 @@ resource "aws_instance" "instance" {
       "Name", "${var.name}"
     )
   )}"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
