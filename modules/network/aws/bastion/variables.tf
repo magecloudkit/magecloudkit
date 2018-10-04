@@ -17,7 +17,7 @@ variable "user_data" {
 
 # ---------------------------------------------------------------------------------------------------------------------
 # OPTIONAL PARAMETERS
-# These parameters have reasonable defaults.
+# These parameters are preconfigured and have reasonable default values.
 # ---------------------------------------------------------------------------------------------------------------------
 
 variable "name" {

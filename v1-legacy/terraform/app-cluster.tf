@@ -131,7 +131,7 @@ resource "aws_ecs_service" "magento2" {
   desired_count                      = "${lookup(var.app_task_count, terraform.workspace)}"
   deployment_maximum_percent         = 100
   deployment_minimum_healthy_percent = 50
-0
+
   // Required so that the agent can talk to the load balancer
   iam_role = "${aws_iam_role.app_ecs_service_role.arn}"
 

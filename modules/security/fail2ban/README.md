@@ -1,7 +1,7 @@
 # Fail2Ban Module
 
-This module automatically installs and configures the fail2ban application. By
-default we only monitor the SSH log files for malicious activity.
+This module automatically installs and configures the [Fail2ban](https://www.fail2ban.org)
+software. By default we only monitor the SSH log files for malicious activity.
 
 ## Requirements
 
@@ -9,7 +9,9 @@ default we only monitor the SSH log files for malicious activity.
 
 ## Usage
 
- * TODO
+```bash
+$ install-fail2ban
+```
 
 ## References
 

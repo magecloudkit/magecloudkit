@@ -6,9 +6,11 @@ set -e
 # This script is designed to be run as root.
 
 # Install dependencies
+echo "Configuring system for automatic updates..."
+DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get install -y --no-install-recommends unattended-upgrades
-DEBIAN_FRONTEND=noninteractive dpkg-reconfigure --priority=low unattended-upgrades
+dpkg-reconfigure --priority=low unattended-upgrades
 
 # Generate a random sleep value
 RANDOMSLEEP=$(shuf -i 600-1800 -n 1)
