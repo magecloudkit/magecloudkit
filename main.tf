@@ -39,13 +39,11 @@ module "bastion" {
   ssh_key_name = "${var.ssh_key_name}"
 
   # An example of custom tags
-  #tags = [
-  #  {
-  #    key                 = "Environment"
-  #    value               = "development"
-  #    propagate_at_launch = true
-  #  },
-  #]
+  tags = [
+    {
+      Environment = "development"
+    },
+  ]
 }
 
 # ---------------------------------------------------------------------------------------------------------------------

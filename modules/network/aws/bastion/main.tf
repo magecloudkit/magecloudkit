@@ -35,14 +35,12 @@ resource "aws_instance" "instance" {
   source_dest_check = false
 
   # add tags
-  #tags = [
-  #  {
-  #    key                 = "Name"
-  #    value               = "${var.name}"
-  #    propagate_at_launch = true
-  #  },
-  #  "${var.tags}",
-  #]
+  tags = "${merge(
+    var.tags,
+    map(
+      "Name", "${var.name}"
+    )
+  )}"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------

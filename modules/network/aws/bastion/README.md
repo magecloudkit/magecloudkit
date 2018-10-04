@@ -33,9 +33,7 @@ module "bastion" {
   # An example of custom tags
   tags = [
     {
-      key                 = "Environment"
-      value               = "development"
-      propagate_at_launch = true
+      Environment = "development"
     },
   ]
 }

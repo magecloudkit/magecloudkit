@@ -22,7 +22,7 @@ variable "user_data" {
 
 variable "name" {
   description = "The name used for the EC2 instance"
-  default = "bastion01"
+  default     = "bastion01"
 }
 
 variable "description" {
@@ -32,12 +32,12 @@ variable "description" {
 
 variable "ami_id" {
   description = "The ID of the AMI used to launch the Bastion instance. If blank then a recent Ubuntu 16.04 AMI will be used."
-  default = ""
+  default     = ""
 }
 
 variable "instance_type" {
   description = "The type of EC2 Instances to run for each node in the ASG (e.g. t2.micro)."
-  default = "t2.micro"
+  default     = "t2.micro"
 }
 
 variable "ssh_key_name" {
@@ -69,16 +69,12 @@ variable "ssh_port" {
 
 variable "tags" {
   description = "List fo extra tag blocks added to the autoscaling group configuration. Each element in the list is a map containing keys 'key', 'value', and 'propagate_at_launch' mapped to the respective values."
-  type        = "list"
-  default     = []
+  type        = "map"
+  default     = {}
 
   # Example:
   #
-  # default = [
-  #   {
-  #     key                 = "foo"
-  #     value               = "bar"
-  #     propagate_at_launch = true
-  #   }
-  # ]
+  # default = {
+  #   key = "value"
+  # }
 }
