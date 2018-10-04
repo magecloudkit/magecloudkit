@@ -1,28 +1,28 @@
-/**
- * Required Variables.
- *
- * A value for these variables must be set when invoking the module.
- */
+# ---------------------------------------------------------------------------------------------------------------------
+# REQUIRED PARAMETERS
+# You must provide a value for each of these parameters.
+# ---------------------------------------------------------------------------------------------------------------------
+
+variable "region" {
+  description = "The AWS region"
+}
+
 variable "availability_zones" {
   description = "List of availability zones"
   type        = "list"
 }
 
-variable "environment" {
-  description = "The environment (production, staging, qa)."
-}
+# ---------------------------------------------------------------------------------------------------------------------
+# OPTIONAL PARAMETERS
+# These parameters are preconfigured and have reasonable default values.
+# ---------------------------------------------------------------------------------------------------------------------
 
-/**
- * Optional Variables.
- *
- * These variables are preconfigured and have acceptable default values.
- */
 variable "name" {
-  description = "The VPC name. Used when setting tags on resources."
-  default     = "stack"
+  description = "The name used for the VPC"
+  default     = "magecloudkit-default"
 }
 
-variable "cidr" {
+variable "vpc_cidr" {
   description = "The VPC CIDR."
   default     = "172.31.0.0/16"
 }
@@ -32,18 +32,32 @@ variable "enable_dns_hostnames" {
   default     = true
 }
 
-variable "ami_id" {
-  description = "The ID of the AMI to run. The value should be an Ubuntu 16.04 AMI for your given AWS region. Leave blank to default to the latest public Ubuntu 16.04 AMI from Canonical."
-  default     = ""
+variable "public_subnets" {
+  description = "List of public subnets"
+  type        = "list"
+  default     = ["172.31.0.0/24", "172.31.1.0/24", "172.31.2.0/24"]
 }
 
-variable "description" {
-  description = "Description of VPC"
-  default     = ""
+variable "private_subnets" {
+  description = "List of private subnets"
+  type        = "list"
+  default     = ["172.31.3.0/24", "172.31.4.0/24", "172.31.5.0/24"]
 }
 
-// dhcp settings
-// Ref: https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_DHCP_Options.html
-domain-name-servers
-domain-name
-ec2.internal for us-east-1 or region.compute.internal for other regions
+variable "persistence_subnets" {
+  description = "List of persistence subnets"
+  type        = "list"
+  default     = ["172.31.6.0/24", "172.31.7.0/24", "172.31.8.0/24"]
+}
+
+variable "tags" {
+  description = "List fo extra tag blocks added to the autoscaling group configuration. Each element in the list is a map containing keys 'key', 'value', and 'propagate_at_launch' mapped to the respective values."
+  type        = "map"
+  default     = {}
+
+  # Example:
+  #
+  # default = {
+  #   key = "value"
+  # }
+}
