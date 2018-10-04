@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------------------------------------------------
-# DEPLOY A BASTION NODE IN THE DEFAULT VPC
+# DEPLOY A BASTION NODE
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "bastion" {
@@ -7,7 +7,6 @@ module "bastion" {
 
   instance_type = "t2.medium"
 
-  #user_data = "${data.template_file.user_data_bastion.rendered}"
   user_data = "${data.template_cloudinit_config.user_data_bastion.rendered}"
 
   vpc_id    = "${module.vpc.vpc_id}"
