@@ -23,13 +23,28 @@ variable "name" {
 }
 
 variable "vpc_cidr" {
-  description = "The VPC CIDR."
+  description = "The VPC CIDR block"
   default     = "172.31.0.0/16"
 }
 
 variable "enable_dns_hostnames" {
-  description = "Enable DNS hostnames."
+  description = "Enable DNS hostnames"
   default     = true
+}
+
+variable "enable_dhcp" {
+  description = "Enable the DHCP options"
+  default     = true
+}
+
+variable "dhcp_domain_name" {
+  description = "DHCP domain name"
+  default     = "magecloudkit.internal"
+}
+
+variable "dhcp_domain_name_servers" {
+  description = "DHCP domain name servers"
+  default     = []
 }
 
 variable "public_subnets" {

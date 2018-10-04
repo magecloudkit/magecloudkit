@@ -25,6 +25,32 @@ resource "aws_vpc" "main" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
+# CREATE DHCP RESOURCES
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_vpc_dhcp_options" "main" {
+  count = "${var.enable_dhcp ? 1 : 0}"
+
+  domain_name         = "${var.dhcp_domain_name}"
+  domain_name_servers = "${var.dhcp_domain_name_servers}"
+
+  # add tags
+  tags = "${merge(
+    var.tags,
+    map(
+      "Name", format("%s-dhcp-options", var.name)
+    )
+  )}"
+}
+
+resource "aws_vpc_dhcp_options_association" "main" {
+  count = "${var.enable_dhcp ? 1 : 0}"
+
+  vpc_id          = "${aws_vpc.main.id}"
+  dhcp_options_id = "${aws_vpc_dhcp_options.main.id}"
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
 # CREATE AN INTERNET GATEWAY
 # ---------------------------------------------------------------------------------------------------------------------
 
