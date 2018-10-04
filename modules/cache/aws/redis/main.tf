@@ -7,12 +7,11 @@ terraform {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# REDIS
-# CREATE THE ELASTIC CACHE CLUSTER
+# CREATE THE REDIS ELASTICACHE CLUSTER
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_elasticache_cluster" "redis" {
-  cluster_id           = "${var.cluster_id}"
+  cluster_id           = "${var.cluster_name}"
   engine               = "redis"
   engine_version       = "${var.engine_version}"
   node_type            = "${var.node_type}"
@@ -24,9 +23,9 @@ resource "aws_elasticache_cluster" "redis" {
 }
 
 resource "aws_elasticache_subnet_group" "redis" {
-  name        = "${var.subnet_group_name}"
-  description = "${var.subnet_group_description}"
-  subnet_ids  = ["${var.subnet_id}"]
+  name        = "${format("%s-redis-subnet", var.cluster_name)}"
+  description = "ElastiCache Redis Subnet Group"
+  subnet_ids  = ["${var.subnet_ids}"]
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -34,32 +33,30 @@ resource "aws_elasticache_subnet_group" "redis" {
 # We export the ID of the security group as an output variable so users can attach custom rules.
 # ---------------------------------------------------------------------------------------------------------------------
 
-/* Security group for the redis servers */
 resource "aws_security_group" "redis" {
-  name        = "${var.security_group_name}"
-  description = "${var.security_group_description}"
+  name_prefix = "${var.cluster_name}"
+  description = "Security group for the Redis ElastiCache resources"
   vpc_id      = "${var.vpc_id}"
-
-  ingress {
-    from_port = "${var.redis_port}"
-    to_port   = "${var.redis_port}"
-    protocol  = "tcp"
-  }
-
-  ingress {
-    from_port = "${var.redis_port}"
-    to_port   = "${var.redis_port}"
-    protocol  = "tcp"
-  }
-
-  egress {
-    from_port   = "0"
-    to_port     = "0"
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 }
 
-data "aws_vpc" "vpc" {
-  id = "${var.vpc_id}"
+resource "aws_security_group_rule" "allow_redis_inbound" {
+  count       = "${length(var.allowed_redis_cidr_blocks) >= 1 ? 1 : 0}"
+  type        = "ingress"
+  from_port   = "${var.port}"
+  to_port     = "${var.port}"
+  protocol    = "tcp"
+  cidr_blocks = ["${var.allowed_redis_cidr_blocks}"]
+
+  security_group_id = "${aws_security_group.redis.id}"
 }
+
+# TODO - does Redis need outbound?
+#resource "aws_security_group_rule" "allow_redis_outbound" {
+#  type        = "egress"
+#  from_port   = "${var.port}"
+#  to_port     = "${var.port}"
+#  protocol    = "tcp"
+#  cidr_blocks = ["0.0.0.0/0"]
+#
+#  security_group_id = "${aws_security_group.redis.id}"
+#}
