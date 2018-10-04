@@ -11,20 +11,9 @@ function configure_bastion {
 
     echo "Configuring Bastion Node using SSH port $ssh_port..."
 
-    # update apt packages
-    sudo apt-get update
-    sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
-
-    # configure networking
-    # TODO - remove. We are using NAT gateways now.
-    #
-    #sudo iptables -t nat -A POSTROUTING -j MASQUERADE
-    #echo '1' | sudo tee /proc/sys/net/ipv4/ip_forward
-
-    # harden
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libpam-cracklib
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y fail2ban
-
+    # TODO - configure alternate SSH port and update Fail2ban jail.
+    # automatic update script will run after
+    # fail2ban install script will run after
     echo "Done."
 }
 
