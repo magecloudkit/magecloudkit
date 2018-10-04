@@ -34,7 +34,7 @@ variable "engine_version" {
 
 variable "node_type" {
   description = "ElastiCache instance type"
-  default     = "cache.t2.small"
+  default     = "cache.m3.large"
 }
 
 variable "port" {

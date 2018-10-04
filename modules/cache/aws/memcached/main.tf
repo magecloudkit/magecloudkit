@@ -7,12 +7,11 @@ terraform {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# MEMCACHED
-# CREATE THE ELASTIC CACHE CLUSTER
+# CREATE THE MEMCACHED ELASTICACHE CLUSTER
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_elasticache_cluster" "memcached" {
-  cluster_id           = "${var.cluster_id}"
+  cluster_id           = "${var.cluster_name}"
   engine               = "memcached"
   engine_version       = "${var.engine_version}"
   node_type            = "${var.node_type}"
@@ -24,9 +23,9 @@ resource "aws_elasticache_cluster" "memcached" {
 }
 
 resource "aws_elasticache_subnet_group" "memcached" {
-  name        = "${var.subnet_group_name}"
-  description = "${var.subnet_group_description}"
-  subnet_ids  = ["${var.subnet_id}"]
+  name        = "${format("%s-memcached-subnet-group", var.cluster_name)}"
+  description = "ElastiCache Memcached Subnet Group"
+  subnet_ids  = ["${var.subnet_ids}"]
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -34,32 +33,30 @@ resource "aws_elasticache_subnet_group" "memcached" {
 # We export the ID of the security group as an output variable so users can attach custom rules.
 # ---------------------------------------------------------------------------------------------------------------------
 
-/* Security group for the memcached servers */
 resource "aws_security_group" "memcached" {
-  name        = "${var.security_group_name}"
-  description = "${var.security_group_description}"
+  name_prefix = "${var.cluster_name}"
+  description = "Security group for the Memcached ElastiCache resources"
   vpc_id      = "${var.vpc_id}"
-
-  ingress {
-    from_port = "${var.memcached_port}"
-    to_port   = "${var.memcached_port}"
-    protocol  = "tcp"
-  }
-
-  ingress {
-    from_port = "${var.memcached_port}"
-    to_port   = "${var.memcached_port}"
-    protocol  = "tcp"
-  }
-
-  egress {
-    from_port   = "0"
-    to_port     = "0"
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 }
 
-data "aws_vpc" "vpc" {
-  id = "${var.vpc_id}"
+resource "aws_security_group_rule" "allow_memcached_inbound" {
+  count       = "${length(var.allowed_memcached_cidr_blocks) >= 1 ? 1 : 0}"
+  type        = "ingress"
+  from_port   = "${var.port}"
+  to_port     = "${var.port}"
+  protocol    = "tcp"
+  cidr_blocks = ["${var.allowed_memcached_cidr_blocks}"]
+
+  security_group_id = "${aws_security_group.memcached.id}"
 }
+
+# TODO - does Memcached need outbound?
+#resource "aws_security_group_rule" "allow_memcached_outbound" {
+#  type        = "egress"
+#  from_port   = "${var.port}"
+#  to_port     = "${var.port}"
+#  protocol    = "tcp"
+#  cidr_blocks = ["0.0.0.0/0"]
+#
+#  security_group_id = "${aws_security_group.memcached.id}"
+#}

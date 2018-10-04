@@ -4,11 +4,12 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 variable "vpc_id" {
-  description = "The ID of the VPC in which to launch the ElastiCache instance."
+  description = "The ID of the VPC in which to launch the ElastiCache resources"
 }
 
-variable "subnet_id" {
-  description = "The ID of the Subnet in which to launch the ElastiCache instance."
+variable "subnet_ids" {
+  type        = "list"
+  description = "The IDs of the Subnets in which to launch the ElastiCache resources"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -16,23 +17,23 @@ variable "subnet_id" {
 # These parameters have reasonable defaults.
 # ---------------------------------------------------------------------------------------------------------------------
 
-variable "cluster_id" {
-  description = "The name used for the Memcached cluster id"
-  default     = "memcached-production"
+variable "cluster_name" {
+  description = "The name used for the ElastiCache cluster"
+  default     = "memcached01"
 }
 
 variable "engine" {
-  description = "The engine used for the ElastiCache engine"
+  description = "The ElastiCache engine"
   default     = "memcached"
 }
 
 variable "engine_version" {
-  description = "The engine version used for the ElastiCache memcached engine"
+  description = "The ElastiCache engine version"
   default     = "1.4.24"
 }
 
 variable "node_type" {
-  description = "node_type ElastiCache instance"
+  description = "ElastiCache instance type"
   default     = "cache.m3.large"
 }
 
@@ -51,35 +52,8 @@ variable "parameter_group_name" {
   default     = "default.memcached1.4"
 }
 
-# ---------------------------------------------------------------------------------------------------------------------
-# SUBNET GROUP VARIABLES
-# ---------------------------------------------------------------------------------------------------------------------
-
-variable "subnet_group_name" {
-  description = "The name used for the  subnet group"
-  default     = "memcached-production-subnet"
-}
-
-variable "subnet_group_description" {
-  description = "Description of Memcached subnet group"
-  default     = ""
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# SECURITY GROUP VARIABLES
-# ---------------------------------------------------------------------------------------------------------------------
-
-variable "security_group_name" {
-  description = "The name used for the Memcached subnet group"
-  default     = "sg_production_memcached"
-}
-
-variable "security_group_description" {
-  description = "Description of Memcached security group"
-  default     = "Security group for the Memcached servers"
-}
-
-variable "memcached_port" {
-  description = "ElastiCache security group ingress/outgress port"
-  default     = 11211
+variable "allowed_memcached_cidr_blocks" {
+  description = "A list of CIDR-formatted IP address ranges from which the ElastiCache resources will allow connections."
+  type        = "list"
+  default     = []
 }
