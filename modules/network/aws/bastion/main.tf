@@ -21,7 +21,7 @@ resource "aws_eip" "eip" {
 
 resource "aws_instance" "instance" {
   # used the supplied AMI or fallback to a recent Ubuntu 16.04 image.
-  ami = "${coalesce(var.ami_id, data.aws_ami.ubuntu.id)}"
+  ami           = "${coalesce(var.ami_id, data.aws_ami.ubuntu.id)}"
   instance_type = "${var.instance_type}"
 
   # deploy the instance into the first availability zone
@@ -31,7 +31,7 @@ resource "aws_instance" "instance" {
   vpc_security_group_ids = ["${aws_security_group.bastion.id}"]
 
   key_name          = "${var.ssh_key_name}"
-  user_data     = "${var.user_data}"
+  user_data         = "${var.user_data}"
   source_dest_check = false
 
   # add tags
@@ -70,17 +70,17 @@ resource "aws_security_group_rule" "allow_ssh_inbound" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 data "aws_ami" "ubuntu" {
-    most_recent = true
+  most_recent = true
 
-    filter {
-        name   = "name"
-        values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
-    }
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
+  }
 
-    filter {
-        name   = "virtualization-type"
-        values = ["hvm"]
-    }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
 
-    owners = ["099720109477"] # Canonical
+  owners = ["099720109477"] # Canonical
 }
