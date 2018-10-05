@@ -46,7 +46,7 @@ resource "aws_efs_mount_target" "main" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# CREATE A SECURITY GROUP TO CONTROL WHAT REQUESTS CAN GO IN AND OUT OF EACH EC2 INSTANCE
+# CREATE A SECURITY GROUP TO CONTROL WHAT CAN ACCESS THE EFS RESOURCES.
 # We export the ID of the security group as an output variable so users can attach custom rules.
 # ---------------------------------------------------------------------------------------------------------------------
 
