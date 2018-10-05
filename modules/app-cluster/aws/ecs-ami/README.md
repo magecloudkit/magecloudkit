@@ -17,3 +17,10 @@ To build the AWS AMI, simply run:
 ```bash
 $ packer build -only=ubuntu-ami ecs.json
 ```
+
+The default region is `us-east-1`. If you wish to build an AMI for a different
+region, simply pass in the `aws_region` parameter:
+
+```bash
+$ packer build -var aws_region=eu-west-1 -only ubuntu-ami ecs.json
+```
