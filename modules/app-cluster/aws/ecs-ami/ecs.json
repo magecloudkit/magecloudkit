@@ -2,16 +2,15 @@
   "min_packer_version": "0.12.0",
   "variables": {
     "aws_region": "us-east-1",
-    "base_ami_name": "magecloudkit"
+    "base_ami_name": "magecloudkit-app"
   },
   "builders": [{
     "name": "ubuntu-ami",
     "type": "amazon-ebs",
-    "ami_name": "{{user `base_ami_name`}}-ubuntu-{{isotime | clean_ami_name}}",
     "region": "{{user `aws_region`}}",
     "instance_type": "c5.large",
     "ssh_username": "ubuntu",
-    "ami_name": "magecloudkit-app {{timestamp}}",
+    "ami_name": "{{user `base_ami_name`}}-{{isotime | clean_ami_name}}",
     "ena_support": true,
     "source_ami_filter": {
       "filters": {
