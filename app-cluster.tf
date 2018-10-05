@@ -33,7 +33,9 @@ module "ecs_cluster" {
   # An example of custom tags
   tags = [
     {
-      Environment = "development"
+      key                 = "Environment"
+      value               = "development"
+      propagate_at_launch = true
     },
   ]
 }
