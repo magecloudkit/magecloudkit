@@ -41,7 +41,7 @@ variable "instance_type" {
 }
 
 variable "ssh_key_name" {
-  description = "The name of an EC2 Key Pair that can be used to SSH to the EC2 Instances in this cluster. Set to an empty string to not associate a Key Pair."
+  description = "The name of an EC2 Key Pair that can be used to SSH into the Bastion EC2 Instance. Set to an empty string to not associate a Key Pair."
   default     = ""
 }
 
@@ -68,7 +68,7 @@ variable "ssh_port" {
 }
 
 variable "tags" {
-  description = "List fo extra tag blocks added to the autoscaling group configuration. Each element in the list is a map containing keys 'key', 'value', and 'propagate_at_launch' mapped to the respective values."
+  description = "A map of extra tag blocks added to the resources. Each element in this map is a key/value pair mapped to the respective values."
   type        = "map"
   default     = {}
 

@@ -56,6 +56,14 @@ resource "aws_security_group" "bastion" {
   name_prefix = "${var.name}"
   description = "Security group for the Bastion instance"
   vpc_id      = "${var.vpc_id}"
+
+  # add tags
+  tags = "${merge(
+    var.tags,
+    map(
+      "Name", "${var.name}"
+    )
+  )}"
 }
 
 resource "aws_security_group_rule" "allow_ssh_inbound" {
