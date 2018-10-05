@@ -6,7 +6,7 @@ module "vpc" {
   source             = "./modules/network/aws/vpc"
   name               = "${var.project_name}"
   region             = "${var.aws_region}"
-  availability_zones = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  availability_zones = "${var.availability_zones}"
 
   # An example of custom tags
   tags = [
