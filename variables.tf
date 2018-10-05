@@ -30,7 +30,7 @@ variable "availability_zones" {
 
 variable "ecs_ami" {
   description = "The ECS AMI used to run . This AMI is built from the ECS-AMI Packer template (See modules/app-cluster/aws/ecs-ami/ecs.json)."
-  default     = "ami-027e4a0be14ffd1f5"
+  default     = "ami-0be2dee98c4f5afda"
 }
 
 variable "ecs_cluster_name" {
