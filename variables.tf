@@ -8,6 +8,11 @@ variable "project_name" {
   default     = "magecloudkit-development"
 }
 
+variable "environment" {
+  description = "The environment used to tag resources."
+  default     = "development"
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # OPTIONAL PARAMETERS
 # These parameters have reasonable defaults.
@@ -21,6 +26,16 @@ variable "aws_region" {
 variable "availability_zones" {
   description = "List of availability zones."
   default     = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+}
+
+variable "ecs_ami" {
+  description = "The ECS AMI used to run . This AMI is built from the ECS-AMI Packer template (See modules/app-cluster/aws/ecs-ami/ecs.json)."
+  default     = "ami-027e4a0be14ffd1f5"
+}
+
+variable "ecs_cluster_name" {
+  description = "The ECS Cluster Name."
+  default     = "development-app"
 }
 
 variable "ssh_key_name" {
