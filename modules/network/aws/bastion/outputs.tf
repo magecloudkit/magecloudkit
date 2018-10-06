@@ -1,3 +1,7 @@
+output "public_ip" {
+  value = "${aws_eip.bastion.public_ip}"
+}
+
 output "instance_id" {
   value = "${aws_instance.instance.id}"
 }

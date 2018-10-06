@@ -14,11 +14,11 @@ The MageCloudKit AWS resources have now been successfully created!
 
 You can SSH into the Bastion instance using:
 
-$ ssh ubuntu@${aws_eip.bastion.public_ip} -p ${module.bastion.ssh_port}
+$ ssh ubuntu@${module.bastion.public_ip} -p ${module.bastion.ssh_port}
 ------------------------------------------------------------------
 EOF
 }
 
 output "bastion_ip" {
-  value = "${aws_eip.bastion.public_ip}"
+  value = "${module.bastion.public_ip}"
 }
