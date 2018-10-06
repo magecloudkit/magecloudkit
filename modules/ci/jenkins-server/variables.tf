@@ -35,15 +35,15 @@ variable "user_data" {
 
 variable "min_size" {
   description = "The minimum number of nodes to have in the Auto Scaling Group."
-  default = 1
+  default     = 1
 }
 
 variable "max_size" {
   description = "The maximum number of nodes to have in the Auto Scaling Group."
-  default = 1
+  default     = 1
 }
 
-variable "ssh_key_name" {
+variable "key_pair_name" {
   description = "The name of an EC2 Key Pair that can be used to SSH to the EC2 Instances in this cluster. Set to an empty string to not associate a Key Pair."
   default     = ""
 }

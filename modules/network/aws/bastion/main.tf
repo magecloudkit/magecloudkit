@@ -30,7 +30,7 @@ resource "aws_instance" "instance" {
   # add security groups to allow ssh & vpn access
   vpc_security_group_ids = ["${aws_security_group.bastion.id}"]
 
-  key_name          = "${var.ssh_key_name}"
+  key_name          = "${var.key_pair_name}"
   user_data         = "${var.user_data}"
   source_dest_check = false
 

@@ -55,7 +55,7 @@ resource "aws_launch_configuration" "launch_configuration" {
   spot_price    = "${var.spot_price}"
 
   iam_instance_profile        = "${aws_iam_instance_profile.instance_profile.name}"
-  key_name                    = "${var.ssh_key_name}"
+  key_name                    = "${var.key_pair_name}"
   security_groups             = ["${aws_security_group.lc_security_group.id}"]
   placement_tenancy           = "${var.tenancy}"
   associate_public_ip_address = "${var.associate_public_ip_address}"

@@ -16,7 +16,7 @@ module "bastion" {
   # recommend you limit this to the IP address ranges of known, trusted servers.
   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
 
-  ssh_key_name = "${var.ssh_key_name}"
+  key_pair_name = "${var.key_pair_name}"
 
   # An example of custom tags
   tags = [

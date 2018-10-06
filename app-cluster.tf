@@ -21,7 +21,7 @@ module "ecs_cluster" {
   # Allow inbound SSH access from the Bastion instance
   allowed_ssh_security_group_ids = ["${module.bastion.security_group_id}"]
 
-  ssh_key_name = "${var.ssh_key_name}"
+  key_pair_name = "${var.key_pair_name}"
 
   # custom docker volume
   #ebs_block_device {
