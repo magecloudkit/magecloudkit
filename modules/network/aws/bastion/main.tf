@@ -7,12 +7,21 @@ terraform {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# CREATE AN ELASTIC IP
+# ATTACH AN ELASTIC IP
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "aws_eip" "eip" {
+resource "aws_eip" "bastion" {
   instance = "${aws_instance.instance.id}"
   vpc      = true
+
+  #depends_on = ["aws_instance.instance"]
+
+  # Workaround for an eventual consistency bug where Terraform doesn't wait long enough for an EIP to be created, which
+  # can occasionally cause an 'Failure associating EIP: InvalidAllocationID.NotFound: The allocation ID 'eipalloc-XXX'
+  # does not exist' error. For more info, see: https://github.com/hashicorp/terraform/issues/1815
+  provisioner "local-exec" {
+    command = "echo 'Sleeping 15 seconds to work around EIP propagation bug in Terraform' && sleep 15"
+  }
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -30,7 +39,7 @@ resource "aws_instance" "instance" {
   # add security groups to allow ssh & vpn access
   vpc_security_group_ids = ["${aws_security_group.bastion.id}"]
 
-  key_name          = "${var.ssh_key_name}"
+  key_name          = "${var.key_pair_name}"
   user_data         = "${var.user_data}"
   source_dest_check = false
 

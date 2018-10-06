@@ -40,7 +40,7 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
-variable "ssh_key_name" {
+variable "key_pair_name" {
   description = "The name of an EC2 Key Pair that can be used to SSH into the Bastion EC2 Instance. Set to an empty string to not associate a Key Pair."
   default     = ""
 }

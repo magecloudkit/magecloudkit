@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "ecs_cluster" {
-  source = "./modules/app-cluster/aws/ecs-cluster"
+  source = "../../modules/app-cluster/aws/ecs-cluster"
 
   cluster_name  = "${var.ecs_cluster_name}"
   ami_id        = "${var.ecs_ami}"
@@ -19,17 +19,18 @@ module "ecs_cluster" {
   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
 
   # Allow inbound SSH access from the Bastion instance
-  allowed_ssh_security_group_ids = ["${module.bastion.security_group_id}"]
+  #allowed_ssh_security_group_ids = ["${module.bastion.security_group_id}"]
+  #allowed_ssh_security_group_ids = ["${aws_security_group.bastion.id}"]
 
   key_pair_name = "${var.key_pair_name}"
-
-  # custom docker volume
-  #ebs_block_device {
-  #  device_name = "/dev/xvdcz"
-  #  volume_type = "gp2"
-  #  volume_size = "25"
-  #}
-
+  # We recommend using a separate EBS Volume for the Docker data dir
+  ebs_block_devices = [
+    {
+      device_name = "/dev/xvdcz"
+      volume_type = "gp2"
+      volume_size = 50
+    },
+  ]
   # An example of custom tags
   tags = [
     {
@@ -47,7 +48,7 @@ module "ecs_cluster" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 data "template_file" "user_data_ecs" {
-  template = "${file("./modules/app-cluster/aws/ecs-cluster/user-data/user-data.sh")}"
+  template = "${file("../../modules/app-cluster/aws/ecs-cluster/user-data/user-data.sh")}"
 
   vars {
     environment = "${var.environment}"
@@ -58,10 +59,5 @@ data "template_file" "user_data_ecs" {
     mysql_database = "magento"
     mysql_user     = "magento"
     mysql_password = "magento"
-
-    #mysql_host     = "${aws_route53_record.db.fqdn}"
-    #mysql_database = "${var.env_mysql_database}"
-    #mysql_user     = "${var.env_mysql_user}"
-    #mysql_password = "${lookup(var.rds_password, terraform.workspace)}"
   }
 }

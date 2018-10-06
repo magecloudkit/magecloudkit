@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "bastion" {
-  source = "./modules/network/aws/bastion"
+  source = "../../modules/network/aws/bastion"
 
   instance_type = "t2.medium"
 
@@ -47,19 +47,19 @@ data "template_cloudinit_config" "user_data_bastion" {
   part {
     filename     = "auto-update.sh"
     content_type = "text/x-shellscript"
-    content      = "${file("./modules/security/auto-update/install.sh")}"
+    content      = "${file("../../modules/security/auto-update/install.sh")}"
   }
 
   # fail2ban script
   part {
     filename     = "fail2ban.sh"
     content_type = "text/x-shellscript"
-    content      = "${file("./modules/security/fail2ban/install.sh")}"
+    content      = "${file("../../modules/security/fail2ban/install.sh")}"
   }
 }
 
 data "template_file" "user_data_bastion" {
-  template = "${file("./modules/network/aws/bastion/user-data/user-data.sh")}"
+  template = "${file("../../modules/network/aws/bastion/user-data/user-data.sh")}"
 
   vars {
     ssh_port = "${module.bastion.ssh_port}"

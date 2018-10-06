@@ -55,7 +55,7 @@ resource "aws_launch_configuration" "launch_configuration" {
   spot_price    = "${var.spot_price}"
 
   iam_instance_profile        = "${aws_iam_instance_profile.instance_profile.name}"
-  key_name                    = "${var.ssh_key_name}"
+  key_name                    = "${var.key_pair_name}"
   security_groups             = ["${aws_security_group.lc_security_group.id}"]
   placement_tenancy           = "${var.tenancy}"
   associate_public_ip_address = "${var.associate_public_ip_address}"
@@ -117,17 +117,16 @@ resource "aws_security_group_rule" "allow_ssh_inbound_from_security_groups" {
   from_port                = "${var.ssh_port}"
   to_port                  = "${var.ssh_port}"
   protocol                 = "tcp"
-  security_group_id        = "${aws_security_group.lc_security_group.id}"
   source_security_group_id = "${element(var.allowed_ssh_security_group_ids, count.index)}"
+  security_group_id        = "${aws_security_group.lc_security_group.id}"
 }
 
 resource "aws_security_group_rule" "allow_all_outbound" {
-  type        = "egress"
-  from_port   = 0
-  to_port     = 0
-  protocol    = "-1"
-  cidr_blocks = ["0.0.0.0/0"]
-
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.lc_security_group.id}"
 }
 
