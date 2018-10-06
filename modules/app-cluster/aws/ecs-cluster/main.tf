@@ -117,17 +117,16 @@ resource "aws_security_group_rule" "allow_ssh_inbound_from_security_groups" {
   from_port                = "${var.ssh_port}"
   to_port                  = "${var.ssh_port}"
   protocol                 = "tcp"
-  security_group_id        = "${aws_security_group.lc_security_group.id}"
   source_security_group_id = "${element(var.allowed_ssh_security_group_ids, count.index)}"
+  security_group_id        = "${aws_security_group.lc_security_group.id}"
 }
 
 resource "aws_security_group_rule" "allow_all_outbound" {
-  type        = "egress"
-  from_port   = 0
-  to_port     = 0
-  protocol    = "-1"
-  cidr_blocks = ["0.0.0.0/0"]
-
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.lc_security_group.id}"
 }
 
