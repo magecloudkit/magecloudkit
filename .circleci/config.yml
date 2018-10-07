@@ -29,52 +29,8 @@ jobs:
           root: .
           paths: .
 
-  test:
-    # only build the terratest branch for now
-    branches:
-      only:
-        - terratest
-    docker:
-      # specify the version
-      - image: circleci/golang:1.10
-    working_directory: /go/src/github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-    steps:
-      - checkout
-      - run: curl -L -s https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64 -o /go/bin/dep && chmod +x /go/bin/dep
-      - run: curl -L -s https://releases.hashicorp.com/packer/1.3.1/packer_1.3.1_linux_amd64.zip -o /go/bin/packer.zip && unzip /go/bin/packer.zip -d /go/bin && chmod +x /go/bin/packer
-      - run: curl -L -s https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip -o /go/bin/terraform.zip && unzip /go/bin/terraform.zip -d /go/bin && chmod +x /go/bin/terraform
-
-      # Install HashiCorp dependencies
-      - restore_cache:
-          keys:
-            - v1-external-dep
-            - v1-dep-{{ checksum "test/Gopkg.lock" }}
-
-      # go test needs an empty main.go file otherwise it will complain
-      - run:
-          name: Foo
-          command: |
-            cat > main.go << EOF
-            package main
-            func main() {
-            }
-            EOF
-      - run: dep ensure -vendor-only
-      - save_cache:
-          key: v1-external-dep
-          paths:
-            - $HOME/terraform
-            - $HOME/packer
-      - save_cache:
-          key: v1-dep-{{ checksum "test/Gopkg.lock" }}
-          paths:
-            - $HOME/.go_workspace/src/github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/test/vendor
-
-      - run: cd test && go test -v -timeout 60m
-
 workflows:
   version: 2
   build:
     jobs:
       - validate
-      - test
