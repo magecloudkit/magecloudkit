@@ -38,3 +38,5 @@ Historically, v1 suffers from:
 ## Getting Started
 
 The root folder of this repository contains an oppinionated stack for launching MageCloudKit.
+
+The `examples` folder contains real-world, production examples of how to use MageCloudKit.
