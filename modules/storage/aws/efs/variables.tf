@@ -4,7 +4,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 variable "vpc_id" {
-  description = "The ID of the VPC in which to launch the EC2 instance."
+  description = " The VPC ID where the resources will be deployed."
 }
 
 variable "availability_zones" {
@@ -75,7 +75,7 @@ variable "efs_port" {
 }
 
 variable "tags" {
-  description = "List fo extra tag blocks added to the autoscaling group configuration. Each element in the list is a map containing keys 'key', 'value', and 'propagate_at_launch' mapped to the respective values."
+  description = "A map of extra tag blocks added to the resources. Each element in this map is a key/value pair mapped to the respective values."
   type        = "map"
   default     = {}
 

@@ -66,7 +66,7 @@ variable "persistence_subnets" {
 }
 
 variable "tags" {
-  description = "List fo extra tag blocks added to the autoscaling group configuration. Each element in the list is a map containing keys 'key', 'value', and 'propagate_at_launch' mapped to the respective values."
+  description = "A map of extra tag blocks added to the resources. Each element in this map is a key/value pair mapped to the respective values."
   type        = "map"
   default     = {}
 
