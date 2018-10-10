@@ -18,5 +18,5 @@ variable "environment" {
 
 variable "retention_in_days" {
   description = "The number of days for log retention. We recommend a value greater than 7."
-  default = 30
+  default     = 30
 }
