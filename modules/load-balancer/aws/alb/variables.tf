@@ -110,18 +110,28 @@ variable "load_balancer_update_timeout" {
 }
 
 variable "logging_enabled" {
-  description = "Controls if the ALB will log requests to S3."
+  description = "If true, then an S3 bucket will be created to store the ALB logs."
   default     = true
 }
 
+variable "create_log_bucket" {
+  description = "Controls if the ALB will log requests to S3."
+  default     = false
+}
+
 variable "log_bucket_name" {
-  description = "S3 bucket (externally created) for storing load balancer access logs. Required if logging_enabled is true."
+  description = "S3 bucket (externally created) for storing load balancer access logs. Required if var.logging_enabled or var.create_log_bucket is true."
   default     = ""
 }
 
 variable "log_location_prefix" {
   description = "S3 prefix within the log_bucket_name under which logs are stored."
   default     = ""
+}
+
+variable "log_bucket_expiry_in_days" {
+  description = "The number of days to retain logs in the S3 bucket. Only required if var.create_log_bucket is true."
+  default     = 7
 }
 
 variable "target_groups" {

@@ -91,3 +91,42 @@ resource "aws_lb_listener_certificate" "https_listener" {
   certificate_arn = "${lookup(var.extra_ssl_certs[count.index], "certificate_arn")}"
   count           = "${var.logging_enabled ? var.extra_ssl_certs_count : 0}"
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# CREATE AN S3 BUCKET IF REQUIRED TO STORE THE ALB LOGS
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_s3_bucket" "log_bucket" {
+  count         = "${var.create_log_bucket}"
+  bucket        = "${var.log_bucket_name}"
+  policy        = "${data.aws_iam_policy_document.bucket_policy.json}"
+  force_destroy = true
+  tags          = "${var.tags}"
+
+  lifecycle_rule {
+    id      = "log-expiration"
+    enabled = "true"
+
+    expiration {
+      days = "${var.log_bucket_expiry_in_days}"
+    }
+  }
+}
+
+# Data providers to assist with creating the log bucket and applying the appropriate IAM policies.
+data "aws_caller_identity" "current" {}
+
+data "aws_elb_service_account" "main" {}
+
+data "aws_iam_policy_document" "bucket_policy" {
+  statement {
+    sid       = "AllowToPutLoadBalancerLogsToS3Bucket"
+    actions   = ["s3:PutObject"]
+    resources = ["arn:aws:s3:::${var.log_bucket_name}/${var.log_location_prefix}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_elb_service_account.main.id}:root"]
+    }
+  }
+}
