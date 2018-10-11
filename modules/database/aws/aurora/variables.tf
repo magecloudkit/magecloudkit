@@ -3,6 +3,14 @@
 # You must provide a value for each of these parameters.
 # ---------------------------------------------------------------------------------------------------------------------
 
+variable "cluster_identifier" {
+  description = "The identifier for the RDS cluster"
+}
+
+variable "cluster_instance_prefix" {
+  description = "A prefix used to identify RDS Cluster instances."
+}
+
 variable "vpc_id" {
   description = "The ID of the VPC in which to launch the RDS resources"
 }
@@ -17,11 +25,6 @@ variable "subnet_ids" {
 # These parameters have reasonable defaults.
 # ---------------------------------------------------------------------------------------------------------------------
 
-variable "cluster_identifier" {
-  description = "The identifier for the RDS cluster"
-  default     = "rds-prod-aurora-cluster"
-}
-
 variable "database_name" {
   description = "The database name"
   default     = "magento2"
@@ -34,7 +37,7 @@ variable "master_username" {
 
 variable "master_password" {
   description = "RDS password"
-  default     = "production"
+  default     = "magento2"
 }
 
 variable "backup_retention_period" {
@@ -47,24 +50,14 @@ variable "preferred_backup_window" {
   default     = "01:00-02:00"
 }
 
-variable "aws_rds_cluster_instance_count" {
+variable "cluster_instance_count" {
   description = "AWS RDS Cluster instance count"
   default     = 2
-}
-
-variable "aws_rds_cluster_instance_identifier" {
-  description = "AWS RDS Cluster instance identifier"
-  default     = "rds-prod-aurora-cluster-2"
 }
 
 variable "instance_class" {
   description = "AWS RDS instance class"
   default     = "db.t2.medium"
-}
-
-variable "aws_security_group_name" {
-  description = "AWS RDS Security Group Name"
-  default     = "sg_prod_rds"
 }
 
 variable "port" {
