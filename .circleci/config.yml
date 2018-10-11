@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: circleci/golang:1.10
 
-    working_directory: /go/src/github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+    working_directory: /go/src/github.com/brightfame/magecloudkit
 
     steps:
       - checkout
