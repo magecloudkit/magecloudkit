@@ -35,7 +35,7 @@ module "ecs_cluster" {
   tags = [
     {
       key                 = "Environment"
-      value               = "development"
+      value               = "${var.environment}"
       propagate_at_launch = true
     },
   ]

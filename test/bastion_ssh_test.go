@@ -84,6 +84,8 @@ func configureTerraformOptions(t *testing.T, workingDir string) (*terraform.Opti
 	// Give this EC2 Instance and other resources in the Terraform code a name with a unique ID so it doesn't clash
 	// with anything else in the AWS account.
 	//instanceName := fmt.Sprintf("terratest-ssh-example-%s", uniqueID)
+	projectName := fmt.Sprintf("magecloudkit-test-%s", uniqueID)
+	ecsClusterName := fmt.Sprintf("test-app-%s", uniqueID)
 
 	// Get the AWS region
 	awsRegion := test_structure.LoadString(t, workingDir, "awsRegion")
@@ -102,11 +104,13 @@ func configureTerraformOptions(t *testing.T, workingDir string) (*terraform.Opti
 		// The path to where our Terraform code is located
 		TerraformDir: workingDir,
 
-		// Variables to pass to our Terraform code using -var options
 		Vars: map[string]interface{}{
 			"aws_region":         awsRegion,
 			"availability_zones": azs,
+			"project_name":       projectName,
+			"environment":        "test",
 			"ecs_ami":            amiID,
+			"ecs_cluster_name":   ecsClusterName,
 			"key_pair_name":      keyPairName,
 		},
 	}

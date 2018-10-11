@@ -4,12 +4,12 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 variable "project_name" {
-  description = "The project name used to tag resources."
+  description = "The project name used when naming resources."
   default     = "magecloudkit-development"
 }
 
 variable "environment" {
-  description = "The environment used to tag resources."
+  description = "The environment used when naming resources."
   default     = "development"
 }
 

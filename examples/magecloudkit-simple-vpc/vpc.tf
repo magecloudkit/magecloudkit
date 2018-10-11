@@ -11,7 +11,7 @@ module "vpc" {
   # An example of custom tags
   tags = [
     {
-      Environment = "development"
+      Environment = "${var.environment}"
     },
   ]
 }
