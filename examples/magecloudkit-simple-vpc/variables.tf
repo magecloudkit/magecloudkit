@@ -4,12 +4,12 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 variable "project_name" {
-  description = "The project name used to tag resources."
+  description = "The project name used when naming resources."
   default     = "magecloudkit-development"
 }
 
 variable "environment" {
-  description = "The environment used to tag resources."
+  description = "The environment used when naming resources."
   default     = "development"
 }
 
@@ -20,12 +20,7 @@ variable "environment" {
 
 variable "aws_region" {
   description = "The AWS region to create resources in."
-  default     = "us-west-1"
-}
-
-variable "availability_zones" {
-  description = "List of availability zones."
-  default     = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  default     = "eu-west-1"
 }
 
 variable "ecs_ami" {

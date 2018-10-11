@@ -33,7 +33,7 @@ module "bastion" {
   # An example of custom tags
   tags = [
     {
-      Environment = "development"
+      Environment = "production"
     },
   ]
 }

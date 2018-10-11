@@ -8,7 +8,8 @@ module "aurora" {
   vpc_id     = "${module.vpc.vpc_id}"
   subnet_ids = "${module.vpc.persistence_subnets}"
 
-  cluster_identifier      = "rds-prod-aurora-cluster"
+  cluster_identifier      = "${var.project_name}-aurora-cluster"
+  cluster_instance_prefix = "${var.project_name}-aurora-cluster-instance"
   database_name           = "magento2"
   master_username         = "magento2"
   master_password         = "${random_string.rds_password.result}"

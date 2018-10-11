@@ -25,7 +25,7 @@ module "ecs_cluster" {
   # An example of custom tags
   tags = [
     {
-      Environment = "development"
+      Environment = "production"
     },
   ]
 }

@@ -35,7 +35,7 @@ module "ecs_cluster" {
   tags = [
     {
       key                 = "Environment"
-      value               = "development"
+      value               = "${var.environment}"
       propagate_at_launch = true
     },
   ]
@@ -75,12 +75,16 @@ module "alb" {
 
   security_groups = ["${aws_security_group.alb_web.id}"]
 
-  #log_bucket_name          = "logs-us-east-2-123456789012"
-  #log_location_prefix      = "my-alb-logs"
+  create_log_bucket   = true
+  log_bucket_name     = "${var.project_name}-alb-logs"
+  log_location_prefix = "app-alb-logs"
 
-  https_listeners          = "${list(map("certificate_arn", "arn:aws:iam::123456789012:server-certificate/test_cert-123456789012", "port", 443))}"
-  https_listeners_count    = "1"
-  http_tcp_listeners       = "${list(map("port", "80", "protocol", "HTTP"))}"
+  # Uncomment these listeners if you want to enable HTTPS on the load balancer.
+  # Note: You must specify the ARN to an ACM or IAM SSL certificate.
+  #https_listeners          = "${list(map("certificate_arn", "arn:aws:iam::123456789012:server-certificate/test_cert-123456789012", "port", 443))}"
+  #https_listeners_count    = "1"
+  http_tcp_listeners = "${list(map("port", "80", "protocol", "HTTP"))}"
+
   http_tcp_listeners_count = "1"
   target_groups            = "${list(map("name", "foo", "backend_protocol", "HTTP", "backend_port", "80"))}"
   target_groups_count      = "1"
@@ -135,3 +139,7 @@ resource "aws_security_group" "alb_web" {
     Environment = "${var.environment}"
   }
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# CREATE AN S3 BUCKET TO STORE THE ALB LOGS
+# ---------------------------------------------------------------------------------------------------------------------

@@ -7,7 +7,8 @@ terraform {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# CREATE THE AWS Aurora CLUSTER
+# CREATE THE RDS AURORA CLUSTER
+# ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_rds_cluster" "default" {
   cluster_identifier      = "${var.cluster_identifier}"
@@ -22,8 +23,8 @@ resource "aws_rds_cluster" "default" {
 }
 
 resource "aws_rds_cluster_instance" "cluster_instances" {
-  count              = "${var.aws_rds_cluster_instance_count}"
-  identifier         = "${var.aws_rds_cluster_instance_identifier}"
+  count              = "${var.cluster_instance_count}"
+  identifier         = "${format("%s-%03d", var.cluster_instance_prefix, count.index+1)}"
   cluster_identifier = "${aws_rds_cluster.default.id}"
   instance_class     = "${var.instance_class}"
 }
@@ -41,7 +42,7 @@ resource "aws_db_subnet_group" "default" {
 
 /* Security group for the rds instances */
 resource "aws_security_group" "rds" {
-  name        = "${var.aws_security_group_name}"
+  name_prefix = "${var.cluster_identifier}"
   description = "Security group for the Aurora instances"
   vpc_id      = "${var.vpc_id}"
 
