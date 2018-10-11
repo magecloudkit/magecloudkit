@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  validate:
+  build:
     docker:
       - image: circleci/golang:1.10
 
@@ -9,27 +9,28 @@ jobs:
 
     steps:
       - checkout
-
-      # Validate Terraform code
+      - run:
+          name: Update npm
+          command: 'sudo npm install -g npm@latest'
       - run:
           name: terraform init
           command: terraform init -input=false
-       - run:
+      - run:
           name: Validate Terraform configurations
           command: find ./modules -type f -name "*.tf" -exec dirname {} \;|sort -u | while read m; do (terraform validate -check-variables=false "$m" && echo "√ $m") || exit 1 ; done
-       - run:
+      - run:
           name: Check if Terraform configurations are properly formatted
           command: if [[ -n "$(terraform fmt -write=false modules)" ]]; then echo "Some terraform files need be formatted, run 'terraform fmt' to fix"; exit 1; fi
-       - run:
+      - run:
           name: Install tflint
           command: curl -L -o /tmp/tflint.zip https://github.com/wata727/tflint/releases/download/v0.7.2/tflint_linux_amd64.zip && unzip /tmp/tflint.zip -d /usr/local/bin
-       - run:
+      - run:
           name: Check Terraform configurations with tflint
           command: cd modules && tflint
 
-       # Run the tests
-       - run: curl -L -s https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64 -o /go/bin/dep && chmod +x /go/bin/dep
-       - run: curl -L -s https://releases.hashicorp.com/packer/1.2.3/packer_1.2.3_linux_amd64.zip -o /go/bin/packer.zip && unzip /go/bin/packer.zip -d /go/bin && chmod +x /go/bin/packer
-       - run: curl -L -s https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip -o /go/bin/terraform.zip && unzip /go/bin/terraform.zip -d /go/bin && chmod +x /go/bin/terraform
-       - run: cd test; dep ensure -vendor-only
-       - run: make test
+      # Run the tests
+      - run: curl -L -s https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64 -o /go/bin/dep && chmod +x /go/bin/dep
+      - run: curl -L -s https://releases.hashicorp.com/packer/1.2.3/packer_1.2.3_linux_amd64.zip -o /go/bin/packer.zip && unzip /go/bin/packer.zip -d /go/bin && chmod +x /go/bin/packer
+      - run: curl -L -s https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip -o /go/bin/terraform.zip && unzip /go/bin/terraform.zip -d /go/bin && chmod +x /go/bin/terraform
+      - run: cd test; dep ensure -vendor-only
+      - run: make test
