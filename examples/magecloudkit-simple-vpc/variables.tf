@@ -20,12 +20,7 @@ variable "environment" {
 
 variable "aws_region" {
   description = "The AWS region to create resources in."
-  default     = "us-west-1"
-}
-
-variable "availability_zones" {
-  description = "List of availability zones."
-  default     = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  default     = "eu-west-1"
 }
 
 variable "ecs_ami" {
