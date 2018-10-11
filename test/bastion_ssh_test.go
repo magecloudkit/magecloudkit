@@ -21,7 +21,7 @@ func TestBastionSsh(t *testing.T) {
 	t.Parallel()
 
 	//os.Setenv("SKIP_build_ami", "true")
-	os.Setenv("SKIP_cleanup_ami", "true")
+	//os.Setenv("SKIP_cleanup_ami", "true")
 
 	workingDir := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/magecloudkit-simple-vpc")
 
