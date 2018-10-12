@@ -5,12 +5,12 @@
 
 variable "project_name" {
   description = "The project name used to tag resources."
-  default     = "magecloudkit-development"
+  default     = "magecloudkit-production"
 }
 
 variable "environment" {
   description = "The environment used to tag resources."
-  default     = "development"
+  default     = "production"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ variable "ecs_ami" {
 
 variable "ecs_cluster_name" {
   description = "The ECS Cluster Name."
-  default     = "development-app"
+  default     = "production-app"
 }
 
 variable "key_pair_name" {
