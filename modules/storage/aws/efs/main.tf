@@ -51,7 +51,6 @@ resource "aws_efs_mount_target" "main" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_security_group" "efs" {
-  name_prefix = "${var.name}"
   description = "Security group for the EFS mount targets"
   vpc_id      = "${var.vpc_id}"
 
