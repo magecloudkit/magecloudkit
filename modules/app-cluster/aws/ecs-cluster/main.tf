@@ -138,7 +138,7 @@ resource "aws_security_group_rule" "allow_all_outbound" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_iam_instance_profile" "instance_profile" {
-  name_prefix = "${var.cluster_name}"
+  name_prefix = "${var.cluster_name}-instance-profile"
   path        = "${var.instance_profile_path}"
   role        = "${aws_iam_role.instance_role.name}"
 
@@ -172,4 +172,16 @@ data "aws_iam_policy_document" "instance_role" {
       identifiers = ["ecs.amazonaws.com", "ec2.amazonaws.com"]
     }
   }
+}
+
+# Make sure the ECS instances have the appriopriate policy attached so they can register themselves in the ECS cluster
+resource "aws_iam_role_policy_attachment" "ecs_ec2_role" {
+  role       = "${aws_iam_role.instance_role.id}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+}
+
+# Allow the ECS instances to write CloudWatch logs
+resource "aws_iam_role_policy_attachment" "ecs_ec2_cloudwatch_role" {
+  role       = "${aws_iam_role.instance_role.id}"
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 }
