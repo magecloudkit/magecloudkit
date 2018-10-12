@@ -11,7 +11,11 @@ resource "aws_cloudwatch_log_group" "main" {
   name              = "${var.name}"
   retention_in_days = "${var.retention_in_days}"
 
-  tags {
-    Environment = "${var.environment}"
-  }
+  # add tags
+  tags = "${merge(
+    var.tags,
+    map(
+      "Name", "${var.name}"
+    )
+  )}"
 }
