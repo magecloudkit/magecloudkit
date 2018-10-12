@@ -12,6 +12,7 @@ terraform {
 
 resource "aws_rds_cluster" "default" {
   cluster_identifier      = "${var.cluster_identifier}"
+  engine                  = "${var.engine}"
   database_name           = "${var.database_name}"
   master_username         = "${var.master_username}"
   master_password         = "${var.master_password}"

@@ -55,6 +55,11 @@ variable "cluster_instance_count" {
   default     = 2
 }
 
+variable "engine" {
+  description = "The name of the database engine to be used for the RDS instance. Valid Values: aurora, aurora-mysql, aurora-postgresql."
+  default     = "aurora-mysql"
+}
+
 variable "instance_class" {
   description = "AWS RDS instance class"
   default     = "db.t2.medium"
