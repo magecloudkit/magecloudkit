@@ -23,7 +23,7 @@ resource "aws_elasticache_cluster" "memcached" {
 }
 
 resource "aws_elasticache_subnet_group" "memcached" {
-  name        = "${format("%s-memcached-subnet-group", var.cluster_name)}"
+  name        = "${format("%s-subnet-group", var.cluster_name)}"
   description = "ElastiCache Memcached Subnet Group"
   subnet_ids  = ["${var.subnet_ids}"]
 }
@@ -60,4 +60,3 @@ resource "aws_security_group_rule" "allow_memcached_inbound" {
 #
 #  security_group_id = "${aws_security_group.memcached.id}"
 #}
-

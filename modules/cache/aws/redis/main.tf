@@ -23,7 +23,7 @@ resource "aws_elasticache_cluster" "redis" {
 }
 
 resource "aws_elasticache_subnet_group" "redis" {
-  name        = "${format("%s-redis-subnet-group", var.cluster_name)}"
+  name        = "${format("%s-subnet-group", var.cluster_name)}"
   description = "ElastiCache Redis Subnet Group"
   subnet_ids  = ["${var.subnet_ids}"]
 }
@@ -60,4 +60,3 @@ resource "aws_security_group_rule" "allow_redis_inbound" {
 #
 #  security_group_id = "${aws_security_group.redis.id}"
 #}
-
