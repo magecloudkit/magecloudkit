@@ -73,7 +73,7 @@ data "template_file" "user_data_ecs" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 # REPOSITORY URL FOR WEB SERVICE APP
-data "aws_ecr_repository" "web_service_app" {
+data "aws_ecr_repository" "web_service" {
   name = "kiwico/web_service"
 }
 
@@ -112,7 +112,7 @@ resource "aws_ecs_task_definition" "web_service" {
         "web"
       ],
       "mountPoints": [],
-      "image": "${data.aws_ecr_repository.web_service_app.repository_url}",,
+      "image": "${data.aws_ecr_repository.web_service.repository_url}",,
       "privileged": false,
       "essential": true,
       "portMappings": [
@@ -133,6 +133,174 @@ resource "aws_ecs_task_definition" "web_service" {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "production-web-service",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "webapp/nginx"
+        }
+      },
+      "cpu": 0,
+      "volumesFrom": [
+        {
+          "readOnly": false,
+          "sourceContainer": "web"
+        }
+      ],
+      "dockerLabels": {}
+    }
+  ]
+EOF
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# CHECKOUT-SERVICE - ECS-SERVICE
+#
+# This module will create ecs-service for web-service
+# ---------------------------------------------------------------------------------------------------------------------
+
+# REPOSITORY URL FOR CHECKOUT SERVICE APP
+data "aws_ecr_repository" "checkout_service" {
+  name = "kiwico/checkout_service"
+}
+
+module "aws_ecs_checkout_service" {
+  source = "./modules/app-cluster/aws/ecs-service"
+
+  service_name = "web-service"
+  vpc_id       = "${module.vpc.vpc_id}"
+  subnet_ids   = "${module.vpc.private_subnets}"
+  cluster      = "${module.ecs_cluster.cluster_name}"
+  environment  = "production"
+
+  task_definition = "${aws_ecs_task_definition.checkout_service.family}:${max("${aws_ecs_task_definition.checkout_service.revision}", "${data.aws_ecs_task_definition.checkout_service.revision}")}"
+  desired_count   = 2
+}
+
+// Gets the current task definition from AWS, reflecting anything that's been deployed
+// outside of Terraform (e.g: CI builds).
+data "aws_ecs_task_definition" "checkout_service" {
+  task_definition = "${aws_ecs_task_definition.web_service.family}"
+  depends_on      = ["aws_ecs_task_definition.checkout_service"]
+}
+
+resource "aws_ecs_task_definition" "checkout_service" {
+  family        = "production-checkout-service"
+  task_role_arn = "${aws_iam_role.app_ecs_task_role.arn}"
+
+  container_definitions = <<EOF
+  [
+    {
+      "dnsSearchDomains": [],
+      "environment": [],
+      "readonlyRootFilesystem": false,
+      "name": "nginx",
+      "links": [
+        "web"
+      ],
+      "mountPoints": [],
+      "image": "${data.aws_ecr_repository.checkout_service.repository_url}",,
+      "privileged": false,
+      "essential": true,
+      "portMappings": [
+        {
+          "protocol": "tcp",
+          "containerPort": 80,
+          "hostPort": 80
+        }
+      ],
+      "dnsServers": [],
+      "dockerSecurityOptions": [],
+      "entryPoint": [],
+      "ulimits": [],
+      "memoryReservation": 512,
+      "command": [],
+      "extraHosts": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "production-checkout-service",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "webapp/nginx"
+        }
+      },
+      "cpu": 0,
+      "volumesFrom": [
+        {
+          "readOnly": false,
+          "sourceContainer": "web"
+        }
+      ],
+      "dockerLabels": {}
+    }
+  ]
+EOF
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# API-SERVICE - ECS-SERVICE
+#
+# This module will create ecs-service for api-service
+# ---------------------------------------------------------------------------------------------------------------------
+
+# REPOSITORY URL FOR WEB SERVICE APP
+data "aws_ecr_repository" "api_service" {
+  name = "kiwico/api_service"
+}
+
+module "aws_ecs_api_service" {
+  source = "./modules/app-cluster/aws/ecs-service"
+
+  service_name = "api-service"
+  vpc_id       = "${module.vpc.vpc_id}"
+  subnet_ids   = "${module.vpc.private_subnets}"
+  cluster      = "${module.ecs_cluster.cluster_name}"
+  environment  = "production"
+
+  task_definition = "${aws_ecs_task_definition.api_service.family}:${max("${aws_ecs_task_definition.api_service.revision}", "${data.aws_ecs_task_definition.api_service.revision}")}"
+  desired_count   = 2
+}
+
+// Gets the current task definition from AWS, reflecting anything that's been deployed
+// outside of Terraform (e.g: CI builds).
+data "aws_ecs_task_definition" "api_service" {
+  task_definition = "${aws_ecs_task_definition.api_service.family}"
+  depends_on      = ["aws_ecs_task_definition.api_service"]
+}
+
+resource "aws_ecs_task_definition" "api_service" {
+  family        = "production-api-service"
+  task_role_arn = "${aws_iam_role.app_ecs_task_role.arn}"
+
+  container_definitions = <<EOF
+  [
+    {
+      "dnsSearchDomains": [],
+      "environment": [],
+      "readonlyRootFilesystem": false,
+      "name": "nginx",
+      "links": [
+        "web"
+      ],
+      "mountPoints": [],
+      "image": "${data.aws_ecr_repository.api_service.repository_url}",,
+      "privileged": false,
+      "essential": true,
+      "portMappings": [
+        {
+          "protocol": "tcp",
+          "containerPort": 80,
+          "hostPort": 80
+        }
+      ],
+      "dnsServers": [],
+      "dockerSecurityOptions": [],
+      "entryPoint": [],
+      "ulimits": [],
+      "memoryReservation": 512,
+      "command": [],
+      "extraHosts": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "production-api-service",
           "awslogs-region": "eu-west-1",
           "awslogs-stream-prefix": "webapp/nginx"
         }
