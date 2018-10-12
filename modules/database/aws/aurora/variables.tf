@@ -60,6 +60,11 @@ variable "engine" {
   default     = "aurora-mysql"
 }
 
+variable "engine_version" {
+  description = "The database engine version."
+  default     = "5.7.12"
+}
+
 variable "instance_class" {
   description = "AWS RDS instance class"
   default     = "db.t2.medium"
