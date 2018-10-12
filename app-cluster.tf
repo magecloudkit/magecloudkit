@@ -112,7 +112,7 @@ resource "aws_ecs_task_definition" "web_service" {
         "web"
       ],
       "mountPoints": [],
-      "image": "${data.aws_ecr_repository.web_service.repository_url}",,
+      "image": "857346137638.dkr.ecr.us-west-1.amazonaws.com/brightfame/nginx",
       "privileged": false,
       "essential": true,
       "portMappings": [
@@ -135,6 +135,43 @@ resource "aws_ecs_task_definition" "web_service" {
           "awslogs-group": "production-web-service",
           "awslogs-region": "eu-west-1",
           "awslogs-stream-prefix": "webapp/nginx"
+        }
+      },
+      "cpu": 0,
+      "volumesFrom": [
+        {
+          "readOnly": false,
+          "sourceContainer": "web"
+        }
+      ],
+      "dockerLabels": {}
+    },
+    {
+      "dnsSearchDomains": [],
+      "environment": [],
+      "readonlyRootFilesystem": false,
+      "name": "nginx",
+      "links": [
+        "web"
+      ],
+      "mountPoints": [],
+      "image": "857346137638.dkr.ecr.us-west-1.amazonaws.com/brightfame/magento",
+      "privileged": false,
+      "essential": true,
+      "portMappings": [],
+      "dnsServers": [],
+      "dockerSecurityOptions": [],
+      "entryPoint": [],
+      "ulimits": [],
+      "memoryReservation": 512,
+      "command": [],
+      "extraHosts": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "production-web-service",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "webapp/magento"
         }
       },
       "cpu": 0,
@@ -196,7 +233,7 @@ resource "aws_ecs_task_definition" "checkout_service" {
         "web"
       ],
       "mountPoints": [],
-      "image": "${data.aws_ecr_repository.checkout_service.repository_url}",,
+      "image": "857346137638.dkr.ecr.us-west-1.amazonaws.com/brightfame/nginx",
       "privileged": false,
       "essential": true,
       "portMappings": [
@@ -219,6 +256,43 @@ resource "aws_ecs_task_definition" "checkout_service" {
           "awslogs-group": "production-checkout-service",
           "awslogs-region": "eu-west-1",
           "awslogs-stream-prefix": "webapp/nginx"
+        }
+      },
+      "cpu": 0,
+      "volumesFrom": [
+        {
+          "readOnly": false,
+          "sourceContainer": "web"
+        }
+      ],
+      "dockerLabels": {}
+    },
+    {
+      "dnsSearchDomains": [],
+      "environment": [],
+      "readonlyRootFilesystem": false,
+      "name": "nginx",
+      "links": [
+        "web"
+      ],
+      "mountPoints": [],
+      "image": "857346137638.dkr.ecr.us-west-1.amazonaws.com/brightfame/magento",
+      "privileged": false,
+      "essential": true,
+      "portMappings": [],
+      "dnsServers": [],
+      "dockerSecurityOptions": [],
+      "entryPoint": [],
+      "ulimits": [],
+      "memoryReservation": 512,
+      "command": [],
+      "extraHosts": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "production-checkout-service",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "webapp/magento"
         }
       },
       "cpu": 0,
@@ -280,7 +354,7 @@ resource "aws_ecs_task_definition" "api_service" {
         "web"
       ],
       "mountPoints": [],
-      "image": "${data.aws_ecr_repository.api_service.repository_url}",,
+      "image": "857346137638.dkr.ecr.us-west-1.amazonaws.com/brightfame/nginx",
       "privileged": false,
       "essential": true,
       "portMappings": [
@@ -300,9 +374,46 @@ resource "aws_ecs_task_definition" "api_service" {
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "production-api-service",
+          "awslogs-group": "production-web-service",
           "awslogs-region": "eu-west-1",
           "awslogs-stream-prefix": "webapp/nginx"
+        }
+      },
+      "cpu": 0,
+      "volumesFrom": [
+        {
+          "readOnly": false,
+          "sourceContainer": "web"
+        }
+      ],
+      "dockerLabels": {}
+    },
+    {
+      "dnsSearchDomains": [],
+      "environment": [],
+      "readonlyRootFilesystem": false,
+      "name": "nginx",
+      "links": [
+        "web"
+      ],
+      "mountPoints": [],
+      "image": "857346137638.dkr.ecr.us-west-1.amazonaws.com/brightfame/magento",
+      "privileged": false,
+      "essential": true,
+      "portMappings": [],
+      "dnsServers": [],
+      "dockerSecurityOptions": [],
+      "entryPoint": [],
+      "ulimits": [],
+      "memoryReservation": 512,
+      "command": [],
+      "extraHosts": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "production-api-service",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "webapp/magento"
         }
       },
       "cpu": 0,
