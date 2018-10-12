@@ -29,6 +29,8 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
   identifier         = "${format("%s-%03d", var.cluster_instance_prefix, count.index+1)}"
   cluster_identifier = "${aws_rds_cluster.default.id}"
   instance_class     = "${var.instance_class}"
+  engine             = "${var.engine}"
+  engine_version     = "${var.engine_version}"
 }
 
 resource "aws_db_subnet_group" "default" {
