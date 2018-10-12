@@ -70,12 +70,13 @@ variable "instance_class" {
   default     = "db.t2.medium"
 }
 
+variable "allowed_cidr_blocks" {
+  description = "A list of CIDR-formatted IP address ranges from which the RDS Instances will allow connections."
+  type        = "list"
+  default     = []
+}
+
 variable "port" {
   description = "RDS ingress port"
   default     = 3306
-}
-
-variable "egress_port" {
-  description = "RDS egress port"
-  default     = 0
 }
