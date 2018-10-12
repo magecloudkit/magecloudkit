@@ -65,3 +65,110 @@ data "template_file" "user_data_ecs" {
     #mysql_password = "${lookup(var.rds_password, terraform.workspace)}"
   }
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# WEB-SERVICE - ECS-SERVICE
+#
+# This module will create ecs-service for web-service
+# ---------------------------------------------------------------------------------------------------------------------
+
+# REPOSITORY URL FOR WEB SERVICE APP
+data "aws_ecr_repository" "web_service_app" {
+  name = "kiwico/web_service"
+}
+
+module "aws_ecs_web_service" {
+  source = "./modules/app-cluster/aws/ecs-service"
+
+  service_name = "web-service"
+  vpc_id       = "${module.vpc.vpc_id}"
+  subnet_ids   = "${module.vpc.private_subnets}"
+  cluster      = "${module.ecs_cluster.cluster_name}"
+  environment  = "production"
+
+  task_definition = "${aws_ecs_task_definition.web_service.family}:${max("${aws_ecs_task_definition.web_service.revision}", "${data.aws_ecs_task_definition.web_service.revision}")}"
+  desired_count   = 2
+}
+
+// Gets the current task definition from AWS, reflecting anything that's been deployed
+// outside of Terraform (e.g: CI builds).
+data "aws_ecs_task_definition" "web_service" {
+  task_definition = "${aws_ecs_task_definition.web_service.family}"
+  depends_on      = ["aws_ecs_task_definition.web_service"]
+}
+
+resource "aws_ecs_task_definition" "web_service" {
+  family        = "production-web-service"
+  task_role_arn = "${aws_iam_role.app_ecs_task_role.arn}"
+
+  container_definitions = <<EOF
+  [
+    {
+      "dnsSearchDomains": [],
+      "environment": [],
+      "readonlyRootFilesystem": false,
+      "name": "nginx",
+      "links": [
+        "web"
+      ],
+      "mountPoints": [],
+      "image": "${data.aws_ecr_repository.web_service_app.repository_url}",,
+      "privileged": false,
+      "essential": true,
+      "portMappings": [
+        {
+          "protocol": "tcp",
+          "containerPort": 80,
+          "hostPort": 80
+        }
+      ],
+      "dnsServers": [],
+      "dockerSecurityOptions": [],
+      "entryPoint": [],
+      "ulimits": [],
+      "memoryReservation": 512,
+      "command": [],
+      "extraHosts": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "production-web-service",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "webapp/nginx"
+        }
+      },
+      "cpu": 0,
+      "volumesFrom": [
+        {
+          "readOnly": false,
+          "sourceContainer": "web"
+        }
+      ],
+      "dockerLabels": {}
+    }
+  ]
+EOF
+}
+
+#
+# This role lets ECS tasks access AWS. We're using it for managing secrets and S3 access.
+#
+resource "aws_iam_role" "app_ecs_task_role" {
+  name = "${terraform.workspace}-app-ecs-task-role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}

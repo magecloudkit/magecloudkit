@@ -5,3 +5,14 @@ Deploy one or more Docker containers as a long-running ECS service. This module 
 The service module creates an ecs service, task definition and a route53 record under the local service zone (see the dns module).
 
 ## Usage
+
+```
+module "aws_ecs_service" {
+  source = "./modules/app-cluster/aws/ecs-service"
+
+  subnet_id = "${element(data.aws_subnet_ids.default.ids, 0)}"
+
+  task_definition  = "${var.task_definition}"
+  desired_count    = "${var.desired_count}"
+}
+```

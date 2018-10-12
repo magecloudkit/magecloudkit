@@ -2,6 +2,10 @@ output "cluster_id" {
   value = "${aws_ecs_cluster.ecs_cluster.id}"
 }
 
+output "cluster_name" {
+  value = "${aws_ecs_cluster.ecs_cluster.cluster_name}"
+}
+
 output "asg_name" {
   value = "${aws_autoscaling_group.autoscaling_group.name}"
 }
