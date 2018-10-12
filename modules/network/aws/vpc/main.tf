@@ -89,7 +89,7 @@ resource "aws_eip" "nat" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_nat_gateway" "main" {
-  count         = "${length(var.private_subnets)}"
+  count         = "${local.subnet_count}"
   allocation_id = "${element(aws_eip.nat.*.id, count.index)}"
   subnet_id     = "${element(aws_subnet.public.*.id, count.index)}"
   depends_on    = ["aws_internet_gateway.main"]
@@ -100,11 +100,18 @@ resource "aws_nat_gateway" "main" {
 # Create 3 tiers of subnets.
 # ---------------------------------------------------------------------------------------------------------------------
 
+locals {
+  # This works as long as we want the same number of subnets in each AZ
+  subnet_count = "${min(length(var.availability_zones), length(var.public_subnets), length(var.private_subnets), length(var.persistence_subnets))}"
+
+  #nat_gateway_count = "${var.single_nat_gateway ? 1 : (var.one_nat_gateway_per_az ? length(var.azs) : local.max_subnet_length)}"
+}
+
 resource "aws_subnet" "public" {
   vpc_id                  = "${aws_vpc.main.id}"
   cidr_block              = "${element(var.public_subnets, count.index)}"
   availability_zone       = "${element(var.availability_zones, count.index)}"
-  count                   = "${length(var.public_subnets)}"
+  count                   = "${local.subnet_count}"
   map_public_ip_on_launch = true
 
   tags = "${merge(
@@ -119,7 +126,7 @@ resource "aws_subnet" "private" {
   vpc_id            = "${aws_vpc.main.id}"
   cidr_block        = "${element(var.private_subnets, count.index)}"
   availability_zone = "${element(var.availability_zones, count.index)}"
-  count             = "${length(var.private_subnets)}"
+  count             = "${local.subnet_count}"
 
   tags = "${merge(
     var.tags,
@@ -133,7 +140,7 @@ resource "aws_subnet" "persistence" {
   vpc_id            = "${aws_vpc.main.id}"
   cidr_block        = "${element(var.persistence_subnets, count.index)}"
   availability_zone = "${element(var.availability_zones, count.index)}"
-  count             = "${length(var.persistence_subnets)}"
+  count             = "${local.subnet_count}"
 
   tags = "${merge(
     var.tags,
@@ -165,7 +172,7 @@ resource "aws_route" "public" {
 }
 
 resource "aws_route_table" "private" {
-  count  = "${length(var.private_subnets)}"
+  count  = "${local.subnet_count}"
   vpc_id = "${aws_vpc.main.id}"
 
   tags = "${merge(
@@ -187,13 +194,13 @@ resource "aws_route" "private" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_route_table_association" "public" {
-  count          = "${length(var.public_subnets)}"
+  count          = "${local.subnet_count}"
   subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
   route_table_id = "${aws_route_table.public.id}"
 }
 
 resource "aws_route_table_association" "private" {
-  count          = "${length(var.private_subnets)}"
+  count          = "${local.subnet_count}"
   subnet_id      = "${element(aws_subnet.private.*.id, count.index)}"
   route_table_id = "${element(aws_route_table.private.*.id, count.index)}"
 }
