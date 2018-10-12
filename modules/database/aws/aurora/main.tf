@@ -30,8 +30,8 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  name        = "${var.aws_db_subnet_group_name}"
-  description = "${var.aws_db_subnet_group_description}"
+  name        = "${var.cluster_identifier}-subnet-group"
+  description = "RDS Aurora Subnets"
   subnet_ids  = ["${var.subnet_ids}"]
 }
 

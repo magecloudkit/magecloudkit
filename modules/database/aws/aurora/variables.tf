@@ -69,13 +69,3 @@ variable "egress_port" {
   description = "RDS egress port"
   default     = 0
 }
-
-variable "aws_db_subnet_group_name" {
-  description = "AWS DB Subnet group name"
-  default     = "aurora-prod-default-subnet-group"
-}
-
-variable "aws_db_subnet_group_description" {
-  description = "AWS DB Subnet group description"
-  default     = "Production RDS Aurora Subnets"
-}
