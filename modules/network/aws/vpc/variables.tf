@@ -34,7 +34,7 @@ variable "enable_dns_hostnames" {
 
 variable "enable_dhcp" {
   description = "Enable the DHCP options"
-  default     = true
+  default     = false
 }
 
 variable "dhcp_domain_name" {
