@@ -118,7 +118,6 @@ module "alb" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_security_group" "alb_web" {
-  name        = "${var.environment}-sg-alb-web"
   description = "Security group for the ALB that allows web traffic from internet"
   vpc_id      = "${module.vpc.vpc_id}"
 
