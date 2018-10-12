@@ -12,14 +12,14 @@ module "aurora" {
   cluster_instance_prefix = "${var.project_name}-aurora-cluster-instance"
   database_name           = "magento2"
   master_username         = "magento2"
-  master_password         = "${random_string.rds_password.result}"
+  master_password         = "magento2"
   backup_retention_period = 7
   preferred_backup_window = "01:00-02:00"
 }
 
-# Generate a random RDS master password
-resource "random_string" "rds_password" {
-  length           = 30
-  special          = true
-  override_special = "/@"
-}
+# Generate a random RDS master password, you can use this password by referencing: ${random_string.rds_password.result}
+#resource "random_string" "rds_password" {
+#  length           = 30
+#  special          = true
+#  override_special = "/@"
+#}
