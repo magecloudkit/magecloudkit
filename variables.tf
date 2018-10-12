@@ -20,17 +20,17 @@ variable "environment" {
 
 variable "aws_region" {
   description = "The AWS region to create resources in."
-  default     = "eu-west-1"
+  default     = "us-west-1"
 }
 
 variable "availability_zones" {
   description = "List of availability zones."
-  default     = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  default     = ["us-west-1a", "us-west-1c"]
 }
 
 variable "ecs_ami" {
   description = "The ECS AMI used to run . This AMI is built from the ECS-AMI Packer template (See modules/app-cluster/aws/ecs-ami/ecs.json)."
-  default     = "ami-0be2dee98c4f5afda"
+  default     = "ami-05c07371ae041d32f"
 }
 
 variable "ecs_cluster_name" {
