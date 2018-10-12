@@ -5,6 +5,7 @@
 module "efs" {
   source = "../../modules/storage/aws/efs"
 
+  name               = "${var.project_name}"
   vpc_id             = "${module.vpc.vpc_id}"
   availability_zones = "${data.aws_availability_zones.available.names}"
   subnet_ids         = "${module.vpc.persistence_subnets}"

@@ -5,6 +5,7 @@
 module "efs" {
   source = "./modules/storage/aws/efs"
 
+  name               = "${var.project_name}"
   vpc_id             = "${module.vpc.vpc_id}"
   availability_zones = "${var.availability_zones}"
   subnet_ids         = "${module.vpc.persistence_subnets}"
@@ -18,7 +19,7 @@ module "efs" {
   # An example of custom tags
   tags = [
     {
-      Environment = "development"
+      Environment = "${var.environment}"
     },
   ]
 }
