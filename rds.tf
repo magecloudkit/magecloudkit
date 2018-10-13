@@ -15,4 +15,6 @@ module "aurora" {
   master_password         = "production"
   backup_retention_period = 7
   preferred_backup_window = "01:00-02:00"
+
+  allowed_db_security_group_ids = ["${module.app_cluster.security_group_id}"]
 }

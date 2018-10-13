@@ -70,8 +70,14 @@ variable "instance_class" {
   default     = "db.t2.medium"
 }
 
-variable "allowed_cidr_blocks" {
-  description = "A list of CIDR-formatted IP address ranges from which the RDS Instances will allow connections."
+variable "allowed_db_cidr_blocks" {
+  description = "A list of CIDR-formatted IP address ranges from which the RDS instances will allow database connections."
+  type        = "list"
+  default     = []
+}
+
+variable "allowed_db_security_group_ids" {
+  description = "A list of security group IDs from which the ElastiCache instances will allow database connections."
   type        = "list"
   default     = []
 }
