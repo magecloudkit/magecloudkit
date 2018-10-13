@@ -28,6 +28,7 @@ DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
         python3-pip \
         awscli \
         mysql-client-5.7 \
+        redis-tools \
         jq
 
 ln -s /usr/bin/pip3 /usr/bin/pip
