@@ -14,7 +14,7 @@ apt-get -y autoclean
 
 rm -rf /tmp/*
 rm -rf /var/tmp/*
-#rm -rf $HOME/.ssh/authorized_keys
+rm -rf $HOME/.ssh/authorized_keys
 
 for f in $(find /var/log -type f) ; do
   dd if=/dev/null of=$f
