@@ -52,8 +52,14 @@ variable "parameter_group_name" {
   default     = "default.redis3.2"
 }
 
-variable "allowed_redis_cidr_blocks" {
-  description = "A list of CIDR-formatted IP address ranges from which the ElastiCache resources will allow connections."
+variable "allowed_inbound_cidr_blocks" {
+  description = "A list of CIDR-formatted IP address ranges from which the ElastiCache resources will allow inbound connections."
+  type        = "list"
+  default     = []
+}
+
+variable "allowed_inbound_security_group_ids" {
+  description = "A list of security group IDs from which the ElastiCache instances will allow inbound connections."
   type        = "list"
   default     = []
 }
