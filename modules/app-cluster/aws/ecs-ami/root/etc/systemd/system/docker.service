@@ -7,7 +7,7 @@ Requires=docker.socket bootstrap.service
 [Service]
 EnvironmentFile=-/etc/environment
 Type=notify
-ExecStart=/usr/bin/dockerd -H fd:// --storage-driver overlay --host unix:///var/run/docker.sock  --host 0.0.0.0:2376 --exec-opt native.cgroupdriver=cgroupfs --log-driver=awslogs --log-opt awslogs-region=${AWS_DEFAULT_REGION} --log-opt awslogs-group=${SERVER_GROUP} --log-opt tag='{{ with split .ImageName ":" }}{{join . "_"}}{{end}}-{{.ID}}'
+ExecStart=/usr/bin/dockerd -H fd:// --storage-driver overlay --host unix:///var/run/docker.sock  --host 0.0.0.0:2376 --exec-opt native.cgroupdriver=cgroupfs
 ExecReload=/bin/kill -s HUP $MAINPID
 MountFlags=slave
 LimitNOFILE=1048576
