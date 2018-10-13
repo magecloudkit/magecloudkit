@@ -57,14 +57,14 @@ variable "provisioned_throughput_in_mibps" {
   default     = 0
 }
 
-variable "allow_inbound_from_cidr_blocks" {
+variable "allowed_inbound_from_cidr_blocks" {
   description = "A list of CIDR-formatted IP address ranges from which the EFS resources will allow NFS connections."
   type        = "list"
   default     = []
 }
 
-variable "allow_inbound_from_security_groups" {
-  description = "A list of Security Group IDs from which the EFS resources will allow incoming NFS requests."
+variable "allowed_inbound_security_group_ids" {
+  description = "A list of Security Group IDs from which the EFS resources will allow incoming NFS connections."
   type        = "list"
   default     = []
 }

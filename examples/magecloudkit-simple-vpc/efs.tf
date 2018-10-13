@@ -12,9 +12,9 @@ module "efs" {
 
   # To make testing easier, we allow SSH requests from any IP address here. In a production deployment, we strongly
   # recommend you limit this to the IP address ranges of known, trusted servers.
-  allow_inbound_from_cidr_blocks = ["0.0.0.0/0"]
+  allowed_inbound_from_cidr_blocks = ["0.0.0.0/0"]
 
-  allow_inbound_from_security_groups = []
+  allowed_inbound_security_group_ids = []
 
   # An example of custom tags
   tags = [
