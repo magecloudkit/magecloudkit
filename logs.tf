@@ -37,12 +37,16 @@ module "ecs-init-logs" {
   retention_in_days = 7
 }
 
-resource "aws_cloudwatch_log_group" "ecs-audit-logs" {
-  name              = "${var.cloudwatch_prefix}/var/log/ecs/audit.log"
+module "ecs-audit-logs" {
+  source = "./modules/monitoring/aws/logs"
+
+  name              = "${var.project_name}-/var/log/ecs/audit.log"
   retention_in_days = 7
 }
 
-resource "aws_cloudwatch_log_group" "message-logs" {
-  name              = "${var.cloudwatch_prefix}/var/log/messages"
+module "ecs-message-logs" {
+  source = "./modules/monitoring/aws/logs"
+
+  name              = "${var.project_name}-/var/log/messages"
   retention_in_days = 7
 }
