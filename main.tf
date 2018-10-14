@@ -3,7 +3,12 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 provider "aws" {
-  region = "${var.aws_region}"
+  region  = "${var.aws_region}"
+  version = "~> 1.39"
+}
+
+provider "template" {
+  version = "~> 1.0"
 }
 
 terraform {
