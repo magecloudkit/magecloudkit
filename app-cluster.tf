@@ -71,6 +71,25 @@ data "template_file" "user_data_ecs" {
   }
 }
 
+# This role lets ECS tasks access AWS. We're using it for managing secrets and S3 access.
+resource "aws_iam_role" "app_ecs_task_role" {
+  name = "${var.project_name}-app-ecs-task-role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # DEPLOY AN ALB LOAD BALANCER TO SERVE TRAFFIC TO THE CLUSTER
 # ---------------------------------------------------------------------------------------------------------------------
@@ -146,4 +165,39 @@ resource "aws_security_group" "alb_web" {
     Name        = "${var.environment}-sg-alb-web"
     Environment = "${var.environment}"
   }
+>>>>>>> master
+}
+
+resource "aws_security_group_rule" "alb_to_ecs" {
+  type                     = "ingress"
+  from_port                = 32768
+  to_port                  = 61000
+  protocol                 = "TCP"
+  source_security_group_id = "${aws_security_group.alb_web.id}"
+  security_group_id = "${module.app_cluster.security_group_id}"
+}
+
+resource "aws_iam_role" "ecs_lb_role" {
+  name = "${var.environment}_ecs_lb_role"
+  path = "/ecs/"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": ["ecs.amazonaws.com"]
+      },
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_lb" {
+  role       = "${aws_iam_role.ecs_lb_role.id}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
 }
