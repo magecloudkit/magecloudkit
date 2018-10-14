@@ -1,6 +1,10 @@
-.PHONY: all bake test init plan apply destroy help
+.PHONY: all dist bake test init plan apply destroy help
 
 all: help
+
+dist: ## Build a release version
+	rm -rf examples
+	rm -rf test
 
 bake: ## Bake a new AMI using Packer
 	packer build packer/aws/app-server.json

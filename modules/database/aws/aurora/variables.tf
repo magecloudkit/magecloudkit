@@ -55,27 +55,34 @@ variable "cluster_instance_count" {
   default     = 2
 }
 
+variable "engine" {
+  description = "The name of the database engine to be used for the RDS instance. Valid Values: aurora, aurora-mysql, aurora-postgresql."
+  default     = "aurora-mysql"
+}
+
+variable "engine_version" {
+  description = "The database engine version."
+  default     = "5.7.12"
+}
+
 variable "instance_class" {
   description = "AWS RDS instance class"
   default     = "db.t2.medium"
 }
 
+variable "allowed_db_cidr_blocks" {
+  description = "A list of CIDR-formatted IP address ranges from which the RDS instances will allow database connections."
+  type        = "list"
+  default     = []
+}
+
+variable "allowed_db_security_group_ids" {
+  description = "A list of security group IDs from which the ElastiCache instances will allow database connections."
+  type        = "list"
+  default     = []
+}
+
 variable "port" {
   description = "RDS ingress port"
   default     = 3306
-}
-
-variable "egress_port" {
-  description = "RDS egress port"
-  default     = 0
-}
-
-variable "aws_db_subnet_group_name" {
-  description = "AWS DB Subnet group name"
-  default     = "aurora-prod-default-subnet-group"
-}
-
-variable "aws_db_subnet_group_description" {
-  description = "AWS DB Subnet group description"
-  default     = "Production RDS Aurora Subnets"
 }

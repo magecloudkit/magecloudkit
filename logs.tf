@@ -5,7 +5,6 @@
 module "logs" {
   source = "./modules/monitoring/aws/logs"
 
-  name              = "log_group"
-  environment       = "production"
+  name              = "${var.ecs_cluster_name}"
   retention_in_days = 30
 }

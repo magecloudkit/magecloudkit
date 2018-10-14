@@ -22,9 +22,14 @@ For more information please refer to the AWS article: https://aws.amazon.com/clo
 module "logs" {
   source = "./modules/monitoring/aws/logs"
 
-  name              = "log_group"
-  environment       = "production"
+  name              = "production-app"
   retention_in_days = 30
 
+  # An example of custom tags
+  tags = [
+    {
+      Environment = "production"
+    },
+  ]
 }
 ```

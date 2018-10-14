@@ -2,7 +2,7 @@
 # DEPLOY AN ECS CLUSTER
 # ---------------------------------------------------------------------------------------------------------------------
 
-module "ecs_cluster" {
+module "app_cluster" {
   source = "./modules/app-cluster/aws/ecs-cluster"
 
   cluster_name  = "${var.ecs_cluster_name}"
@@ -14,27 +14,32 @@ module "ecs_cluster" {
   vpc_id     = "${module.vpc.vpc_id}"
   subnet_ids = "${module.vpc.private_subnets}"
 
+  min_size         = 2 # TODO - bump to 4, before shipping
+  max_size         = 6
+  desired_capacity = 2
+
   # To make testing easier, we allow SSH requests from any IP address here. In a production deployment, we strongly
   # recommend you limit this to the IP address ranges of known, trusted servers.
   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
 
   # Allow inbound SSH access from the Bastion instance
-  allowed_ssh_security_group_ids = ["${module.bastion.security_group_id}"]
+  #allowed_ssh_security_group_ids = ["${module.bastion.security_group_id}"]
+  #allowed_ssh_security_group_ids = ["${aws_security_group.bastion.id}"]
 
   key_pair_name = "${var.key_pair_name}"
-
-  # custom docker volume
-  #ebs_block_device {
-  #  device_name = "/dev/xvdcz"
-  #  volume_type = "gp2"
-  #  volume_size = "25"
-  #}
-
-  # An example of custom tags
+  # We recommend using a separate EBS Volume for the Docker data dir
+  ebs_block_devices = [
+    {
+      device_name = "/dev/xvdcz"
+      volume_type = "gp2"
+      volume_size = 50
+    },
+  ]
+  # Set custom tags
   tags = [
     {
       key                 = "Environment"
-      value               = "development"
+      value               = "${var.environment}"
       propagate_at_launch = true
     },
   ]
@@ -66,374 +71,9 @@ data "template_file" "user_data_ecs" {
   }
 }
 
-# ---------------------------------------------------------------------------------------------------------------------
-# WEB-SERVICE - ECS-SERVICE
-#
-# This module will create ecs-service for web-service
-# ---------------------------------------------------------------------------------------------------------------------
-
-# REPOSITORY URL FOR WEB SERVICE APP
-data "aws_ecr_repository" "web_service" {
-  name = "kiwico/web_service"
-}
-
-module "aws_ecs_web_service" {
-  source = "./modules/app-cluster/aws/ecs-service"
-
-  service_name = "web-service"
-  vpc_id       = "${module.vpc.vpc_id}"
-  subnet_ids   = "${module.vpc.private_subnets}"
-  cluster      = "${module.ecs_cluster.cluster_name}"
-  environment  = "production"
-
-  task_definition = "${aws_ecs_task_definition.web_service.family}:${max("${aws_ecs_task_definition.web_service.revision}", "${data.aws_ecs_task_definition.web_service.revision}")}"
-  desired_count   = 2
-}
-
-// Gets the current task definition from AWS, reflecting anything that's been deployed
-// outside of Terraform (e.g: CI builds).
-data "aws_ecs_task_definition" "web_service" {
-  task_definition = "${aws_ecs_task_definition.web_service.family}"
-  depends_on      = ["aws_ecs_task_definition.web_service"]
-}
-
-resource "aws_ecs_task_definition" "web_service" {
-  family        = "production-web-service"
-  task_role_arn = "${aws_iam_role.app_ecs_task_role.arn}"
-
-  container_definitions = <<EOF
-  [
-    {
-      "dnsSearchDomains": [],
-      "environment": [],
-      "readonlyRootFilesystem": false,
-      "name": "nginx",
-      "links": [
-        "web"
-      ],
-      "mountPoints": [],
-      "image": "857346137638.dkr.ecr.us-west-1.amazonaws.com/brightfame/nginx",
-      "privileged": false,
-      "essential": true,
-      "portMappings": [
-        {
-          "protocol": "tcp",
-          "containerPort": 80,
-          "hostPort": 80
-        }
-      ],
-      "dnsServers": [],
-      "dockerSecurityOptions": [],
-      "entryPoint": [],
-      "ulimits": [],
-      "memoryReservation": 512,
-      "command": [],
-      "extraHosts": [],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "production-web-service",
-          "awslogs-region": "eu-west-1",
-          "awslogs-stream-prefix": "webapp/nginx"
-        }
-      },
-      "cpu": 0,
-      "volumesFrom": [
-        {
-          "readOnly": false,
-          "sourceContainer": "web"
-        }
-      ],
-      "dockerLabels": {}
-    },
-    {
-      "dnsSearchDomains": [],
-      "environment": [],
-      "readonlyRootFilesystem": false,
-      "name": "nginx",
-      "links": [
-        "web"
-      ],
-      "mountPoints": [],
-      "image": "857346137638.dkr.ecr.us-west-1.amazonaws.com/brightfame/magento",
-      "privileged": false,
-      "essential": true,
-      "portMappings": [],
-      "dnsServers": [],
-      "dockerSecurityOptions": [],
-      "entryPoint": [],
-      "ulimits": [],
-      "memoryReservation": 512,
-      "command": [],
-      "extraHosts": [],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "production-web-service",
-          "awslogs-region": "eu-west-1",
-          "awslogs-stream-prefix": "webapp/magento"
-        }
-      },
-      "cpu": 0,
-      "volumesFrom": [
-        {
-          "readOnly": false,
-          "sourceContainer": "web"
-        }
-      ],
-      "dockerLabels": {}
-    }
-  ]
-EOF
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# CHECKOUT-SERVICE - ECS-SERVICE
-#
-# This module will create ecs-service for web-service
-# ---------------------------------------------------------------------------------------------------------------------
-
-# REPOSITORY URL FOR CHECKOUT SERVICE APP
-data "aws_ecr_repository" "checkout_service" {
-  name = "kiwico/checkout_service"
-}
-
-module "aws_ecs_checkout_service" {
-  source = "./modules/app-cluster/aws/ecs-service"
-
-  service_name = "web-service"
-  vpc_id       = "${module.vpc.vpc_id}"
-  subnet_ids   = "${module.vpc.private_subnets}"
-  cluster      = "${module.ecs_cluster.cluster_name}"
-  environment  = "production"
-
-  task_definition = "${aws_ecs_task_definition.checkout_service.family}:${max("${aws_ecs_task_definition.checkout_service.revision}", "${data.aws_ecs_task_definition.checkout_service.revision}")}"
-  desired_count   = 2
-}
-
-// Gets the current task definition from AWS, reflecting anything that's been deployed
-// outside of Terraform (e.g: CI builds).
-data "aws_ecs_task_definition" "checkout_service" {
-  task_definition = "${aws_ecs_task_definition.web_service.family}"
-  depends_on      = ["aws_ecs_task_definition.checkout_service"]
-}
-
-resource "aws_ecs_task_definition" "checkout_service" {
-  family        = "production-checkout-service"
-  task_role_arn = "${aws_iam_role.app_ecs_task_role.arn}"
-
-  container_definitions = <<EOF
-  [
-    {
-      "dnsSearchDomains": [],
-      "environment": [],
-      "readonlyRootFilesystem": false,
-      "name": "nginx",
-      "links": [
-        "web"
-      ],
-      "mountPoints": [],
-      "image": "857346137638.dkr.ecr.us-west-1.amazonaws.com/brightfame/nginx",
-      "privileged": false,
-      "essential": true,
-      "portMappings": [
-        {
-          "protocol": "tcp",
-          "containerPort": 80,
-          "hostPort": 80
-        }
-      ],
-      "dnsServers": [],
-      "dockerSecurityOptions": [],
-      "entryPoint": [],
-      "ulimits": [],
-      "memoryReservation": 512,
-      "command": [],
-      "extraHosts": [],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "production-checkout-service",
-          "awslogs-region": "eu-west-1",
-          "awslogs-stream-prefix": "webapp/nginx"
-        }
-      },
-      "cpu": 0,
-      "volumesFrom": [
-        {
-          "readOnly": false,
-          "sourceContainer": "web"
-        }
-      ],
-      "dockerLabels": {}
-    },
-    {
-      "dnsSearchDomains": [],
-      "environment": [],
-      "readonlyRootFilesystem": false,
-      "name": "nginx",
-      "links": [
-        "web"
-      ],
-      "mountPoints": [],
-      "image": "857346137638.dkr.ecr.us-west-1.amazonaws.com/brightfame/magento",
-      "privileged": false,
-      "essential": true,
-      "portMappings": [],
-      "dnsServers": [],
-      "dockerSecurityOptions": [],
-      "entryPoint": [],
-      "ulimits": [],
-      "memoryReservation": 512,
-      "command": [],
-      "extraHosts": [],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "production-checkout-service",
-          "awslogs-region": "eu-west-1",
-          "awslogs-stream-prefix": "webapp/magento"
-        }
-      },
-      "cpu": 0,
-      "volumesFrom": [
-        {
-          "readOnly": false,
-          "sourceContainer": "web"
-        }
-      ],
-      "dockerLabels": {}
-    }
-  ]
-EOF
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# API-SERVICE - ECS-SERVICE
-#
-# This module will create ecs-service for api-service
-# ---------------------------------------------------------------------------------------------------------------------
-
-# REPOSITORY URL FOR WEB SERVICE APP
-data "aws_ecr_repository" "api_service" {
-  name = "kiwico/api_service"
-}
-
-module "aws_ecs_api_service" {
-  source = "./modules/app-cluster/aws/ecs-service"
-
-  service_name = "api-service"
-  vpc_id       = "${module.vpc.vpc_id}"
-  subnet_ids   = "${module.vpc.private_subnets}"
-  cluster      = "${module.ecs_cluster.cluster_name}"
-  environment  = "production"
-
-  task_definition = "${aws_ecs_task_definition.api_service.family}:${max("${aws_ecs_task_definition.api_service.revision}", "${data.aws_ecs_task_definition.api_service.revision}")}"
-  desired_count   = 2
-}
-
-// Gets the current task definition from AWS, reflecting anything that's been deployed
-// outside of Terraform (e.g: CI builds).
-data "aws_ecs_task_definition" "api_service" {
-  task_definition = "${aws_ecs_task_definition.api_service.family}"
-  depends_on      = ["aws_ecs_task_definition.api_service"]
-}
-
-resource "aws_ecs_task_definition" "api_service" {
-  family        = "production-api-service"
-  task_role_arn = "${aws_iam_role.app_ecs_task_role.arn}"
-
-  container_definitions = <<EOF
-  [
-    {
-      "dnsSearchDomains": [],
-      "environment": [],
-      "readonlyRootFilesystem": false,
-      "name": "nginx",
-      "links": [
-        "web"
-      ],
-      "mountPoints": [],
-      "image": "857346137638.dkr.ecr.us-west-1.amazonaws.com/brightfame/nginx",
-      "privileged": false,
-      "essential": true,
-      "portMappings": [
-        {
-          "protocol": "tcp",
-          "containerPort": 80,
-          "hostPort": 80
-        }
-      ],
-      "dnsServers": [],
-      "dockerSecurityOptions": [],
-      "entryPoint": [],
-      "ulimits": [],
-      "memoryReservation": 512,
-      "command": [],
-      "extraHosts": [],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "production-web-service",
-          "awslogs-region": "eu-west-1",
-          "awslogs-stream-prefix": "webapp/nginx"
-        }
-      },
-      "cpu": 0,
-      "volumesFrom": [
-        {
-          "readOnly": false,
-          "sourceContainer": "web"
-        }
-      ],
-      "dockerLabels": {}
-    },
-    {
-      "dnsSearchDomains": [],
-      "environment": [],
-      "readonlyRootFilesystem": false,
-      "name": "nginx",
-      "links": [
-        "web"
-      ],
-      "mountPoints": [],
-      "image": "857346137638.dkr.ecr.us-west-1.amazonaws.com/brightfame/magento",
-      "privileged": false,
-      "essential": true,
-      "portMappings": [],
-      "dnsServers": [],
-      "dockerSecurityOptions": [],
-      "entryPoint": [],
-      "ulimits": [],
-      "memoryReservation": 512,
-      "command": [],
-      "extraHosts": [],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "production-api-service",
-          "awslogs-region": "eu-west-1",
-          "awslogs-stream-prefix": "webapp/magento"
-        }
-      },
-      "cpu": 0,
-      "volumesFrom": [
-        {
-          "readOnly": false,
-          "sourceContainer": "web"
-        }
-      ],
-      "dockerLabels": {}
-    }
-  ]
-EOF
-}
-
-#
 # This role lets ECS tasks access AWS. We're using it for managing secrets and S3 access.
-#
 resource "aws_iam_role" "app_ecs_task_role" {
-  name = "${terraform.workspace}-app-ecs-task-role"
+  name = "${var.project_name}-app-ecs-task-role"
 
   assume_role_policy = <<EOF
 {
@@ -449,5 +89,115 @@ resource "aws_iam_role" "app_ecs_task_role" {
     }
   ]
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY AN ALB LOAD BALANCER TO SERVE TRAFFIC TO THE CLUSTER
+# ---------------------------------------------------------------------------------------------------------------------
+
+module "alb" {
+  source = "./modules/load-balancer/aws/alb"
+
+  name       = "${var.environment}-app-alb"
+  vpc_id     = "${module.vpc.vpc_id}"
+  subnet_ids = "${module.vpc.public_subnets}"
+
+  security_groups = ["${aws_security_group.alb_web.id}"]
+
+  create_log_bucket   = true
+  log_bucket_name     = "${var.project_name}-alb-logs"
+  log_location_prefix = "app-alb-logs"
+
+  # Uncomment these listeners if you want to enable HTTPS on the load balancer.
+  # Note: You must specify the ARN to an ACM or IAM SSL certificate.
+  #https_listeners          = "${list(map("certificate_arn", "arn:aws:iam::123456789012:server-certificate/test_cert-123456789012", "port", 443))}"
+  #https_listeners_count    = "1"
+  http_tcp_listeners = "${list(map("port", "80", "protocol", "HTTP"))}"
+
+  http_tcp_listeners_count = "1"
+  target_groups            = "${list(map("name", "foo", "backend_protocol", "HTTP", "backend_port", "80"))}"
+  target_groups_count      = "1"
+
+  # To make testing easier, we allow SSH requests from any IP address here. In a production deployment, we strongly
+  # recommend you limit this to the IP address ranges of known, trusted servers.
+  #allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
+
+
+  # Allow inbound SSH access from the Bastion instance
+  #allowed_ssh_security_group_ids = ["${module.bastion.security_group_id}"]
+  #allowed_ssh_security_group_ids = ["${aws_security_group.bastion.id}"]
+
+  # An example of custom tags
+  tags = {
+    Environment = "${var.environment}"
+  }
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# CREATE A SECURITY GROUP FOR THE ALB
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_security_group" "alb_web" {
+  description = "Security group for the ALB that allows web traffic from internet"
+  vpc_id      = "${module.vpc.vpc_id}"
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = "0"
+    to_port     = "0"
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags {
+    Name        = "${var.environment}-sg-alb-web"
+    Environment = "${var.environment}"
+  }
+>>>>>>> master
+}
+
+resource "aws_security_group_rule" "alb_to_ecs" {
+  type                     = "ingress"
+  from_port                = 32768
+  to_port                  = 61000
+  protocol                 = "TCP"
+  source_security_group_id = "${aws_security_group.alb_web.id}"
+  security_group_id = "${module.app_cluster.security_group_id}"
+}
+
+resource "aws_iam_role" "ecs_lb_role" {
+  name = "${var.environment}_ecs_lb_role"
+  path = "/ecs/"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": ["ecs.amazonaws.com"]
+      },
+      "Effect": "Allow"
+    }
+  ]
+}
 EOF
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_lb" {
+  role       = "${aws_iam_role.ecs_lb_role.id}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
 }

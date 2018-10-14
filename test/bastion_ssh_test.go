@@ -44,7 +44,7 @@ func TestBastionSsh(t *testing.T) {
 	test_structure.RunTestStage(t, "build_ami", func() {
 		// Pick a random AWS region to test in. This helps ensure your code works in all regions.
 		// Note: that we limit this only to regions where EFS is supported.
-		approvedRegions := []string{"us-east-1", "us-east-2", "us-west-1", "us-west-2", "eu-central-1", "eu-west-1", "ap-northeast-1", "ap-northeast-2", "ap-southeast-1", "ap-southeast-2"}
+		approvedRegions := []string{"us-east-1", "us-east-2", "us-west-2", "eu-central-1", "eu-west-1", "ap-northeast-1", "ap-northeast-2", "ap-southeast-1", "ap-southeast-2"}
 		awsRegion := aws.GetRandomRegion(t, approvedRegions, nil)
 		test_structure.SaveString(t, workingDir, "awsRegion", awsRegion)
 		buildEcsAMI(t, awsRegion, workingDir)
