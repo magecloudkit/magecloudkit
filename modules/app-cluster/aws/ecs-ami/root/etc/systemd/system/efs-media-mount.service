@@ -9,7 +9,7 @@ Type=oneshot
 RemainAfterExit=yes
 EnvironmentFile=/etc/environment
 ExecStartPre=/bin/mkdir -p /mnt/media
-ExecStart=/bin/mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 media.efs.us-east-1.belif.internal:/ /mnt/media
+ExecStart=/bin/mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 media.efs.us-west-1.magecloudkit.internal:/ /mnt/media
 
 [Install]
 WantedBy=multi-user.target
