@@ -29,6 +29,9 @@ jobs:
 
       # Validate Terraform module syntax
       - run:
+          name: remove kiwico state
+          command: rm terraform.tf
+      - run:
           name: terraform init
           command: terraform init -input=false
       - run:
