@@ -17,8 +17,8 @@ terraform {
 
   # Also configure remote state for working in teams.
   backend "s3" {
-    bucket = "brightfame-state"
-    key    = "terraform"
+    bucket = "kiwico-state"
+    key    = "env/production/terraform.tfstate"
     region = "us-west-1"
   }
 }

@@ -69,8 +69,8 @@ data "template_file" "ecs_web_task_container_definitions" {
 
   vars {
     environment                           = "${var.environment}"
-    nginx_image                           = "857346137638.dkr.ecr.us-west-1.amazonaws.com/brightfame/nginx"
-    magento_image                         = "857346137638.dkr.ecr.us-west-1.amazonaws.com/brightfame/magento"
+    nginx_image                           = "054130723771.dkr.ecr.us-west-1.amazonaws.com/kiwico/nginx"
+    magento_image                         = "054130723771.dkr.ecr.us-west-1.amazonaws.com/kiwico/magento"
     cloudwatch_logs_group                 = "${module.ecs-cluster-logs.log_group_id}"
     cloudwatch_logs_region                = "${var.aws_region}"
     cloudwatch_logs_nginx_stream_prefix   = "web/nginx"
