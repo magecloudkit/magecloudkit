@@ -71,25 +71,6 @@ data "template_file" "user_data_ecs" {
   }
 }
 
-# This role lets ECS tasks access AWS. We're using it for managing secrets and S3 access.
-resource "aws_iam_role" "app_ecs_task_role" {
-  name = "${var.project_name}-app-ecs-task-role"
-
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-
 # ---------------------------------------------------------------------------------------------------------------------
 # DEPLOY AN ALB LOAD BALANCER TO SERVE TRAFFIC TO THE CLUSTER
 # ---------------------------------------------------------------------------------------------------------------------
@@ -111,10 +92,10 @@ module "alb" {
   # Note: You must specify the ARN to an ACM or IAM SSL certificate.
   #https_listeners          = "${list(map("certificate_arn", "arn:aws:iam::123456789012:server-certificate/test_cert-123456789012", "port", 443))}"
   #https_listeners_count    = "1"
-  http_tcp_listeners = "${list(map("port", "80", "protocol", "HTTP"))}"
 
+  http_tcp_listeners       = "${list(map("port", "80", "protocol", "HTTP"))}"
   http_tcp_listeners_count = "1"
-  target_groups            = "${list(map("name", "foo", "backend_protocol", "HTTP", "backend_port", "80"))}"
+  target_groups            = "${list(map("name", "${var.project_name}-web-tg", "backend_protocol", "HTTP", "backend_port", "80"))}"
   target_groups_count      = "1"
 
   # To make testing easier, we allow SSH requests from any IP address here. In a production deployment, we strongly
@@ -165,7 +146,6 @@ resource "aws_security_group" "alb_web" {
     Name        = "${var.environment}-sg-alb-web"
     Environment = "${var.environment}"
   }
->>>>>>> master
 }
 
 resource "aws_security_group_rule" "alb_to_ecs" {
@@ -174,7 +154,7 @@ resource "aws_security_group_rule" "alb_to_ecs" {
   to_port                  = 61000
   protocol                 = "TCP"
   source_security_group_id = "${aws_security_group.alb_web.id}"
-  security_group_id = "${module.app_cluster.security_group_id}"
+  security_group_id        = "${module.app_cluster.security_group_id}"
 }
 
 resource "aws_iam_role" "ecs_lb_role" {
