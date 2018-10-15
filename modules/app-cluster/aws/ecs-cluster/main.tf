@@ -20,9 +20,9 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_autoscaling_group" "autoscaling_group" {
-  name = "${var.cluster_name}"
+  name = "${var.cluster_name}-${aws_launch_configuration.launch_configuration.name}"
 
-  launch_configuration = "${aws_launch_configuration.launch_configuration.name}"
+  launch_configuration = "${aws_launch_configuration.launch_configuration.id}"
   vpc_zone_identifier  = ["${var.subnet_ids}"]
 
   min_size             = "${var.min_size}"
@@ -41,6 +41,10 @@ resource "aws_autoscaling_group" "autoscaling_group" {
     },
     "${var.tags}",
   ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
