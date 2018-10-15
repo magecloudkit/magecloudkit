@@ -34,8 +34,8 @@ variable "internal_domain" {
 }
 
 variable "ecs_ami" {
-  description = "The ECS AMI used to run . This AMI is built from the ECS-AMI Packer template (See modules/app-cluster/aws/ecs-ami/ecs.json)."
-  default     = "ami-05c07371ae041d32f"
+  description = "The ECS AMI used to run our ECS cluster instances. This AMI is built from the ECS-AMI Packer template (See modules/app-cluster/aws/ecs-ami/ecs.json)."
+  default     = "ami-08c0596782489ff88"
 }
 
 variable "ecs_cluster_name" {
