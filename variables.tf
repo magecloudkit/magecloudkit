@@ -28,6 +28,11 @@ variable "availability_zones" {
   default     = ["us-west-1a", "us-west-1c"]
 }
 
+variable "internal_domain" {
+  description = "The internal domain used for service discovery."
+  default     = "magecloudkit.internal"
+}
+
 variable "ecs_ami" {
   description = "The ECS AMI used to run . This AMI is built from the ECS-AMI Packer template (See modules/app-cluster/aws/ecs-ami/ecs.json)."
   default     = "ami-05c07371ae041d32f"
