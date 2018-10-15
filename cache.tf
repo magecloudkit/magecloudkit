@@ -8,9 +8,12 @@ module "redis" {
   cluster_name = "redis-production"
   node_type    = "cache.t2.small"
 
-  vpc_id                             = "${module.vpc.vpc_id}"
-  subnet_ids                         = "${module.vpc.persistence_subnets}"
-  allowed_inbound_security_group_ids = ["${module.app_cluster.security_group_id}"]
+  vpc_id     = "${module.vpc.vpc_id}"
+  subnet_ids = "${module.vpc.persistence_subnets}"
+
+  # Limit access to app servers only
+  allowed_inbound_security_group_count = 1
+  allowed_inbound_security_group_ids   = ["${module.app_cluster.security_group_id}"]
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -23,7 +26,10 @@ module "memcached" {
   cluster_name = "memcached-production"
   node_type    = "cache.t2.small"
 
-  vpc_id                             = "${module.vpc.vpc_id}"
-  subnet_ids                         = "${module.vpc.persistence_subnets}"
-  allowed_inbound_security_group_ids = ["${module.app_cluster.security_group_id}"]
+  vpc_id     = "${module.vpc.vpc_id}"
+  subnet_ids = "${module.vpc.persistence_subnets}"
+
+  # Limit access to app servers only
+  allowed_inbound_security_group_count = 1
+  allowed_inbound_security_group_ids   = ["${module.app_cluster.security_group_id}"]
 }

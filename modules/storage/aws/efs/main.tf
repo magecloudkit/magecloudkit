@@ -74,7 +74,7 @@ resource "aws_security_group_rule" "allow_inbound_from_cidr_blocks" {
 }
 
 resource "aws_security_group_rule" "allow_inbound_from_security_groups" {
-  count                    = "${length(var.allowed_inbound_security_group_ids)}"
+  count                    = "${length(var.allowed_inbound_security_group_count)}"
   type                     = "ingress"
   from_port                = "${var.efs_port}"
   to_port                  = "${var.efs_port}"

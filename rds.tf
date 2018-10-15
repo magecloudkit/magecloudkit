@@ -16,5 +16,7 @@ module "aurora" {
   backup_retention_period = 7
   preferred_backup_window = "01:00-02:00"
 
-  allowed_db_security_group_ids = ["${module.app_cluster.security_group_id}"]
+  # Limit access to app servers only
+  allowed_db_security_group_count = 1
+  allowed_db_security_group_ids   = ["${module.app_cluster.security_group_id}"]
 }

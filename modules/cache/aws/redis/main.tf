@@ -51,7 +51,7 @@ resource "aws_security_group_rule" "allow_redis_inbound" {
 }
 
 resource "aws_security_group_rule" "allow_inbound_from_security_group_ids" {
-  count                    = "${length(var.allowed_inbound_security_group_ids)}"
+  count                    = "${var.allowed_inbound_security_group_count}"
   type                     = "ingress"
   from_port                = "${var.port}"
   to_port                  = "${var.port}"
@@ -71,4 +71,3 @@ resource "aws_security_group_rule" "allow_inbound_from_security_group_ids" {
 #
 #  security_group_id = "${aws_security_group.redis.id}"
 #}
-

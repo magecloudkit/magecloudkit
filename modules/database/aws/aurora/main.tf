@@ -63,7 +63,7 @@ resource "aws_security_group_rule" "allow_inbound" {
 }
 
 resource "aws_security_group_rule" "allow_db_access_from_security_group_ids" {
-  count                    = "${length(var.allowed_db_security_group_ids)}"
+  count                    = "${var.allowed_db_security_group_count}"
   type                     = "ingress"
   from_port                = "${var.port}"
   to_port                  = "${var.port}"

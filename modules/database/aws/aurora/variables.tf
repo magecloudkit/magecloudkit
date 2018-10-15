@@ -82,6 +82,11 @@ variable "allowed_db_security_group_ids" {
   default     = []
 }
 
+variable "allowed_db_security_group_count" {
+  description = "The number of entries in var.allowed_db_security_group_ids. Ideally, this value could be computed dynamically, but we pass this variable to a Terraform resource's 'count' property and Terraform requires that 'count' be computed with literals or data sources only."
+  default     = 0
+}
+
 variable "port" {
   description = "RDS ingress port"
   default     = 3306
