@@ -68,3 +68,15 @@ variable "allowed_inbound_security_group_count" {
   description = "The number of entries in var.allowed_inbound_security_group_ids. Ideally, this value could be computed dynamically, but we pass this variable to a Terraform resource's 'count' property and Terraform requires that 'count' be computed with literals or data sources only."
   default     = 0
 }
+
+variable "tags" {
+  description = "A map of extra tag blocks added to the resources. Each element in this map is a key/value pair mapped to the respective values."
+  type        = "map"
+  default     = {}
+
+  # Example:
+  #
+  # default = {
+  #   key = "value"
+  # }
+}

@@ -35,7 +35,7 @@ resource "aws_route53_record" "redis_cache" {
   name    = "redis-cache.${var.aws_region}.${var.internal_domain}"
   type    = "CNAME"
   ttl     = "300"
-  records = ["${module.redis.primary_address}"]
+  records = ["${module.redis_cache.primary_address}"]
 }
 
 resource "aws_route53_record" "redis_session" {
