@@ -18,7 +18,7 @@ module "bastion" {
 
   key_pair_name = "${var.key_pair_name}"
 
-  # An example of custom tags
+  # Set custom tags
   tags = [
     {
       Environment = "${var.environment}"
