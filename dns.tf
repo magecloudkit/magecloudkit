@@ -24,7 +24,7 @@ resource "aws_route53_record" "internal_ns" {
 
 resource "aws_route53_record" "db" {
   zone_id = "${aws_route53_zone.internal.zone_id}"
-  name    = "db.${var.internal_domain}"
+  name    = "db.${var.aws_region}.${var.internal_domain}"
   type    = "CNAME"
   ttl     = "300"
   records = ["${module.aurora.endpoint}"]
@@ -32,7 +32,7 @@ resource "aws_route53_record" "db" {
 
 resource "aws_route53_record" "redis_cache" {
   zone_id = "${aws_route53_zone.internal.zone_id}"
-  name    = "redis-cache.${var.internal_domain}"
+  name    = "redis-cache.${var.aws_region}.${var.internal_domain}"
   type    = "CNAME"
   ttl     = "300"
   records = ["${module.redis.primary_address}"]
@@ -40,7 +40,7 @@ resource "aws_route53_record" "redis_cache" {
 
 resource "aws_route53_record" "efs_dns" {
   zone_id = "${aws_route53_zone.internal.zone_id}"
-  name    = "media.efs.us-west-1.${var.internal_domain}"
+  name    = "media.efs.${var.aws_region}.${var.internal_domain}"
   type    = "CNAME"
   ttl     = "300"
   records = ["${module.efs.efs_filesystem_id}.efs.us-west-1.amazonaws.com"]
