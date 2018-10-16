@@ -38,6 +38,14 @@ resource "aws_route53_record" "redis_cache" {
   records = ["${module.redis.primary_address}"]
 }
 
+resource "aws_route53_record" "redis_session" {
+  zone_id = "${aws_route53_zone.internal.zone_id}"
+  name    = "redis-session.${var.aws_region}.${var.internal_domain}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["${module.redis_session.primary_address}"]
+}
+
 resource "aws_route53_record" "efs_dns" {
   zone_id = "${aws_route53_zone.internal.zone_id}"
   name    = "media.efs.${var.aws_region}.${var.internal_domain}"

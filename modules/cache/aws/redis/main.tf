@@ -20,6 +20,14 @@ resource "aws_elasticache_cluster" "redis" {
   parameter_group_name = "${var.parameter_group_name}"
   security_group_ids   = ["${aws_security_group.redis.id}"]
   subnet_group_name    = "${aws_elasticache_subnet_group.redis.name}"
+
+  # add tags
+  tags = "${merge(
+    var.tags,
+    map(
+      "Name", "${var.cluster_name}"
+    )
+  )}"
 }
 
 resource "aws_elasticache_subnet_group" "redis" {
