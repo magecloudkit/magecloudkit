@@ -75,15 +75,12 @@ data "template_file" "ecs_web_task_container_definitions" {
     cloudwatch_logs_region                = "${var.aws_region}"
     cloudwatch_logs_nginx_stream_prefix   = "web/nginx"
     cloudwatch_logs_magento_stream_prefix = "web/magento"
-    mysql_host                            = "db.magecloudkit.internal"
-    mysql_database                        = "magento"
-    mysql_user                            = "magento"
-    mysql_password                        = "magento"
-    redis_cache_host                      = "redis.magecloudkit.internal"
-
-    #mysql_host     = "${aws_route53_record.db.fqdn}"
-    #mysql_database = "${var.env_mysql_database}"
-    #mysql_user     = "${var.env_mysql_user}"
-    #mysql_password = "${lookup(var.rds_password, terraform.workspace)}"
+    mysql_host                            = "${aws_route53_record.db.fqdn}"
+    mysql_database                        = "${var.env_mysql_database}"
+    mysql_user                            = "${var.env_mysql_user}"
+    mysql_password                        = "${var.env_mysql_password}"
+    redis_cache_host                      = "${aws_route53_record.redis_cache.fqdn}"
+    redis_session_host                    = "${aws_route53_record.redis_session.fqdn}"
+    mage_table_prefix                     = "${var.env_mage_table_prefix}"
   }
 }

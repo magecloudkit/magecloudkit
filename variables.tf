@@ -52,3 +52,23 @@ variable "jenkins_load_balancer_port" {
   description = "The port the load balancer should listen on for Jenkins Web UI requests."
   default     = 8080
 }
+
+variable "env_mysql_database" {
+  description = "The MySQL database used by Magento."
+  default     = "magento2"
+}
+
+variable "env_mysql_user" {
+  description = "The MySQL user used by Magento."
+  default     = "magento2"
+}
+
+variable "env_mysql_password" {
+  description = "The MySQL password used by Magento."
+  default     = "magento2"
+}
+
+variable "env_mage_table_prefix" {
+  description = ""
+  default     = "magento_"
+}
