@@ -88,10 +88,9 @@ module "alb" {
   log_bucket_name     = "${var.project_name}-alb-logs"
   log_location_prefix = "app-alb-logs"
 
-  # Uncomment these listeners if you want to enable HTTPS on the load balancer.
-  # Note: You must specify the ARN to an ACM or IAM SSL certificate.
-  #https_listeners          = "${list(map("certificate_arn", "arn:aws:iam::123456789012:server-certificate/test_cert-123456789012", "port", 443))}"
-  #https_listeners_count    = "1"
+  # Enable HTTPS on the load balancer. We are referencing the KiwiCo 'KiwiCoGoDaddy' certificate.
+  https_listeners       = "${list(map("certificate_arn", "arn:aws:acm:us-west-1:054130723771:certificate/1a6b062a-4225-443a-a981-47a40aba62fb", "port", 443))}"
+  https_listeners_count = "1"
 
   http_tcp_listeners       = "${list(map("port", "80", "protocol", "HTTP"))}"
   http_tcp_listeners_count = "1"
