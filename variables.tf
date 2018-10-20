@@ -65,10 +65,10 @@ variable "env_mysql_user" {
 
 variable "env_mysql_password" {
   description = "The MySQL password used by Magento."
-  default     = "magento2"
+  default     = "production"
 }
 
 variable "env_mage_table_prefix" {
-  description = ""
+  description = "The MySQL table prefix used by Magento."
   default     = "magento_"
 }
