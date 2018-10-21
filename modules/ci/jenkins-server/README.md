@@ -1,7 +1,7 @@
 # Jenkins Server
 
-This folder contains a Terraform module to deploy a single instance Jenkins server inside an AWS Autoscaling group.
-It attaches an EBS volume and uses Route 53 for DNS. It requires an AMI that has Jenkins installed, ideally created using the `jenkins-ami` module.
+This folder contains a Terraform module to deploy a single instance Jenkins server inside an AWS Auto Scaling Group.
+It attaches an EBS volume and uses an ALB load balancer for health checks. The new instances will automatically reattach the same EBS volume in the event of a failure. It requires an AMI that has Jenkins installed, ideally created using the `jenkins-ami` module.
 
 ## Usage
 
