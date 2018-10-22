@@ -6,7 +6,7 @@
   },
   "builders": [{
     "name": "ubuntu-ami",
-    "ami_name": "{{user `base_ami_name`}}-ubuntu-jenkins-{{isotime | clean_ami_name}}",
+    "ami_name": "{{user `base_ami_name`}}-ubuntu-{{isotime | clean_ami_name}}",
     "ami_description": "An Ubuntu 16.04 AMI with Jenkins installed.",
     "instance_type": "t2.micro",
     "region": "{{user `aws_region`}}",
@@ -48,7 +48,7 @@
     "pause_before": "30s",
     "inline": [
       "DEBIAN_FRONTEND=noninteractive sudo apt-get update",
-      "sudo apt-get install -y jq curl git python-pip",
+      "sudo apt-get install -y jq curl git python-pip nfs-common",
       "sudo -H pip install --upgrade awscli"
     ],
     "only": ["ubuntu-ami"]
