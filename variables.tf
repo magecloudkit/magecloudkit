@@ -48,8 +48,8 @@ variable "key_pair_name" {
   default     = "robs-2017-mbp"
 }
 
-variable "jenkins_load_balancer_port" {
-  description = "The port the load balancer should listen on for Jenkins Web UI requests."
+variable "jenkins_http_port" {
+  description = "The port to use for the Jenkins HTTP Web UI."
   default     = 8080
 }
 
@@ -71,4 +71,14 @@ variable "env_mysql_password" {
 variable "env_mage_table_prefix" {
   description = "The MySQL table prefix used by Magento."
   default     = "magento_"
+}
+
+variable "env_blackfire_server_id" {
+  description = "The Server Id used by Blackfire.io."
+  default     = "852036a8-a5ed-44e0-b02a-36e575a5cddb"
+}
+
+variable "env_blackfire_server_token" {
+  description = "The Server Token used by Blackfire.io."
+  default     = "35a7ee2b9a06b34d1aaeebd7c513c74630de9be74eacb49c4d8f50b19670393d"
 }

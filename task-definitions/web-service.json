@@ -99,5 +99,29 @@
     },
     "cpu": 0,
     "memoryReservation": 768
+  },
+  {
+    "name": "blackfire",
+    "image": "blackfire/blackfire:latest",
+    "cpu": 0,
+    "memoryReservation": 128,
+    "essential": true,
+    "environment": [{
+        "name": "BLACKFIRE_SERVER_ID",
+        "value": "${blackfire_server_id}"
+      },
+      {
+        "name": "BLACKFIRE_SERVER_TOKEN",
+        "value": "${blackfire_server_token}"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${cloudwatch_logs_group}",
+        "awslogs-region": "${cloudwatch_logs_region}",
+        "awslogs-stream-prefix": "${cloudwatch_logs_blackfire_stream_prefix}"
+      }
+    }
   }
 ]
