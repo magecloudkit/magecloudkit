@@ -84,8 +84,8 @@
         "value": "${redis_cache_host}"
       },
       {
-        "name": "REDIS_SESSION_HOST",
-        "value": "${redis_session_host}"
+        "name": "MEMCACHED_HOST",
+        "value": "${memcached_host}"
       },
       {
         "name": "MAGE_TABLE_PREFIX",
