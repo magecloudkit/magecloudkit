@@ -42,6 +42,9 @@
     "readonlyRootFilesystem": false,
     "name": "magento",
     "image": "${magento_image}",
+    "links": [
+      "blackfire:blackfire"
+    ],
     "mountPoints": [{
       "containerPath": "/var/www/html/pub/media",
       "sourceVolume": "media",
