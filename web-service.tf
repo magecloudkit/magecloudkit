@@ -81,7 +81,7 @@ data "template_file" "ecs_web_task_container_definitions" {
     mysql_user                              = "${var.env_mysql_user}"
     mysql_password                          = "${var.env_mysql_password}"
     redis_cache_host                        = "${aws_route53_record.redis_cache.fqdn}"
-    redis_session_host                      = "${aws_route53_record.redis_session.fqdn}"
+    memcached_host                          = "${aws_route53_record.memcached.fqdn}"
     mage_table_prefix                       = "${var.env_mage_table_prefix}"
     blackfire_server_id                     = "${var.env_blackfire_server_id}"
     blackfire_server_token                  = "${var.env_blackfire_server_token}"
