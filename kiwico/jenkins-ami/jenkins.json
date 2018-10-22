@@ -51,7 +51,7 @@
     "pause_before": "30s",
     "inline": [
       "DEBIAN_FRONTEND=noninteractive sudo apt-get update",
-      "sudo apt-get install -y jq curl git python-pip nfs-utils",
+      "sudo apt-get install -y jq curl git python-pip nfs-common",
       "sudo -H pip install --upgrade awscli"
     ],
     "only": ["ubuntu-ami"]
@@ -62,7 +62,7 @@
     ]
   }, {
     "type": "file",
-    "source": "{{template_dir}}/../",
+    "source": "{{template_dir}}/../../modules/ci/aws/",
     "destination": "/tmp/brightfame"
   }, {
     "type": "shell",
