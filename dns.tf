@@ -38,12 +38,12 @@ resource "aws_route53_record" "redis_cache" {
   records = ["${module.redis_cache.primary_address}"]
 }
 
-resource "aws_route53_record" "redis_session" {
+resource "aws_route53_record" "memcached" {
   zone_id = "${aws_route53_zone.internal.zone_id}"
-  name    = "redis-session.${var.aws_region}.${var.internal_domain}"
+  name    = "memcached.${var.aws_region}.${var.internal_domain}"
   type    = "CNAME"
   ttl     = "300"
-  records = ["${module.redis_session.primary_address}"]
+  records = ["${module.memcached.primary_address}"]
 }
 
 resource "aws_route53_record" "efs_dns" {
