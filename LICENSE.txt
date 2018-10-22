@@ -8,7 +8,7 @@ consult the Software Development Agreement for the complete terms under which yo
 
 ## MIT License
 
-Portions of this code contain MIT-licensed software, therefore we have included it below.
+Portions of our code contain MIT-licensed software, therefore we have included it below.
 
 Copyright (c) 2018 Brightfame - MIT License
 
