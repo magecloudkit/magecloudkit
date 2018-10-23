@@ -46,7 +46,7 @@
       "blackfire:blackfire"
     ],
     "mountPoints": [{
-      "containerPath": "/var/www/html/pub/media",
+      "containerPath": "/var/www/html/media",
       "sourceVolume": "media",
       "readOnly": null
     }],
