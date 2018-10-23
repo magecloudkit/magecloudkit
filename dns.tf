@@ -53,3 +53,11 @@ resource "aws_route53_record" "efs_dns" {
   ttl     = "300"
   records = ["${module.efs.efs_filesystem_id}.efs.us-west-1.amazonaws.com"]
 }
+
+resource "aws_route53_record" "jenkins_efs_dns" {
+  zone_id = "${aws_route53_zone.internal.zone_id}"
+  name    = "jenkins.efs.${var.aws_region}.${var.internal_domain}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["${module.jenkins.efs_filesystem_id}.efs.us-west-1.amazonaws.com"]
+}
