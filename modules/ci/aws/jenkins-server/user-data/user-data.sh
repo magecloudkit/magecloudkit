@@ -6,15 +6,25 @@ set -e
 # From: https://alestic.com/2010/12/ec2-user-data-output/
 exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
 
-source "/opt/brightfame/run-jenkins/mount-volume.sh"
+function mount_volume {
+  local readonly efs_filesystem_id="$1"
+  local readonly mount_point="$2"
+  local readonly owner="$3"
+  local readonly file_system_type="efs"
+  local readonly mount_options="defaults,_netdev"
+  local readonly fs_tab_path="/etc/fstab"
 
-function mount_volumes {
-  local readonly data_volume_device_name="$1"
-  local readonly data_volume_mount_point="$2"
-  local readonly volume_owner="$3"
+  echo "Mounting EFS filesystem for the data directory"
+  mkdir -p "$data_volume_mount_point"
 
-  echo "Mounting EBS Volume for the data directory"
-  mount_volume "$data_volume_device_name" "$data_volume_mount_point" "$volume_owner"
+  echo "Adding EFS filesystem $efs_filesystem_id to /etc/fstab with mount point $mount_point"
+  echo "$efs_filesystem_id    $mount_point   $file_system_type    $mount_options  0 0" >> "$fs_tab_path"
+
+  echo "Mounting volumes..."
+  mount -a
+
+  echo "Changing ownership of $mount_point to $owner..."
+  chown "$owner" "$mount_point"
 }
 
 function update_jenkins_home {
@@ -25,7 +35,7 @@ function update_jenkins_home {
 
   # We need to copy the Jenkins data files if its the first time mounting the volume
   if [ ! -f $data_volume_mount_point/config.xml ]; then
-    echo "Moving Jenkins data files"
+    echo "Copying Jenkins data files"
     rsync -a /var/lib/jenkins/ $data_volume_mount_point
   fi
 
@@ -44,11 +54,11 @@ function run_jenkins {
 function run {
   # TODO - support HTTP port configuration
   local readonly http_port="$1"
-  local readonly data_volume_device_name="$2"
+  local readonly efs_filesystem_id="$2"
   local readonly data_volume_mount_point="$3"
   local readonly volume_owner="$4"
 
-  mount_volumes "$data_volume_device_name" "$data_volume_mount_point" "$volume_owner"
+  mount_volume "$efs_filesystem_id" "$data_volume_mount_point" "$volume_owner"
   update_jenkins_home "$data_volume_mount_point"
   run_jenkins "$http_port" "$data_volume_mount_point"
 }
@@ -56,6 +66,6 @@ function run {
 # The variables below are filled in via Terraform interpolation
 run \
   "${http_port}" \
-  "${data_volume_device_name}" \
+  "${efs_filesystem_id}" \
   "${data_volume_mount_point}" \
   "${volume_owner}"

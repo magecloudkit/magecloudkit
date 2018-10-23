@@ -3,8 +3,16 @@
 # You must provide a value for each of these parameters.
 # ---------------------------------------------------------------------------------------------------------------------
 
-variable "cluster_name" {
+variable "name" {
   description = "The name of the Jenkins Auto Scaling Group (e.g. jenkins-production). This variable is used to namespace all resources created by this module."
+}
+
+variable "efs_name" {
+  description = "This is used to name the EFS resources."
+}
+
+variable "environment" {
+  description = "The name of the given environment. This property is passed to submodules created by this module."
 }
 
 variable "ami_id" {
@@ -15,12 +23,22 @@ variable "instance_type" {
   description = "The type of EC2 Instances to run for each node in the ASG (e.g. t2.micro)."
 }
 
+variable "availability_zones" {
+  description = "List of availability zones"
+  type        = "list"
+}
+
 variable "vpc_id" {
   description = "The ID of the VPC in which to deploy the Jenkins resources."
 }
 
 variable "subnet_ids" {
   description = "The subnet IDs into which the EC2 Instances should be deployed."
+  type        = "list"
+}
+
+variable "efs_subnet_ids" {
+  description = "The subnet IDs into which the EFS file system used for Jenkins data should be deployed."
   type        = "list"
 }
 
@@ -148,6 +166,16 @@ variable "instance_profile_path" {
   default     = "/"
 }
 
+variable "volume_mountpoint" {
+  description = "Path in which to create the IAM instance profile."
+  default     = "/mnt/jenkins"
+}
+
+variable "volume_owner" {
+  description = "Path in which to create the IAM instance profile."
+  default     = "jenkins"
+}
+
 variable "ssh_port" {
   description = "The port used for SSH connections"
   default     = 22
@@ -156,6 +184,12 @@ variable "ssh_port" {
 variable "http_port" {
   description = "The port used for HTTP connections"
   default     = 8080
+}
+
+variable "target_group_arns" {
+  description = "A list of ALB target groups to associate the Auto Scaling Group with."
+  type        = "list"
+  default     = []
 }
 
 variable "tags" {

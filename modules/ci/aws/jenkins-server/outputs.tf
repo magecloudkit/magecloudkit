@@ -23,5 +23,25 @@ output "security_group_id" {
 }
 
 output "http_port" {
-  value = "8080"
+  value = "${var.http_port}"
+}
+
+output "volume_mountpoint" {
+  value = "${var.volume_mountpoint}"
+}
+
+output "volume_owner" {
+  value = "${var.volume_owner}"
+}
+
+output "efs_filesystem_id" {
+  value = "${module.efs.efs_filesystem_id}"
+}
+
+output "efs_dns_name" {
+  value = "${module.efs.efs_dns_name}"
+}
+
+output "efs_security_group_id" {
+  value = "${module.efs.security_group_id}"
 }
