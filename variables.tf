@@ -34,7 +34,7 @@ variable "internal_domain" {
 }
 
 variable "ecs_ami" {
-  description = "The ECS AMI used to run our ECS cluster instances. This AMI is built from the ECS-AMI Packer template (See modules/app-cluster/aws/ecs-ami/ecs.json)."
+  description = "The ECS AMI used to run our ECS cluster instances. This AMI is built from the ECS-AMI Packer template (See the KiwiCo customized version: kiwico/ecs-ami/ecs.json)."
   default     = "ami-0e8d1356ecdcca81d"
 }
 
@@ -46,6 +46,11 @@ variable "ecs_cluster_name" {
 variable "key_pair_name" {
   description = "The name of an EC2 Key Pair that can be used to SSH to the EC2 Instances in this VPC. Set to an empty string to not associate a Key Pair."
   default     = "robs-2017-mbp"
+}
+
+variable "jenkins_ami" {
+  description = "The AMI used to run our Jenkins instance. This AMI is built from the Jenkins-AMI Packer template (See the KiwiCo customized version: kiwico/jenkins-ami/jenkins.json)."
+  default     = "ami-0a572ed47a73e25e2"
 }
 
 variable "jenkins_http_port" {
