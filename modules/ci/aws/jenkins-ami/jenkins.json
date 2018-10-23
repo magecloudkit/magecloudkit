@@ -72,8 +72,6 @@
   },{
     "type": "shell",
     "inline": [
-      "sudo mkdir -p /opt/brightfame",
-      "sudo cp -rf /tmp/brightfame/run-jenkins /opt/brightfame",
       "/tmp/brightfame/install-jenkins/install-jenkins"
     ]
   }],
