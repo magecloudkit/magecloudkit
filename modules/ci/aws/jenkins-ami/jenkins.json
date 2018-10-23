@@ -48,8 +48,16 @@
     "pause_before": "30s",
     "inline": [
       "DEBIAN_FRONTEND=noninteractive sudo apt-get update",
-      "sudo apt-get install -y jq curl git python-pip nfs-common",
+      "sudo apt-get install -y jq curl git python-pip binutils nfs-common",
       "sudo -H pip install --upgrade awscli"
+    ],
+    "only": ["ubuntu-ami"]
+  },{
+    "type": "shell",
+    "inline": [
+      "git clone https://github.com/aws/efs-utils /tmp/efs-utils",
+      "cd /tmp/efs-utils && ./build-deb.sh",
+      "sudo apt-get -y install /tmp/efs-utils/build/amazon-efs-utils*deb"
     ],
     "only": ["ubuntu-ami"]
   },{
