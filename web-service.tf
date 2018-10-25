@@ -1,13 +1,13 @@
 # ---------------------------------------------------------------------------------------------------------------------
 # WEB-SERVICE - ECS-SERVICE
 #
-# This module will create an ecs-service for web-service.
+# Create an ECS service for the web-service.
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "ecs_roles" {
   source       = "./modules/app-cluster/aws/ecs-roles"
-  cluster_name = "${var.ecs_cluster_name}"
-  prefix       = "${var.ecs_cluster_name}"
+  cluster_name = "${var.ecs_cluster_name_app}"
+  prefix       = "${var.ecs_cluster_name_app}"
 }
 
 data "aws_ecs_task_definition" "web_service_task_definition" {
@@ -20,7 +20,7 @@ module "ecs_web_service" {
 
   name                     = "web-service"
   cluster_arn              = "${module.app_cluster.cluster_arn}"
-  cluster_name             = "${var.ecs_cluster_name}"
+  cluster_name             = "${var.ecs_cluster_name_app}"
   ecs_service_iam_role_arn = "${aws_iam_role.ecs_lb_role.arn}"
   target_group_arn         = "${module.alb.target_group_arns[0]}"
 

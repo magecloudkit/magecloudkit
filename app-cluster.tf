@@ -5,7 +5,7 @@
 module "app_cluster" {
   source = "./modules/app-cluster/aws/ecs-cluster"
 
-  cluster_name  = "${var.ecs_cluster_name}"
+  cluster_name  = "${var.ecs_cluster_name_app}"
   ami_id        = "${var.ecs_ami}"
   instance_type = "c5.large"
 
@@ -53,7 +53,7 @@ data "template_file" "user_data_ecs" {
 
   vars {
     environment = "${var.environment}"
-    cluster     = "${var.ecs_cluster_name}"
+    cluster     = "${var.ecs_cluster_name_app}"
     aws_region  = "${var.aws_region}"
 
     mysql_host     = "db.magecloudkit.internal"
@@ -91,8 +91,8 @@ module "alb" {
 
   http_tcp_listeners       = "${list(map("port", "80", "protocol", "HTTP"))}"
   http_tcp_listeners_count = "1"
-  target_groups            = "${list(map("name", "${var.project_name}-web-tg", "backend_protocol", "HTTP", "backend_port", "80"))}"
-  target_groups_count      = "1"
+  target_groups            = "${list(map("name", "${var.project_name}-web-tg", "backend_protocol", "HTTP", "backend_port", "80"), map("name", "${var.project_name}-admin", "backend_protocol", "HTTP", "backend_port", "80"))}"
+  target_groups_count      = "2"
 
   # To make testing easier, we allow SSH requests from any IP address here. In a production deployment, we strongly
   # recommend you limit this to the IP address ranges of known, trusted servers.

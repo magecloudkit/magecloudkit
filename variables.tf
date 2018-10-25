@@ -38,9 +38,14 @@ variable "ecs_ami" {
   default     = "ami-0e8d1356ecdcca81d"
 }
 
-variable "ecs_cluster_name" {
-  description = "The ECS Cluster Name."
+variable "ecs_cluster_name_app" {
+  description = "The ECS cluster name for running the Magento web, checkout and api services."
   default     = "production-app"
+}
+
+variable "ecs_cluster_name_admin" {
+  description = "The ECS cluster name for running the Magento admin service."
+  default     = "production-admin"
 }
 
 variable "key_pair_name" {
