@@ -10,6 +10,7 @@ module "aurora" {
 
   cluster_identifier      = "${var.project_name}-aurora-cluster"
   cluster_instance_prefix = "${var.project_name}-aurora-cluster-instance"
+  instance_class          = "db.r4.2xlarge"
   database_name           = "magento2"
   master_username         = "magento2"
   master_password         = "production"
