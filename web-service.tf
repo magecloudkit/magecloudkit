@@ -24,7 +24,7 @@ module "ecs_web_service" {
   ecs_service_iam_role_arn = "${aws_iam_role.ecs_lb_role.arn}"
   target_group_arn         = "${module.alb.target_group_arns[0]}"
 
-  desired_task_count = 2
+  desired_task_count = 4
   task_definition    = "${aws_ecs_task_definition.web_service_task_definition.family}:${max(aws_ecs_task_definition.web_service_task_definition.revision,data.aws_ecs_task_definition.web_service_task_definition.revision)}"
   container_name     = "nginx"
   container_port     = "80"
