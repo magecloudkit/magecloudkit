@@ -1,33 +1,33 @@
 # ---------------------------------------------------------------------------------------------------------------------
-# ADMIN-SERVICE - ECS-SERVICE
+# API-SERVICE - ECS-SERVICE
 #
-# Create an ECS service for the admin-service.
+# Create an ECS service for the api-service.
 # ---------------------------------------------------------------------------------------------------------------------
 
-data "aws_ecs_task_definition" "admin_service_task_definition" {
-  task_definition = "${aws_ecs_task_definition.admin_service_task_definition.family}"
-  depends_on      = ["aws_ecs_task_definition.admin_service_task_definition"]
+data "aws_ecs_task_definition" "api_service_task_definition" {
+  task_definition = "${aws_ecs_task_definition.api_service_task_definition.family}"
+  depends_on      = ["aws_ecs_task_definition.api_service_task_definition"]
 }
 
-module "ecs_admin_service" {
+module "ecs_api_service" {
   source = "./modules/app-cluster/aws/ecs-service"
 
-  name                     = "admin-service"
-  cluster_arn              = "${module.admin_cluster.cluster_arn}"
-  cluster_name             = "${var.ecs_cluster_name_admin}"
+  name                     = "api-service"
+  cluster_arn              = "${module.app_cluster.cluster_arn}"
+  cluster_name             = "${var.ecs_cluster_name_app}"
   ecs_service_iam_role_arn = "${aws_iam_role.ecs_lb_role.arn}"
   target_group_arn         = "${module.alb.target_group_arns[2]}"
 
   desired_task_count = 1
-  task_definition    = "${aws_ecs_task_definition.admin_service_task_definition.family}:${max(aws_ecs_task_definition.admin_service_task_definition.revision,data.aws_ecs_task_definition.admin_service_task_definition.revision)}"
+  task_definition    = "${aws_ecs_task_definition.api_service_task_definition.family}:${max(aws_ecs_task_definition.api_service_task_definition.revision,data.aws_ecs_task_definition.api_service_task_definition.revision)}"
   container_name     = "nginx"
   container_port     = "80"
 }
 
-resource "aws_ecs_task_definition" "admin_service_task_definition" {
-  family                = "${var.project_name}-admin-service"
+resource "aws_ecs_task_definition" "api_service_task_definition" {
+  family                = "${var.project_name}-api-service"
   task_role_arn         = "${module.ecs_roles.ecs_default_task_iam_role_arn}"
-  container_definitions = "${data.template_file.ecs_admin_task_container_definitions.rendered}"
+  container_definitions = "${data.template_file.ecs_api_task_container_definitions.rendered}"
 
   volume = {
     name      = "media"
@@ -36,23 +36,23 @@ resource "aws_ecs_task_definition" "admin_service_task_definition" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# THE ECS CONTAINER DEFINITIONS FOR THE ADMIN SERVICE
+# THE ECS CONTAINER DEFINITIONS FOR THE api SERVICE
 #
 # This script will configure the instances to join the specified ECS cluster.
 # ---------------------------------------------------------------------------------------------------------------------
 
-data "template_file" "ecs_admin_task_container_definitions" {
-  template = "${file("./task-definitions/admin-service.json")}"
+data "template_file" "ecs_api_task_container_definitions" {
+  template = "${file("./task-definitions/api-service.json")}"
 
   vars {
     environment                             = "${var.environment}"
     nginx_image                             = "054130723771.dkr.ecr.us-west-1.amazonaws.com/kiwico/nginx"
     magento_image                           = "054130723771.dkr.ecr.us-west-1.amazonaws.com/kiwico/magento"
-    cloudwatch_logs_group                   = "${module.ecs-cluster-logs-admin.log_group_id}"
+    cloudwatch_logs_group                   = "${module.ecs-cluster-logs.log_group_id}"
     cloudwatch_logs_region                  = "${var.aws_region}"
-    cloudwatch_logs_nginx_stream_prefix     = "web/nginx"
-    cloudwatch_logs_magento_stream_prefix   = "web/magento"
-    cloudwatch_logs_blackfire_stream_prefix = "web/blackfire"
+    cloudwatch_logs_nginx_stream_prefix     = "api/nginx"
+    cloudwatch_logs_magento_stream_prefix   = "api/magento"
+    cloudwatch_logs_blackfire_stream_prefix = "api/blackfire"
     mysql_host                              = "${aws_route53_record.db.fqdn}"
     mysql_database                          = "${var.env_mysql_database}"
     mysql_user                              = "${var.env_mysql_user}"
@@ -70,18 +70,18 @@ data "template_file" "ecs_admin_task_container_definitions" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 # https
-resource "aws_lb_listener_rule" "admin_route_path_https" {
+resource "aws_lb_listener_rule" "api_route_path_https" {
   listener_arn = "${module.alb.https_listener_arns[0]}"
-  priority     = "50"
+  priority     = "40"
 
   action {
     type             = "forward"
-    target_group_arn = "${module.alb.target_group_arns[2]}"
+    target_group_arn = "${module.alb.target_group_arns[0]}"
   }
 
   condition {
     field  = "host-header"
-    values = ["birdhouse.kiwico.com"]
+    values = ["api2.kiwico.com"]
   }
 
   lifecycle {
@@ -90,18 +90,18 @@ resource "aws_lb_listener_rule" "admin_route_path_https" {
 }
 
 # http
-resource "aws_lb_listener_rule" "admin_route_path_http" {
+resource "aws_lb_listener_rule" "api_route_path_http" {
   listener_arn = "${module.alb.http_tcp_listener_arns[0]}"
-  priority     = "50"
+  priority     = "40"
 
   action {
     type             = "forward"
-    target_group_arn = "${module.alb.target_group_arns[2]}"
+    target_group_arn = "${module.alb.target_group_arns[0]}"
   }
 
   condition {
     field  = "host-header"
-    values = ["birdhouse.kiwico.com"]
+    values = ["api2.kiwico.com"]
   }
 
   lifecycle {

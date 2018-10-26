@@ -1,0 +1,130 @@
+[{
+    "dnsSearchDomains": [],
+    "environment": [],
+    "readonlyRootFilesystem": false,
+    "name": "nginx",
+    "links": [
+      "magento:phpfpm"
+    ],
+    "mountPoints": [],
+    "image": "${nginx_image}",
+    "privileged": false,
+    "essential": true,
+    "portMappings": [{
+      "protocol": "tcp",
+      "containerPort": 80,
+      "hostPort": 0
+    }],
+    "dnsServers": [],
+    "dockerSecurityOptions": [],
+    "entryPoint": [],
+    "ulimits": [],
+    "memoryReservation": 512,
+    "command": [],
+    "extraHosts": [],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${cloudwatch_logs_group}",
+        "awslogs-region": "${cloudwatch_logs_region}",
+        "awslogs-stream-prefix": "${cloudwatch_logs_nginx_stream_prefix}"
+      }
+    },
+    "cpu": 0,
+    "volumesFrom": [{
+      "readOnly": false,
+      "sourceContainer": "magento"
+    }],
+    "dockerLabels": {}
+  },
+  {
+    "dnsSearchDomains": [],
+    "readonlyRootFilesystem": false,
+    "name": "magento",
+    "image": "${magento_image}",
+    "links": [
+      "blackfire:blackfire"
+    ],
+    "mountPoints": [{
+      "containerPath": "/var/www/html/media",
+      "sourceVolume": "media",
+      "readOnly": null
+    }],
+    "essential": true,
+    "environment": [{
+        "name": "ENVIRONMENT",
+        "value": "${environment}"
+      },
+      {
+        "name": "MAGE_MODE",
+        "value": "production"
+      },
+      {
+        "name": "CACHE_PREFIX",
+        "value": "1_"
+      },
+      {
+        "name": "MYSQL_HOST",
+        "value": "${mysql_host}"
+      },
+      {
+        "name": "MYSQL_DATABASE",
+        "value": "${mysql_database}"
+      },
+      {
+        "name": "MYSQL_USER",
+        "value": "${mysql_user}"
+      },
+      {
+        "name": "MYSQL_PASSWORD",
+        "value": "${mysql_password}"
+      },
+      {
+        "name": "REDIS_CACHE_HOST",
+        "value": "${redis_cache_host}"
+      },
+      {
+        "name": "MEMCACHED_HOST",
+        "value": "${memcached_host}"
+      },
+      {
+        "name": "MAGE_TABLE_PREFIX",
+        "value": "${mage_table_prefix}"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${cloudwatch_logs_group}",
+        "awslogs-region": "${cloudwatch_logs_region}",
+        "awslogs-stream-prefix": "${cloudwatch_logs_magento_stream_prefix}"
+      }
+    },
+    "cpu": 0,
+    "memoryReservation": 768
+  },
+  {
+    "name": "blackfire",
+    "image": "blackfire/blackfire:latest",
+    "cpu": 0,
+    "memoryReservation": 128,
+    "essential": true,
+    "environment": [{
+        "name": "BLACKFIRE_SERVER_ID",
+        "value": "${blackfire_server_id}"
+      },
+      {
+        "name": "BLACKFIRE_SERVER_TOKEN",
+        "value": "${blackfire_server_token}"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${cloudwatch_logs_group}",
+        "awslogs-region": "${cloudwatch_logs_region}",
+        "awslogs-stream-prefix": "${cloudwatch_logs_blackfire_stream_prefix}"
+      }
+    }
+  }
+]

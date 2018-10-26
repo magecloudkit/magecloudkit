@@ -21,17 +21,8 @@ module "alb" {
 
   http_tcp_listeners       = "${list(map("port", "80", "protocol", "HTTP"))}"
   http_tcp_listeners_count = "1"
-  target_groups            = "${list(map("name", "${var.project_name}-web-tg", "backend_protocol", "HTTP", "backend_port", "80"), map("name", "${var.project_name}-admin", "backend_protocol", "HTTP", "backend_port", "80"))}"
-  target_groups_count      = "2"
-
-  # To make testing easier, we allow SSH requests from any IP address here. In a production deployment, we strongly
-  # recommend you limit this to the IP address ranges of known, trusted servers.
-  #allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
-
-
-  # Allow inbound SSH access from the Bastion instance
-  #allowed_ssh_security_group_ids = ["${module.bastion.security_group_id}"]
-  #allowed_ssh_security_group_ids = ["${aws_security_group.bastion.id}"]
+  target_groups            = "${list(map("name", "${var.project_name}-web", "backend_protocol", "HTTP", "backend_port", "80"), map("name", "${var.project_name}-checkout", "backend_protocol", "HTTP", "backend_port", "80"), map("name", "${var.project_name}-admin", "backend_protocol", "HTTP", "backend_port", "80"))}"
+  target_groups_count      = "3"
 
   # An example of custom tags
   tags = {
@@ -40,7 +31,7 @@ module "alb" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# CREATE A SECURITY GROUP FOR THE ALB
+# CREATE SECURITY GROUPS FOR THE ALB
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_security_group" "alb_web" {
