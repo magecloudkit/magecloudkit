@@ -9,7 +9,7 @@ module "checkout_cluster" {
   ami_id        = "${var.ecs_ami}"
   instance_type = "c5.large"
 
-  user_data = "${data.template_file.user_data_ecs_admin.rendered}"
+  user_data = "${data.template_file.user_data_ecs_checkout.rendered}"
 
   vpc_id     = "${module.vpc.vpc_id}"
   subnet_ids = "${module.vpc.private_subnets}"
@@ -53,7 +53,7 @@ data "template_file" "user_data_ecs_checkout" {
 
   vars {
     environment = "${var.environment}"
-    cluster     = "${var.ecs_cluster_name_admin}"
+    cluster     = "${var.ecs_cluster_name_checkout}"
     aws_region  = "${var.aws_region}"
 
     mysql_host     = "${aws_route53_record.db.fqdn}"
