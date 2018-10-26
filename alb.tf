@@ -142,12 +142,3 @@ resource "aws_iam_role_policy_attachment" "ecs_lb" {
 # THEN
 # Redirect tohttps://www.kiwico.com:443/atlas/#{path}?#{query}
 # Status code:HTTP_301
-###### HTTPS RULES
-# IF
-# Path is /kiwicrate_customeraccount/*
-# THEN
-# Forward to checkout-servers
-# IF
-# Path is /ads/manageajax/*
-# THEN
-# Forward to checkout-servers

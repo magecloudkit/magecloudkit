@@ -108,6 +108,44 @@ resource "aws_lb_listener_rule" "checkout3_route_path_https" {
   }
 }
 
+resource "aws_lb_listener_rule" "customer_route_path_https" {
+  listener_arn = "${module.alb.https_listener_arns[0]}"
+  priority     = "31"
+
+  action {
+    type             = "forward"
+    target_group_arn = "${module.alb.target_group_arns[1]}"
+  }
+
+  condition {
+    field  = "path-pattern"
+    values = ["/kiwicrate_customeraccount/*"]
+  }
+
+  lifecycle {
+    ignore_changes = ["priority"]
+  }
+}
+
+resource "aws_lb_listener_rule" "ads_ajax_route_path_https" {
+  listener_arn = "${module.alb.https_listener_arns[0]}"
+  priority     = "32"
+
+  action {
+    type             = "forward"
+    target_group_arn = "${module.alb.target_group_arns[1]}"
+  }
+
+  condition {
+    field  = "path-pattern"
+    values = ["/ads/manageajax/*"]
+  }
+
+  lifecycle {
+    ignore_changes = ["priority"]
+  }
+}
+
 # http
 resource "aws_lb_listener_rule" "checkout_route_path_http" {
   listener_arn = "${module.alb.http_tcp_listener_arns[0]}"
