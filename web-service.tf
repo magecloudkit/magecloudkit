@@ -41,23 +41,6 @@ resource "aws_ecs_task_definition" "web_service_task_definition" {
   }
 }
 
-# Add custom routing rules for the foo service
-#resource "aws_alb_listener_rule" "http_host_rule" {
-#  listener_arn = "${lookup(data.terraform_remote_state.alb.listener_arns, 80)}"
-#  priority     = 100
-#
-#  action {
-#    type             = "forward"
-#    target_group_arn = "${module.service.target_group_arn}"
-#  }
-#
-# Note how I'm using host-based routing here. You may want to make the domain name a variable so you can customize it for each environment
-#  condition {
-#    field  = "host-header"
-#    values = ["foo.acme.com"]
-#  }
-#}
-
 # ---------------------------------------------------------------------------------------------------------------------
 # THE ECS CONTAINER DEFINITIONS FOR THE WEB SERVICE
 #
