@@ -99,6 +99,13 @@
     {
       "type": "shell",
       "scripts": [
+        "{{template_dir}}/scripts/iam-roles.sh"
+      ],
+      "execute_command": "echo ubuntu | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+    {
+      "type": "shell",
+      "scripts": [
         "{{template_dir}}/scripts/stop.sh"
       ],
       "execute_command": "echo ubuntu | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
