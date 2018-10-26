@@ -24,7 +24,7 @@ module "alb" {
   target_groups            = "${list(map("name", "${var.project_name}-web", "backend_protocol", "HTTP", "backend_port", "80"), map("name", "${var.project_name}-checkout", "backend_protocol", "HTTP", "backend_port", "80"), map("name", "${var.project_name}-admin", "backend_protocol", "HTTP", "backend_port", "80"))}"
   target_groups_count      = "3"
 
-  # An example of custom tags
+  # Set custom tags
   tags = {
     Environment = "${var.environment}"
   }
