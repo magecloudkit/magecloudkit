@@ -92,6 +92,15 @@ resource "aws_security_group_rule" "alb_to_ecs_admin" {
   security_group_id        = "${module.admin_cluster.security_group_id}"
 }
 
+resource "aws_security_group_rule" "alb_to_ecs_checkout" {
+  type                     = "ingress"
+  from_port                = 32768
+  to_port                  = 61000
+  protocol                 = "TCP"
+  source_security_group_id = "${aws_security_group.alb_web.id}"
+  security_group_id        = "${module.checkout_cluster.security_group_id}"
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # CREATE IAM ROLES AND ATTACH ECS POLICIES
 # ---------------------------------------------------------------------------------------------------------------------
