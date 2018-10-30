@@ -16,13 +16,6 @@ module "ecs-cluster-logs-admin" {
   retention_in_days = 30
 }
 
-module "ecs-cluster-logs-checkout" {
-  source = "./modules/monitoring/aws/logs"
-
-  name              = "${var.ecs_cluster_name_checkout}"
-  retention_in_days = 30
-}
-
 module "dmesg-logs" {
   source = "./modules/monitoring/aws/logs"
 
