@@ -16,7 +16,7 @@ module "ecs_admin_service" {
   cluster_arn              = "${module.admin_cluster.cluster_arn}"
   cluster_name             = "${var.ecs_cluster_name_admin}"
   ecs_service_iam_role_arn = "${aws_iam_role.ecs_lb_role.arn}"
-  target_group_arn         = "${module.alb.target_group_arns[2]}"
+  target_group_arn         = "${module.alb.target_group_arns[1]}"
 
   desired_task_count = 1
   task_definition    = "${aws_ecs_task_definition.admin_service_task_definition.family}:${max(aws_ecs_task_definition.admin_service_task_definition.revision,data.aws_ecs_task_definition.admin_service_task_definition.revision)}"
@@ -76,7 +76,7 @@ resource "aws_lb_listener_rule" "admin_route_path_https" {
 
   action {
     type             = "forward"
-    target_group_arn = "${module.alb.target_group_arns[2]}"
+    target_group_arn = "${module.alb.target_group_arns[1]}"
   }
 
   condition {
@@ -96,7 +96,7 @@ resource "aws_lb_listener_rule" "admin_route_path_http" {
 
   action {
     type             = "forward"
-    target_group_arn = "${module.alb.target_group_arns[2]}"
+    target_group_arn = "${module.alb.target_group_arns[1]}"
   }
 
   condition {

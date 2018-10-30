@@ -21,8 +21,8 @@ module "alb" {
 
   http_tcp_listeners       = "${list(map("port", "80", "protocol", "HTTP"))}"
   http_tcp_listeners_count = "1"
-  target_groups            = "${list(map("name", "${var.project_name}-web", "backend_protocol", "HTTP", "backend_port", "80"), map("name", "${var.project_name}-checkout", "backend_protocol", "HTTP", "backend_port", "80"), map("name", "${var.project_name}-admin", "backend_protocol", "HTTP", "backend_port", "80"))}"
-  target_groups_count      = "3"
+  target_groups            = "${list(map("name", "${var.project_name}-web", "backend_protocol", "HTTP", "backend_port", "80"), map("name", "${var.project_name}-admin", "backend_protocol", "HTTP", "backend_port", "80"))}"
+  target_groups_count      = "2"
 
   # Set custom tags
   tags = {
@@ -72,15 +72,6 @@ resource "aws_security_group_rule" "alb_to_ecs" {
   protocol                 = "TCP"
   source_security_group_id = "${aws_security_group.alb_web.id}"
   security_group_id        = "${module.app_cluster.security_group_id}"
-}
-
-resource "aws_security_group_rule" "alb_to_ecs_checkout" {
-  type                     = "ingress"
-  from_port                = 32768
-  to_port                  = 61000
-  protocol                 = "TCP"
-  source_security_group_id = "${aws_security_group.alb_web.id}"
-  security_group_id        = "${module.checkout_cluster.security_group_id}"
 }
 
 resource "aws_security_group_rule" "alb_to_ecs_admin" {

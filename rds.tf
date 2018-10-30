@@ -18,6 +18,6 @@ module "aurora" {
   preferred_backup_window = "01:00-02:00"
 
   # Limit access to app servers only
-  allowed_db_security_group_count = 3
-  allowed_db_security_group_ids   = ["${module.app_cluster.security_group_id}", "${module.checkout_cluster.security_group_id}", "${module.admin_cluster.security_group_id}"]
+  allowed_db_security_group_count = 2
+  allowed_db_security_group_ids   = ["${module.app_cluster.security_group_id}", "${module.admin_cluster.security_group_id}"]
 }
