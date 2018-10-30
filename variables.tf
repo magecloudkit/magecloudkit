@@ -60,7 +60,7 @@ variable "key_pair_name" {
 
 variable "jenkins_ami" {
   description = "The AMI used to run our Jenkins instance. This AMI is built from the Jenkins-AMI Packer template (See the KiwiCo customized version: kiwico/jenkins-ami/jenkins.json)."
-  default     = "ami-0a572ed47a73e25e2"
+  default     = "ami-084d244aeeeed474e"
 }
 
 variable "jenkins_http_port" {
