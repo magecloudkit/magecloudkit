@@ -55,7 +55,7 @@ variable "ecs_cluster_name_checkout" {
 
 variable "key_pair_name" {
   description = "The name of an EC2 Key Pair that can be used to SSH to the EC2 Instances in this VPC. Set to an empty string to not associate a Key Pair."
-  default     = "robs-2017-mbp"
+  default     = "kiwikey"
 }
 
 variable "jenkins_ami" {
