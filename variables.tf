@@ -63,6 +63,11 @@ variable "jenkins_ami" {
   default     = "ami-084d244aeeeed474e"
 }
 
+variable "media_volume_mount_point" {
+  description = "The path where we should mount the EFS filesystem used for Magento media assets on the EC2 instances."
+  default     = "/mnt/media"
+}
+
 variable "jenkins_http_port" {
   description = "The port to use for the Jenkins HTTP Web UI."
   default     = 8080
