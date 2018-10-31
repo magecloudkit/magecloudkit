@@ -10,9 +10,9 @@ module "efs" {
   availability_zones = "${var.availability_zones}"
   subnet_ids         = "${module.vpc.persistence_subnets}"
 
-  # Limit access to app servers only
-  allowed_inbound_security_group_count = 2
-  allowed_inbound_security_group_ids   = ["${module.app_cluster.security_group_id}", "${module.admin_cluster.security_group_id}"]
+  # Limit access to the App and Jenkins servers only
+  allowed_inbound_security_group_count = 3
+  allowed_inbound_security_group_ids   = ["${module.app_cluster.security_group_id}", "${module.admin_cluster.security_group_id}", "${module.jenkins.security_group_id}"]
 
   # Set custom tags
   tags = [

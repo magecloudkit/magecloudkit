@@ -21,8 +21,7 @@ module "jenkins" {
 
   # Allow inbound SSH access from the Bastion instance
   allowed_ssh_security_group_ids = ["${module.bastion.security_group_id}"]
-
-  key_pair_name = "${var.key_pair_name}"
+  key_pair_name                  = "${var.key_pair_name}"
 
   # Provide the ALB target groups
   target_group_arns = ["${module.alb_jenkins.target_group_arns}"]
@@ -53,13 +52,15 @@ module "jenkins" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 data "template_file" "user_data_jenkins" {
-  template = "${file("./modules/ci/aws/jenkins-server/user-data/user-data.sh")}"
+  template = "${file("./kiwico/modules/jenkins-server/user-data/user-data.sh")}"
 
   vars {
-    http_port               = "${var.jenkins_http_port}"
-    efs_filesystem_id       = "${module.jenkins.efs_filesystem_id}"
-    data_volume_mount_point = "${module.jenkins.volume_mountpoint}"
-    volume_owner            = "${module.jenkins.volume_owner}"
+    http_port                 = "${var.jenkins_http_port}"
+    jenkins_efs_filesystem_id = "${module.jenkins.efs_filesystem_id}"
+    media_efs_filesystem_id   = "${module.efs.efs_filesystem_id}"
+    data_volume_mount_point   = "${module.jenkins.volume_mountpoint}"
+    media_volume_mount_point  = "${var.media_volume_mount_point}"
+    volume_owner              = "${module.jenkins.volume_owner}"
   }
 }
 
