@@ -14,22 +14,26 @@ resource "aws_ecs_service" "service" {
   name    = "${var.name}"
   cluster = "${var.cluster_arn}"
 
-  // check the data provider so we don't deploy an old version of the container when re-running terraform
+  # check the data provider so we don't deploy an old version of the container when re-running terraform
   desired_count                      = "${var.desired_task_count}"
   task_definition                    = "${var.task_definition}"
   deployment_maximum_percent         = "${var.deployment_maximum_percent}"
   deployment_minimum_healthy_percent = "${var.deployment_minimum_healthy_percent}"
 
-  #security_groups                    = ["${var.allowed_security_group_ids}"]
-
-  // Required so that the ECS agent can talk to the load balancer
+  # required so that the ECS agent can talk to the load balancer
   iam_role = "${var.ecs_service_iam_role_arn}"
+
   load_balancer = {
     target_group_arn = "${var.target_group_arn}"
 
-    // This value come from the container definitions
+    # this value comes from the container definitions
     container_name = "${var.container_name}"
     container_port = "${var.container_port}"
+  }
+
+  # Ignore external changes from Autoscaling
+  lifecycle {
+    ignore_changes = ["desired_count"]
   }
 }
 
