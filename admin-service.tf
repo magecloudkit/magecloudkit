@@ -48,6 +48,7 @@ data "template_file" "ecs_admin_task_container_definitions" {
     environment                             = "${var.environment}"
     nginx_image                             = "054130723771.dkr.ecr.us-west-1.amazonaws.com/kiwico/nginx"
     magento_image                           = "054130723771.dkr.ecr.us-west-1.amazonaws.com/kiwico/magento"
+    php_memory_limit                        = "4G"
     cloudwatch_logs_group                   = "${module.ecs-cluster-logs-admin.log_group_id}"
     cloudwatch_logs_region                  = "${var.aws_region}"
     cloudwatch_logs_nginx_stream_prefix     = "web/nginx"

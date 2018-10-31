@@ -56,6 +56,10 @@
         "value": "${environment}"
       },
       {
+        "name": "PHP_MEMORY_LIMIT",
+        "value": "${php_memory_limit}"
+      },
+      {
         "name": "MAGE_MODE",
         "value": "production"
       },

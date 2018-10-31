@@ -56,6 +56,30 @@
         "value": "${environment}"
       },
       {
+        "name": "PHP_MEMORY_LIMIT",
+        "value": "${php_memory_limit}"
+      },
+      {
+        "name": "PHP_PM",
+        "value": "${phpfpm_pm}"
+      },
+      {
+        "name": "PHP_PM_MAX_CHILDREN",
+        "value": "${phpfpm_pm_max_children}"
+      },
+      {
+        "name": "PHP_PM_START_SERVERS",
+        "value": "${phpfpm_pm_start_servers}"
+      },
+      {
+        "name": "PHP_PM_MIN_SPARE_SERVERS",
+        "value": "${phpfpm_pm_min_spare_servers}"
+      },
+      {
+        "name": "PHP_PM_MAX_SPARE_SERVERS",
+        "value": "${phpfpm_pm_max_spare_servers}"
+      },
+      {
         "name": "MAGE_MODE",
         "value": "production"
       },
