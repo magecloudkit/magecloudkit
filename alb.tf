@@ -21,7 +21,7 @@ module "alb" {
 
   http_tcp_listeners       = "${list(map("port", "80", "protocol", "HTTP"))}"
   http_tcp_listeners_count = "1"
-  target_groups            = "${list(map("name", "${var.project_name}-web", "backend_protocol", "HTTP", "backend_port", "80"), map("name", "${var.project_name}-admin", "backend_protocol", "HTTP", "backend_port", "80"))}"
+  target_groups            = "${list(map("name", "${var.project_name}-web", "backend_protocol", "HTTP", "backend_port", "80", "health_check_path", "/in.php"), map("name", "${var.project_name}-admin", "backend_protocol", "HTTP", "backend_port", "80", "health_check_path", "/in.php"))}"
   target_groups_count      = "2"
 
   # Set custom tags
