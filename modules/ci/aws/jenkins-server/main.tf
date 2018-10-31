@@ -185,7 +185,7 @@ data "aws_iam_policy_document" "instance_role" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# DEPLOY AN EFS FILE SYSTEM FOR STORING MEDIA ASSETS
+# DEPLOY AN EFS FILE SYSTEM FOR STORING THE JENKINS DATA
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "efs" {
