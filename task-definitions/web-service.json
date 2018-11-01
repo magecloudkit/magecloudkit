@@ -80,6 +80,10 @@
         "value": "${phpfpm_pm_max_spare_servers}"
       },
       {
+        "name": "PHP_PM_MAX_REQUESTS",
+        "value": "${phpfpm_pm_max_requests}"
+      },
+      {
         "name": "MAGE_MODE",
         "value": "production"
       },
