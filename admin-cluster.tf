@@ -7,7 +7,7 @@ module "admin_cluster" {
 
   cluster_name  = "${var.ecs_cluster_name_admin}"
   ami_id        = "${var.ecs_ami}"
-  instance_type = "c5.large"
+  instance_type = "c5.2xlarge"
 
   user_data = "${data.template_file.user_data_ecs_admin.rendered}"
 
