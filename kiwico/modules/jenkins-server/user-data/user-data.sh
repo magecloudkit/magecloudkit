@@ -14,14 +14,14 @@ function mount_volume {
   local readonly mount_options="defaults,_netdev"
   local readonly fs_tab_path="/etc/fstab"
 
-  echo "Mounting EFS filesystem for the data directory"
+  echo "Creating Mount Point $mount_point"
   mkdir -p "$mount_point"
 
   echo "Adding EFS filesystem $efs_filesystem_id to /etc/fstab with mount point $mount_point"
   echo "$efs_filesystem_id    $mount_point   $file_system_type    $mount_options  0 0" >> "$fs_tab_path"
 
-  echo "Mounting volumes..."
-  mount -a
+  echo "Mounting volume..."
+  mount "$mount_point"
 
   echo "Changing ownership of $mount_point to $owner..."
   chown "$owner" "$mount_point"
