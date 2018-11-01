@@ -46,10 +46,16 @@
       "blackfire:blackfire"
     ],
     "mountPoints": [{
-      "containerPath": "/var/www/html/media",
-      "sourceVolume": "media",
-      "readOnly": null
-    }],
+        "containerPath": "/var/www/html/media",
+        "sourceVolume": "media",
+        "readOnly": null
+      },
+      {
+        "containerPath": "/var/www/html/blog/wp-content/uploads",
+        "sourceVolume": "wordpress",
+        "readOnly": null
+      }
+    ],
     "essential": true,
     "environment": [{
         "name": "ENVIRONMENT",
@@ -61,27 +67,27 @@
       },
       {
         "name": "PHP_PM",
-        "value": "${phpfpm_pm}"
+        "value": "${php_pm}"
       },
       {
         "name": "PHP_PM_MAX_CHILDREN",
-        "value": "${phpfpm_pm_max_children}"
+        "value": "${php_pm_max_children}"
       },
       {
         "name": "PHP_PM_START_SERVERS",
-        "value": "${phpfpm_pm_start_servers}"
+        "value": "${php_pm_start_servers}"
       },
       {
         "name": "PHP_PM_MIN_SPARE_SERVERS",
-        "value": "${phpfpm_pm_min_spare_servers}"
+        "value": "${php_pm_min_spare_servers}"
       },
       {
         "name": "PHP_PM_MAX_SPARE_SERVERS",
-        "value": "${phpfpm_pm_max_spare_servers}"
+        "value": "${php_pm_max_spare_servers}"
       },
       {
         "name": "PHP_PM_MAX_REQUESTS",
-        "value": "${phpfpm_pm_max_requests}"
+        "value": "${php_pm_max_requests}"
       },
       {
         "name": "MAGE_MODE",

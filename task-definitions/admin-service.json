@@ -46,10 +46,16 @@
       "blackfire:blackfire"
     ],
     "mountPoints": [{
-      "containerPath": "/var/www/html/media",
-      "sourceVolume": "media",
-      "readOnly": null
-    }],
+        "containerPath": "/var/www/html/media",
+        "sourceVolume": "media",
+        "readOnly": null
+      },
+      {
+        "containerPath": "/var/www/html/shared",
+        "sourceVolume": "shared",
+        "readOnly": null
+      }
+    ],
     "essential": true,
     "environment": [{
         "name": "ENVIRONMENT",
@@ -58,6 +64,30 @@
       {
         "name": "PHP_MEMORY_LIMIT",
         "value": "${php_memory_limit}"
+      },
+      {
+        "name": "PHP_PM",
+        "value": "${php_pm}"
+      },
+      {
+        "name": "PHP_PM_MAX_CHILDREN",
+        "value": "${php_pm_max_children}"
+      },
+      {
+        "name": "PHP_PM_START_SERVERS",
+        "value": "${php_pm_start_servers}"
+      },
+      {
+        "name": "PHP_PM_MIN_SPARE_SERVERS",
+        "value": "${php_pm_min_spare_servers}"
+      },
+      {
+        "name": "PHP_PM_MAX_SPARE_SERVERS",
+        "value": "${php_pm_max_spare_servers}"
+      },
+      {
+        "name": "PHP_PM_MAX_REQUESTS",
+        "value": "${php_pm_max_requests}"
       },
       {
         "name": "MAGE_MODE",
