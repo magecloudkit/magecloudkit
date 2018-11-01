@@ -15,7 +15,7 @@ function mount_volume {
   local readonly fs_tab_path="/etc/fstab"
 
   echo "Mounting EFS filesystem for the data directory"
-  mkdir -p "$data_volume_mount_point"
+  mkdir -p "$mount_point"
 
   echo "Adding EFS filesystem $efs_filesystem_id to /etc/fstab with mount point $mount_point"
   echo "$efs_filesystem_id    $mount_point   $file_system_type    $mount_options  0 0" >> "$fs_tab_path"
