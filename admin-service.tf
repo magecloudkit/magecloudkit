@@ -31,7 +31,12 @@ resource "aws_ecs_task_definition" "admin_service_task_definition" {
 
   volume = {
     name      = "media"
-    host_path = "/mnt/media"
+    host_path = "/mnt/media/magento"
+  }
+
+  volume = {
+    name      = "shared"
+    host_path = "/mnt/media/shared"
   }
 }
 
@@ -49,6 +54,12 @@ data "template_file" "ecs_admin_task_container_definitions" {
     nginx_image                             = "054130723771.dkr.ecr.us-west-1.amazonaws.com/kiwico/nginx"
     magento_image                           = "054130723771.dkr.ecr.us-west-1.amazonaws.com/kiwico/magento"
     php_memory_limit                        = "4G"
+    php_pm                                  = "dynamic"
+    php_pm_max_children                     = "10"
+    php_pm_start_servers                    = "4"
+    php_pm_min_spare_servers                = "2"
+    php_pm_max_spare_servers                = "6"
+    php_pm_max_requests                     = "0"
     cloudwatch_logs_group                   = "${module.ecs-cluster-logs-admin.log_group_id}"
     cloudwatch_logs_region                  = "${var.aws_region}"
     cloudwatch_logs_nginx_stream_prefix     = "web/nginx"
