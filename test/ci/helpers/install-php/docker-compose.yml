@@ -1,0 +1,9 @@
+version: '3'
+services:
+  ubuntu-php:
+    image: brightfame/ubuntu-dev:16.04
+    entrypoint: ["/entrypoint/entrypoint.sh"]
+
+    volumes:
+      - ../../../../modules/ci/helpers/install-php:/opt/install-php
+      - ./entrypoint.sh:/entrypoint/entrypoint.sh
