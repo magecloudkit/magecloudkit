@@ -13,27 +13,26 @@ This repository serves as placeholder for the next version of MageCloudKit.
 
 ## Modules
 
- * `app-cluster`
- * `cache/redis`
- * `cache/memcached`
- * `database`
- * `deploy`
- * `load-balancer`
- * `monitoring`
- * `network`
- * `security`
-
-## Problems with MageCloudKit v1
-
-MageCloudKit v1 was essentially an MVP designed to validate the need for the product with real customers. It's served its purpose and now we are looking to develop the next version.
-
-You can find the source code in the `v1-legacy` directory.
-
-Historically, v1 suffers from:
-
- * Lack of Terraform modules.
- * Hard-coded `${terraform.workspace}` references.
- * Hard-coded view of how the 'world' should appear.
+ * `app-cluster/aws/ecs-ami`
+ * `app-cluster/aws/ecs-cluster`
+ * `app-cluster/aws/ecs-deploy`
+ * `app-cluster/aws/ecs-roles`
+ * `app-cluster/aws/ecs-service`
+ * `cache/aws/redis`
+ * `cache/aws/memcached`
+ * `ci/aws/install-jenkins`
+ * `ci/aws/jenkins-ami`
+ * `ci/aws/jenkins-server`
+ * `ci/helpers/install-php`
+ * `database/aws/aurora`
+ * `load-balancer/aws/alb`
+ * `load-balancer/aws/alb-target-group`
+ * `monitoring/aws/logs`
+ * `network/aws/bastion`
+ * `network/aws/vpc`
+ * `security/auto-update`
+ * `security/fail2ban`
+ * `storage/aws/efs`
 
 ## Getting Started
 
