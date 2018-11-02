@@ -9,5 +9,5 @@ services:
     container_name: ${CONTAINER_BASE_NAME}
 
     volumes:
-      - ../../../modules/ci/install-jenkins:/opt/install-jenkins
+      - ../../../../modules/ci/aws/install-jenkins:/opt/install-jenkins
       - ./entrypoint.sh:/entrypoint/entrypoint.sh

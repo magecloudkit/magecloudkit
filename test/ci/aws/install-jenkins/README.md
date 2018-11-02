@@ -1,4 +1,4 @@
-# Tests for Install Jenkins module
+# Tests for the Install Jenkins module
 
 ## Running the Tests
 
