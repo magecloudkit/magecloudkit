@@ -7,10 +7,9 @@ set -e
 
 # Install dependencies
 echo "Configuring system for automatic updates..."
-DEBIAN_FRONTEND=noninteractive
-apt-get update
-apt-get install -y --no-install-recommends unattended-upgrades
-dpkg-reconfigure --priority=low unattended-upgrades
+sudo apt-get update
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends unattended-upgrades
+sudo DEBIAN_FRONTEND=noninteractive dpkg-reconfigure --priority=low unattended-upgrades
 
 # Generate a random sleep value
 RANDOMSLEEP=$(shuf -i 600-1800 -n 1)
@@ -20,7 +19,7 @@ RANDOMSLEEP=$(shuf -i 600-1800 -n 1)
 # Destination: /etc/apt/apt.conf.d/20auto-upgrades
 # or /etc/apt/apt.conf.d/10periodic
 FILEPATH="/etc/apt/apt.conf.d/10periodic"
-tee $FILEPATH > /dev/null <<BFEOF
+sudo tee $FILEPATH > /dev/null <<BFEOF
 APT::Periodic::Update-Package-Lists "1";
 
 APT::Periodic::Download-Upgradeable-Packages "1";
@@ -34,7 +33,7 @@ BFEOF
 #
 # Destination: /etc/apt/apt.conf.d/50unattended-upgrades
 FILEPATH="/etc/apt/apt.conf.d/50unattended-upgrades"
-tee $FILEPATH > /dev/null <<"BFEOF"
+sudo tee $FILEPATH > /dev/null <<"BFEOF"
 Unattended-Upgrade::Allowed-Origins {
     "${distro_id}:${distro_codename}";
     "${distro_id}:${distro_codename}-security";
