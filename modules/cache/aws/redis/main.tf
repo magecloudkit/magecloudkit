@@ -68,15 +68,3 @@ resource "aws_security_group_rule" "allow_inbound_from_security_group_ids" {
 
   security_group_id = "${aws_security_group.redis.id}"
 }
-
-# TODO - does Redis need outbound?
-#resource "aws_security_group_rule" "allow_redis_outbound" {
-#  type        = "egress"
-#  from_port   = "${var.port}"
-#  to_port     = "${var.port}"
-#  protocol    = "tcp"
-#  cidr_blocks = ["0.0.0.0/0"]
-#
-#  security_group_id = "${aws_security_group.redis.id}"
-#}
-
