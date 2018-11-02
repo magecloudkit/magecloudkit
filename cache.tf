@@ -8,7 +8,7 @@ module "redis_cache" {
   source = "./modules/cache/aws/redis"
 
   cluster_name = "${var.environment}-cache"
-  node_type    = "cache.t2.small"
+  node_type    = "cache.r5.large"
 
   vpc_id     = "${module.vpc.vpc_id}"
   subnet_ids = "${module.vpc.persistence_subnets}"
@@ -35,7 +35,7 @@ module "memcached" {
   source = "./modules/cache/aws/memcached"
 
   cluster_name = "${var.environment}-memcached"
-  node_type    = "cache.t2.small"
+  node_type    = "cache.m3.medium"
 
   vpc_id     = "${module.vpc.vpc_id}"
   subnet_ids = "${module.vpc.persistence_subnets}"
