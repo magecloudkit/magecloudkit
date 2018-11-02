@@ -11,7 +11,19 @@ This repository serves as placeholder for the next version of MageCloudKit.
  * Be sure to run `terraform fmt` on all Terraform code and `packer validate` on all Packer templates.
  * Prefer MIT-licensed software where-ever possible.
 
+## Getting Started
+
+The root folder of this repository contains an oppinionated stack for launching MageCloudKit.
+
+The `examples` folder contains real-world, production examples of how to use MageCloudKit.
+
+## Documentation
+
+Please visit the documentation website: https://docs.magecloudkit.com.
+
 ## Modules
+
+MageCloudKit includes the following modules:
 
  * `app-cluster/aws/ecs-ami`
  * `app-cluster/aws/ecs-cluster`
@@ -33,9 +45,3 @@ This repository serves as placeholder for the next version of MageCloudKit.
  * `security/auto-update`
  * `security/fail2ban`
  * `storage/aws/efs`
-
-## Getting Started
-
-The root folder of this repository contains an oppinionated stack for launching MageCloudKit.
-
-The `examples` folder contains real-world, production examples of how to use MageCloudKit.
