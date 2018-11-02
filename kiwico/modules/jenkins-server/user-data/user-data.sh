@@ -43,6 +43,12 @@ function update_jenkins_home {
   sed -i.bak "s@JENKINS_HOME=/var/lib/\$$NAME@JENKINS_HOME=$data_volume_mount_point@g" /etc/default/jenkins
 }
 
+function create_symlinks {
+  echo "Creating symlinks"
+  ln -s /mnt/media/magento /mnt/jenkins/workspace/git_checkout/media
+  ln -s /mnt/media/shared /mnt/jenkins/workspace/git_checkout/shared
+}
+
 function run_jenkins {
   local readonly http_port="$1"
   local readonly data_dir="$2"
@@ -62,6 +68,7 @@ function run {
 
   mount_volume "$jenkins_efs_filesystem_id" "$data_volume_mount_point" "$volume_owner"
   mount_volume "$media_efs_filesystem_id" "$media_volume_mount_point" "$volume_owner"
+  create_symlinks
   update_jenkins_home "$data_volume_mount_point"
   run_jenkins "$http_port" "$data_volume_mount_point"
 }
