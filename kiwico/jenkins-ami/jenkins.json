@@ -70,6 +70,10 @@
     ]
   }, {
     "type": "file",
+    "source": "{{template_dir}}/../../modules/security/auto-update",
+    "destination": "/tmp/brightfame"
+  }, {
+    "type": "file",
     "source": "{{template_dir}}/../../modules/ci/aws/",
     "destination": "/tmp/brightfame"
   }, {
@@ -79,6 +83,7 @@
   }, {
     "type": "shell",
     "inline": [
+      "/tmp/brightfame/auto-update/install.sh",
       "/tmp/brightfame/install-php/install-php70",
       "/tmp/brightfame/install-jenkins/install-jenkins"
     ]
