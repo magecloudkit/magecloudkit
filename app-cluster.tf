@@ -6,7 +6,6 @@ module "app_cluster" {
   source = "./modules/app-cluster/aws/ecs-cluster"
 
   cluster_name  = "${var.ecs_cluster_name_app}"
-  ami_id        = "${var.ecs_ami}"
   instance_type = "c5.large"
 
   user_data = "${data.template_file.user_data_ecs.rendered}"
@@ -32,6 +31,57 @@ module "app_cluster" {
     },
   ]
 
+  # Autoscaling Properties
+  enable_autoscaling                        = true
+  ecs_instance_draining_lambda_function_arn = "${module.ecs_draining.lambda_function_arn}"
+
+  autoscaling_properties = [
+    {
+      type               = "CPUReservation"
+      direction          = "up"
+      evaluation_periods = 2
+      observation_period = "300"
+      statistic          = "Average"
+      threshold          = "89"
+      cooldown           = "900"
+      adjustment_type    = "ChangeInCapacity"
+      scaling_adjustment = "1"
+    },
+    {
+      type               = "CPUReservation"
+      direction          = "down"
+      evaluation_periods = 4
+      observation_period = "300"
+      statistic          = "Average"
+      threshold          = "10"
+      cooldown           = "300"
+      adjustment_type    = "ChangeInCapacity"
+      scaling_adjustment = "-1"
+    },
+    {
+      type               = "MemoryReservation"
+      direction          = "up"
+      evaluation_periods = 2
+      observation_period = "300"
+      statistic          = "Average"
+      threshold          = "50"
+      cooldown           = "900"
+      adjustment_type    = "ChangeInCapacity"
+      scaling_adjustment = "1"
+    },
+    {
+      type               = "MemoryReservation"
+      direction          = "down"
+      evaluation_periods = 4
+      observation_period = "300"
+      statistic          = "Average"
+      threshold          = "10"
+      cooldown           = "300"
+      adjustment_type    = "ChangeInCapacity"
+      scaling_adjustment = "-1"
+    },
+  ]
+
   # Set custom tags
   tags = [
     {
@@ -52,18 +102,29 @@ data "template_file" "user_data_ecs" {
   template = "${file("./modules/app-cluster/aws/ecs-cluster/user-data/user-data.sh")}"
 
   vars {
-    environment = "${var.environment}"
-    cluster     = "${var.ecs_cluster_name_app}"
-    aws_region  = "${var.aws_region}"
+    environment  = "${var.environment}"
+    cluster_name = "${var.ecs_cluster_name_app}"
+    aws_region   = "${var.aws_region}"
 
-    mysql_host     = "db.magecloudkit.internal"
-    mysql_database = "magento"
-    mysql_user     = "magento"
-    mysql_password = "magento"
+    mysql_host     = "${aws_route53_record.db.fqdn}"
+    mysql_database = "${var.env_mysql_database}"
+    mysql_user     = "${var.env_mysql_user}"
+    mysql_password = "${var.env_mysql_password}"
 
-    #mysql_host     = "${aws_route53_record.db.fqdn}"
-    #mysql_database = "${var.env_mysql_database}"
-    #mysql_user     = "${var.env_mysql_user}"
-    #mysql_password = "${lookup(var.rds_password, terraform.workspace)}"
+    enable_efs         = 1
+    efs_file_system_id = "${module.efs.efs_filesystem_id}"
+    efs_mount_point    = "${var.media_volume_mount_point}"
+
+    # block_metadata_service blocks the aws metadata service from the ECS Tasks true / false
+    block_metadata_service = true
   }
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY THE ECS DRAINING LAMBDA FUNCTION
+# ---------------------------------------------------------------------------------------------------------------------
+
+module "ecs_draining" {
+  source = "./modules/app-cluster/aws/ecs-instance-draining"
+  name   = "${var.ecs_cluster_name_app}"
 }
