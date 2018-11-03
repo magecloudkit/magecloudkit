@@ -6,7 +6,6 @@ module "admin_cluster" {
   source = "./modules/app-cluster/aws/ecs-cluster"
 
   cluster_name  = "${var.ecs_cluster_name_admin}"
-  ami_id        = "${var.ecs_ami}"
   instance_type = "c5.2xlarge"
 
   user_data = "${data.template_file.user_data_ecs_admin.rendered}"
@@ -52,13 +51,20 @@ data "template_file" "user_data_ecs_admin" {
   template = "${file("./modules/app-cluster/aws/ecs-cluster/user-data/user-data.sh")}"
 
   vars {
-    environment = "${var.environment}"
-    cluster     = "${var.ecs_cluster_name_admin}"
-    aws_region  = "${var.aws_region}"
+    environment  = "${var.environment}"
+    cluster_name = "${var.ecs_cluster_name_admin}"
+    aws_region   = "${var.aws_region}"
 
     mysql_host     = "${aws_route53_record.db.fqdn}"
     mysql_database = "${var.env_mysql_database}"
     mysql_user     = "${var.env_mysql_user}"
     mysql_password = "${var.env_mysql_password}"
+
+    enable_efs         = 1
+    efs_file_system_id = "${module.efs.efs_filesystem_id}"
+    efs_mount_point    = "${var.media_volume_mount_point}"
+
+    # block_metadata_service blocks the aws metadata service from the ECS Tasks true / false
+    block_metadata_service = true
   }
 }
