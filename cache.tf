@@ -35,7 +35,7 @@ module "memcached" {
   source = "./modules/cache/aws/memcached"
 
   cluster_name = "${var.environment}-memcached"
-  node_type    = "cache.m3.medium"
+  node_type    = "cache.m5.large"
 
   vpc_id     = "${module.vpc.vpc_id}"
   subnet_ids = "${module.vpc.persistence_subnets}"
