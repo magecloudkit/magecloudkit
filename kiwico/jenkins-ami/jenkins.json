@@ -51,7 +51,7 @@
     "pause_before": "30s",
     "inline": [
       "DEBIAN_FRONTEND=noninteractive sudo apt-get update",
-      "sudo apt-get install -y jq curl git python-pip binutils nfs-common",
+      "sudo apt-get install -y jq curl git python-pip binutils nfs-common mysql-client-5.7 redis-tools",
       "sudo -H pip install --upgrade awscli"
     ],
     "only": ["ubuntu-ami"]
