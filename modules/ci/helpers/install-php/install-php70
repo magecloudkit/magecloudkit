@@ -2,6 +2,18 @@
 
 set -e
 
+# Check that the value of the given arg is not empty. If it is, exit with an error.
+function assert_not_empty {
+  local readonly arg_name="$1"
+  local readonly arg_value="$2"
+  local readonly reason="$3"
+
+  if [[ -z "$arg_value" ]]; then
+    log_error "The value for '$arg_name' cannot be empty. $reason"
+    exit 1
+  fi
+}
+
 # Log the given message at the given level. All logs are written to stderr with a timestamp.
 function log {
   local readonly level="$1"
@@ -36,52 +48,74 @@ function print_usage {
   echo
   echo "This script can be used to install PHP 7.0 and its dependencies. This script only supports Ubuntu 16.04."
   echo
+  echo "Options:"
+  echo
+  echo -e "  --php-ini\t\tThe PHP INI file to use. Optional."
+  echo
   echo "Example:"
   echo
   echo "  install-php70"
+  echo "  install-php70 --php-ini /tmp/brightfame/install-php/php.ini"
 }
 
 function install_php_on_ubuntu {
-    log_info "Installing PHP 7.0 on Ubuntu"
+  log_info "Installing PHP 7.0 on Ubuntu"
 
-    sudo apt-get update
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y php7.0-cli \
-      php7.0-curl \
-      php7.0-bcmath \
-      php7.0-gd \
-      php7.0-intl \
-      php7.0-mbstring \
-      php7.0-mcrypt \
-      php7.0-mysql \
-      php7.0-opcache \
-      php7.0-soap \
-      php7.0-xsl \
-      php7.0-zip
+  sudo apt-get update
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y php7.0-cli \
+    php7.0-curl \
+    php7.0-bcmath \
+    php7.0-gd \
+    php7.0-intl \
+    php7.0-mbstring \
+    php7.0-mcrypt \
+    php7.0-mysql \
+    php7.0-opcache \
+    php7.0-soap \
+    php7.0-xsl \
+    php7.0-zip
 
-    log_info "Installing the PHP memcached extension"
+  log_info "Installing the PHP memcached extension"
 
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y php7.0-dev \
-      gcc \
-      make \
-      autoconf \
-      libc-dev \
-      pkg-config \
-      zlib1g-dev \
-      libmemcached-dev
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y php7.0-dev \
+    gcc \
+    make \
+    autoconf \
+    libc-dev \
+    pkg-config \
+    zlib1g-dev \
+    libmemcached-dev
 
-    log_info "Enabling the PHP memcached extension"
+  log_info "Enabling the PHP memcached extension"
 
-    echo "no --disable-memcached-sasl" | sudo pecl install memcached
-    sudo bash -c "echo extension=memcached.so > /etc/php/7.0/cli/conf.d/20-memcached.ini"
+  echo "no --disable-memcached-sasl" | sudo pecl install memcached
+  sudo bash -c "echo extension=memcached.so > /etc/php/7.0/cli/conf.d/20-memcached.ini"
 
-    log_info "Done."
+  log_info "Done."
+}
+
+function copy_php_ini {
+  local readonly php_ini="$1"
+  local readonly php_ini_dest="/etc/php/7.0/cli/php.ini"
+
+  log_info "Using PHP INI: $php_ini"
+
+  sudo mv "$php_ini_dest" "$php_ini_dest"-$(date +%F)
+  sudo cp -p "$php_ini" "$php_ini_dest"
 }
 
 function install {
+  local php_ini
+
   while [[ $# > 0 ]]; do
     local key="$1"
 
     case "$key" in
+      --php-ini)
+        assert_not_empty "$key" "$2"
+        php_ini="$2"
+        shift
+        ;;
       --help)
         print_usage
         exit
@@ -103,6 +137,10 @@ function install {
   else
     log_error "This script only supports Ubuntu 16.04."
     exit 1
+  fi
+
+  if [[ ! -z "$php_ini" ]]; then
+    copy_php_ini "$php_ini"
   fi
 
   log_info "PHP installed successfully!"
