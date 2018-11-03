@@ -8,7 +8,7 @@
     "name": "ubuntu-ami",
     "ami_name": "{{user `base_ami_name`}}-ubuntu-{{isotime | clean_ami_name}}",
     "ami_description": "An Ubuntu 16.04 AMI with Jenkins installed.",
-    "instance_type": "t2.micro",
+    "instance_type": "t2.medium",
     "region": "{{user `aws_region`}}",
     "vpc_id": "vpc-05842ecf3f920b1eb",
     "subnet_id": "subnet-06ffcebf7d9b9e7e0",
@@ -43,7 +43,7 @@
     "pause_before": "5s",
     "inline": [
       "DEBIAN_FRONTEND=noninteractive sudo apt-get update",
-      "sudo apt-get install -y git"
+      "sudo apt-get install -y git mysql-client-5.7 redis-tools"
     ],
     "only": ["ubuntu-docker"]
   }, {
@@ -66,8 +66,13 @@
   }, {
     "type": "shell",
     "inline": [
-      "mkdir -p /tmp/brightfame"
+      "mkdir -p /tmp/brightfame",
+      "mkdir -p /tmp/kiwico"
     ]
+  }, {
+    "type": "file",
+    "source": "{{template_dir}}/php.ini",
+    "destination": "/tmp/kiwico/php.ini"
   }, {
     "type": "file",
     "source": "{{template_dir}}/../../modules/security/auto-update",
@@ -84,7 +89,7 @@
     "type": "shell",
     "inline": [
       "/tmp/brightfame/auto-update/install.sh",
-      "/tmp/brightfame/install-php/install-php70",
+      "/tmp/brightfame/install-php/install-php70 --php-ini /tmp/kiwico/php.ini",
       "/tmp/brightfame/install-jenkins/install-jenkins"
     ]
   }],
