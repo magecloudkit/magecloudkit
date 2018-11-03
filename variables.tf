@@ -33,11 +33,6 @@ variable "internal_domain" {
   default     = "magecloudkit.internal"
 }
 
-variable "ecs_ami" {
-  description = "The ECS AMI used to run our ECS cluster instances. This AMI is built from the ECS-AMI Packer template (See the KiwiCo customized version: kiwico/ecs-ami/ecs.json)."
-  default     = "ami-0e8d1356ecdcca81d"
-}
-
 variable "ecs_cluster_name_app" {
   description = "The ECS cluster name for running the Magento web, checkout and api services."
   default     = "production-app"
@@ -60,7 +55,7 @@ variable "key_pair_name" {
 
 variable "jenkins_ami" {
   description = "The AMI used to run our Jenkins instance. This AMI is built from the Jenkins-AMI Packer template (See the KiwiCo customized version: kiwico/jenkins-ami/jenkins.json)."
-  default     = "ami-084d244aeeeed474e"
+  default     = "ami-0408977e2c067f0a7"
 }
 
 variable "media_volume_mount_point" {
@@ -101,4 +96,9 @@ variable "env_blackfire_server_id" {
 variable "env_blackfire_server_token" {
   description = "The Server Token used by Blackfire.io."
   default     = "35a7ee2b9a06b34d1aaeebd7c513c74630de9be74eacb49c4d8f50b19670393d"
+}
+
+variable "env_logdna_agent_key" {
+  description = "The API key used by the LogDNA agent."
+  default     = "3f2cf0c27a503ec93b54bc4d1781c17c"
 }
