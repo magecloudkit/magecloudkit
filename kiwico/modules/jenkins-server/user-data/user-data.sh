@@ -43,10 +43,24 @@ function update_jenkins_home {
   sed -i.bak "s@JENKINS_HOME=/var/lib/\$$NAME@JENKINS_HOME=$data_volume_mount_point@g" /etc/default/jenkins
 }
 
+function create_symlink {
+  local readonly source="$1"
+  local readonly target="$2"
+
+  echo "Creating symlink from: $source to: $target"
+
+  if [[ -L "$target" && -d "$target" ]]
+  then
+      echo "The directory symlink already exists: $target"
+  else
+      ln -s $source $target
+  fi
+}
+
 function create_symlinks {
   echo "Creating symlinks"
-  ln -s /mnt/media/magento /mnt/jenkins/workspace/git_checkout/media
-  ln -s /mnt/media/shared /mnt/jenkins/workspace/git_checkout/shared
+  create_symlink "/mnt/media/magento" "/mnt/jenkins/workspace/git_checkout/media"
+  create_symlink "/mnt/media/shared" "/mnt/jenkins/workspace/git_checkout/shared"
 }
 
 function run_jenkins {
