@@ -6,6 +6,7 @@ module "ecs_cluster" {
   source = "../../modules/app-cluster/aws/ecs-cluster"
 
   cluster_name  = "${var.ecs_cluster_name}"
+  ami_id        = "${var.ecs_ami}"
   instance_type = "c5.large"
 
   user_data = "${data.template_file.user_data_ecs.rendered}"
