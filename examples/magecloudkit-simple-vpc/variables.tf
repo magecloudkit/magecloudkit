@@ -24,7 +24,7 @@ variable "aws_region" {
 }
 
 variable "ecs_ami" {
-  description = "The ECS AMI used to run . This AMI is built from the ECS-AMI Packer template (See modules/app-cluster/aws/ecs-ami/ecs.json)."
+  description = "The ECS AMI used to run the ECS Cluster instances. This AMI is built from the ECS-AMI Packer template (See modules/app-cluster/aws/ecs-ami/ecs.json)."
   default     = ""
 }
 
@@ -35,6 +35,11 @@ variable "ecs_cluster_name" {
 
 variable "key_pair_name" {
   description = "The name of an EC2 Key Pair that can be used to SSH to the EC2 Instances in this VPC. Set to an empty string to not associate a Key Pair."
+  default     = ""
+}
+
+variable "jenkins_ami" {
+  description = ""
   default     = ""
 }
 

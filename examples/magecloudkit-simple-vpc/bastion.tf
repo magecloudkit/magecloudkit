@@ -5,7 +5,7 @@
 module "bastion" {
   source = "../../modules/network/aws/bastion"
 
-  instance_type = "t2.medium"
+  instance_type = "t2.micro"
 
   user_data = "${data.template_cloudinit_config.user_data_bastion.rendered}"
 
