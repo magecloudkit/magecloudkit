@@ -55,7 +55,7 @@ variable "key_pair_name" {
 
 variable "jenkins_ami" {
   description = "The AMI used to run our Jenkins instance. This AMI is built from the Jenkins-AMI Packer template (See the KiwiCo customized version: kiwico/jenkins-ami/jenkins.json)."
-  default     = "ami-0408977e2c067f0a7"
+  default     = "ami-0f5b5aa9a8b5fa958"
 }
 
 variable "media_volume_mount_point" {
