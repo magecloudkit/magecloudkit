@@ -61,6 +61,8 @@ function create_symlinks {
   echo "Creating symlinks"
   create_symlink "/mnt/media/magento" "/mnt/jenkins/workspace/git_checkout/media"
   create_symlink "/mnt/media/shared" "/mnt/jenkins/workspace/git_checkout/shared"
+  # TODO this can be removed in the future
+  create_symlink "/mnt/media/shared" "/home/kiwi/shared"
 }
 
 function run_jenkins {
