@@ -9,7 +9,7 @@ module "jenkins" {
   efs_name      = "${var.project_name}-jenkins"
   environment   = "${var.environment}"
   ami_id        = "${var.jenkins_ami}"
-  instance_type = "c5.large"
+  instance_type = "t3.xlarge"
 
   user_data = "${data.template_file.user_data_jenkins.rendered}"
 
