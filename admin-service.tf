@@ -38,6 +38,11 @@ resource "aws_ecs_task_definition" "admin_service_task_definition" {
     name      = "shared"
     host_path = "/mnt/media/shared"
   }
+
+  volume = {
+    name      = "dockersock"
+    host_path = "/var/run/docker.sock"
+  }
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
