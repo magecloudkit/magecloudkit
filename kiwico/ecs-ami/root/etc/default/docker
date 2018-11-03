@@ -1,1 +1,0 @@
-DOCKER_OPTS="--storage-driver overlay --host unix:///var/run/docker.sock  --host 0.0.0.0:2376 --exec-opt native.cgroupdriver=cgroupfs"
