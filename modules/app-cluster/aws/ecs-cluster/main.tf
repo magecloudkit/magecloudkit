@@ -33,6 +33,17 @@ resource "aws_autoscaling_group" "autoscaling_group" {
   health_check_grace_period = "${var.health_check_grace_period}"
   wait_for_capacity_timeout = "${var.wait_for_capacity_timeout}"
 
+  enabled_metrics = [
+    "GroupMinSize",
+    "GroupMaxSize",
+    "GroupDesiredCapacity",
+    "GroupInServiceInstances",
+    "GroupPendingInstances",
+    "GroupStandbyInstances",
+    "GroupTerminatingInstances",
+    "GroupTotalInstances",
+  ]
+
   tags = [
     {
       key                 = "Name"
@@ -53,7 +64,7 @@ resource "aws_autoscaling_group" "autoscaling_group" {
 
 resource "aws_launch_configuration" "launch_configuration" {
   name_prefix   = "${var.cluster_name}"
-  image_id      = "${var.ami_id}"
+  image_id      = "${length(var.ami_id) >= 1 ? var.ami_id : format("%s", data.aws_ami.ecs_ami.id)}"
   instance_type = "${var.instance_type}"
   user_data     = "${var.user_data}"
   spot_price    = "${var.spot_price}"
@@ -188,4 +199,19 @@ resource "aws_iam_role_policy_attachment" "ecs_ec2_role" {
 resource "aws_iam_role_policy_attachment" "ecs_ec2_cloudwatch_role" {
   role       = "${aws_iam_role.instance_role.id}"
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+}
+
+# Look up the latest version of the AWS ECS Optimized AMI
+data "aws_ami" "ecs_ami" {
+  most_recent = true
+
+  filter {
+    name   = "owner-alias"
+    values = ["amazon"]
+  }
+
+  filter {
+    name   = "name"
+    values = ["amzn-ami-${var.ami_version}-amazon-ecs-optimized*"]
+  }
 }

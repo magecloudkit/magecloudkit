@@ -7,10 +7,6 @@ variable "cluster_name" {
   description = "The name of the ECS cluster (e.g. production-app). This variable is used to namespace all resources created by this module."
 }
 
-variable "ami_id" {
-  description = "ECS AMI Image ID. This AMI must contain the ECS agent. It is recommended to use the ECS-AMI Packer Template."
-}
-
 variable "vpc_id" {
   description = "The ID of the VPC in which to launch the EC2 instance."
 }
@@ -32,6 +28,16 @@ variable "user_data" {
 variable "instance_type" {
   description = "The type of EC2 Instances to run for each node in the ASG (e.g. c5.large)."
   default     = "c5.large"
+}
+
+variable "ami_id" {
+  description = "Whether or not to use a custom ECS AMI. This AMI must contain the ECS agent. It is recommended to leave this blank and use the Amazon ECS Optimized AMI."
+  default     = ""
+}
+
+variable "ami_version" {
+  description = "Whether or not to lock the Amazon ECS optimized AMI to a specified version. We default to the latest version."
+  default     = "*"
 }
 
 variable "instance_ebs_optimized" {
@@ -156,6 +162,31 @@ variable "instance_profile_path" {
 variable "ssh_port" {
   description = "The port used for SSH connections"
   default     = 22
+}
+
+variable "enable_autoscaling" {
+  description = "Whether or not to enable ECS Instance Autoscaling for the ECS cluster."
+  default     = false
+}
+
+variable "ecs_instance_draining_lambda_function_arn" {
+  description = "The ARN of a lambda function used for draining containers during a scaling event. Please see the 'ecs-instance-draining' module."
+  default     = ""
+}
+
+variable "autoscaling_properties" {
+  description = "A list of Autoscaling properties to apply to the EC2 instances."
+  type        = "list"
+  default     = []
+}
+
+variable "autoscaling_direction" {
+  type = "map"
+
+  default = {
+    up   = ["GreaterThanOrEqualToThreshold", "scale_out"]
+    down = ["LessThanThreshold", "scale_in"]
+  }
 }
 
 variable "tags" {
