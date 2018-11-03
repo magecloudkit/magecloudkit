@@ -160,5 +160,34 @@
         "awslogs-stream-prefix": "${cloudwatch_logs_blackfire_stream_prefix}"
       }
     }
+  },
+  {
+    "name": "logdna",
+    "image": "logdna/logspout:latest",
+    "cpu": 0,
+    "memoryReservation": 128,
+    "mountPoints": [{
+      "containerPath": "/var/run/docker.sock",
+      "sourceVolume": "dockersock",
+      "readOnly": null
+    }],
+    "essential": true,
+    "environment": [{
+      "name": "LOGDNA_KEY",
+      "value": "${logdna_agent_key}"
+    }],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${cloudwatch_logs_group}",
+        "awslogs-region": "${cloudwatch_logs_region}",
+        "awslogs-stream-prefix": "${cloudwatch_logs_logdna_stream_prefix}"
+      }
+    },
+    "volumesFrom": [{
+      "readOnly": false,
+      "sourceContainer": "magento"
+    }],
+    "dockerLabels": {}
   }
 ]
