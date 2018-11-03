@@ -46,6 +46,37 @@ variable "desired_task_count" {
   default     = "1"
 }
 
+variable "enable_autoscaling" {
+  description = "Whether or not to enable ECS task based Autoscaling."
+  default     = false
+}
+
+variable "desired_min_capacity" {
+  description = "The minimum amount of ECS tasks to run when scaling down."
+  default     = "1"
+}
+
+variable "desired_max_capacity" {
+  description = "The maximum amount of ECS tasks to run when scaling up."
+  default     = "1"
+}
+
+variable "autoscaling_properties" {
+  description = "A list of Autoscaling properties to apply to the ECS tasks."
+  type        = "list"
+  default     = []
+}
+
+# Internal lookup map
+variable "autoscaling_direction" {
+  type = "map"
+
+  default = {
+    up   = ["GreaterThanOrEqualToThreshold", "scale_out"]
+    down = ["LessThanThreshold", "scale_in"]
+  }
+}
+
 variable "deployment_maximum_percent" {
   description = ""
   default     = 200
