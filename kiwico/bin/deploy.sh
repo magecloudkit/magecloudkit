@@ -63,7 +63,7 @@ function deploy_ecs_service {
   local readonly build_id="$3"
   local readonly timeout="360"
 
-  log_info "Deploying to: $ecs_cluster/$ecs_service with Build ID: $build_id"
+  log_info "Deploying ECS service: $ecs_cluster/$ecs_service with Build ID: $build_id"
 
   $SCRIPT_DIR/ecs-deploy.sh -c "$ecs_cluster" -n "$ecs_service" -to "$build_id" -i ignore -t "$timeout"
 }
