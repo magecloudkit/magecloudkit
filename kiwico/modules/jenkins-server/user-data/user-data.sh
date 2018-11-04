@@ -27,22 +27,6 @@ function mount_volume {
   chown "$owner" "$mount_point"
 }
 
-function update_jenkins_home {
-  local readonly data_volume_mount_point="$1"
-
-  echo "Stopping Jenkins"
-  systemctl stop jenkins
-
-  # We need to copy the Jenkins data files if its the first time mounting the volume
-  if [ ! -f $data_volume_mount_point/config.xml ]; then
-    echo "Copying Jenkins data files"
-    rsync -a /var/lib/jenkins/ $data_volume_mount_point
-  fi
-
-  echo "Updating JENKINS_HOME"
-  sed -i.bak "s@JENKINS_HOME=/var/lib/\$$NAME@JENKINS_HOME=$data_volume_mount_point@g" /etc/default/jenkins
-}
-
 function create_symlink {
   local readonly source="$1"
   local readonly target="$2"
@@ -66,6 +50,27 @@ function create_symlinks {
   create_symlink "/mnt/media/shared" "/home/kiwi/shared"
 }
 
+function update_jenkins_home {
+  local readonly data_volume_mount_point="$1"
+
+  echo "Stopping Jenkins"
+  systemctl stop jenkins
+
+  # We need to copy the Jenkins data files if its the first time mounting the volume
+  if [ ! -f $data_volume_mount_point/config.xml ]; then
+    echo "Copying Jenkins data files"
+    rsync -a /var/lib/jenkins/ $data_volume_mount_point
+  fi
+
+  echo "Updating JENKINS_HOME"
+  sed -i.bak "s@JENKINS_HOME=/var/lib/\$$NAME@JENKINS_HOME=$data_volume_mount_point@g" /etc/default/jenkins
+}
+
+function add_environment_vars {
+  echo "Adding custom env vars to /etc/environment"
+  echo "KIWI_SHARED_DIR=/mnt/media/shared" >> /etc/environment
+}
+
 function run_jenkins {
   local readonly http_port="$1"
   local readonly data_dir="$2"
@@ -87,6 +92,7 @@ function run {
   mount_volume "$media_efs_filesystem_id" "$media_volume_mount_point" "$volume_owner"
   create_symlinks
   update_jenkins_home "$data_volume_mount_point"
+  add_environment_vars
   run_jenkins "$http_port" "$data_volume_mount_point"
 }
 
