@@ -53,7 +53,7 @@ function create_symlink {
   then
       echo "The directory symlink already exists: $target"
   else
-      ln -s $source $target
+      ln -nsf $source $target
   fi
 }
 
@@ -62,6 +62,7 @@ function create_symlinks {
   create_symlink "/mnt/media/magento" "/mnt/jenkins/workspace/git_checkout/media"
   create_symlink "/mnt/media/shared" "/mnt/jenkins/workspace/git_checkout/shared"
   # TODO this can be removed in the future
+  mkdir -p /home/kiwi
   create_symlink "/mnt/media/shared" "/home/kiwi/shared"
 }
 

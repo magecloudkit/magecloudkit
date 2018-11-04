@@ -124,6 +124,10 @@
       {
         "name": "MAGE_TABLE_PREFIX",
         "value": "${mage_table_prefix}"
+      },
+      {
+        "name": "KIWI_SHARED_DIR",
+        "value": "/var/www/html/shared"
       }
     ],
     "logConfiguration": {
