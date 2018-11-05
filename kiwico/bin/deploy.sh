@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# ---------------------------------------------------------------------------------------------------------------------
+# KIWICO MAGECLOUDKIT DEPLOY SCRIPT
+#
+# This script can be used to deploy a Docker image built by CircleCI to the KiwiCo ECS Clusters.
+# ---------------------------------------------------------------------------------------------------------------------
+
 set -e
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
