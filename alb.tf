@@ -111,25 +111,3 @@ resource "aws_iam_role_policy_attachment" "ecs_lb" {
   role       = "${aws_iam_role.ecs_lb_role.id}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
 }
-
-##### RULES
-# IF
-# Host is atlascrate.com
-# THEN
-# Redirect tohttps://www.kiwico.com:443/atlas/#{path}?#{query}
-# Status code:HTTP_301
-# IF
-# Host is tadpolecrate.com
-# THEN
-# Redirect tohttps://www.kiwico.com:443/tadpole/#{path}?#{query}
-# Status code:HTTP_301
-# IF
-# Host is *.tadpolecrate.com
-# THEN
-# Redirect tohttps://www.kiwico.com:443/tadpole/#{path}?#{query}
-# Status code:HTTP_301
-# IF
-# Host is *.atlascrate.com
-# THEN
-# Redirect tohttps://www.kiwico.com:443/atlas/#{path}?#{query}
-# Status code:HTTP_301
