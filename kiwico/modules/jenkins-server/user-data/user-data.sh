@@ -66,9 +66,13 @@ function update_jenkins_home {
   sed -i.bak "s@JENKINS_HOME=/var/lib/\$$NAME@JENKINS_HOME=$data_volume_mount_point@g" /etc/default/jenkins
 }
 
-function add_environment_vars {
+function configure_environment {
   echo "Adding custom env vars to /etc/environment"
   echo "KIWI_SHARED_DIR=/mnt/media/shared" >> /etc/environment
+
+  echo "Allowing Jenkins to run PHP CLI with sudo"
+  usermod -a -G sudo jenkins
+  echo "jenkins ALL=(ALL) NOPASSWD: /usr/bin/php" >> /etc/sudoers.d/jenkins
 }
 
 function run_jenkins {
@@ -92,7 +96,7 @@ function run {
   mount_volume "$media_efs_filesystem_id" "$media_volume_mount_point" "$volume_owner"
   create_symlinks
   update_jenkins_home "$data_volume_mount_point"
-  add_environment_vars
+  configure_environment
   run_jenkins "$http_port" "$data_volume_mount_point"
 }
 
