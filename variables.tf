@@ -33,6 +33,11 @@ variable "internal_domain" {
   default     = "magecloudkit.internal"
 }
 
+variable "admin_domain" {
+  description = "The domain used for the Magento admin."
+  default     = "admin.kiwico.com"
+}
+
 variable "ecs_cluster_name_app" {
   description = "The ECS cluster name for running the Magento web, checkout and api services."
   default     = "production-app"
@@ -55,7 +60,7 @@ variable "key_pair_name" {
 
 variable "jenkins_ami" {
   description = "The AMI used to run our Jenkins instance. This AMI is built from the Jenkins-AMI Packer template (See the KiwiCo customized version: kiwico/jenkins-ami/jenkins.json)."
-  default     = "ami-0f5b5aa9a8b5fa958"
+  default     = "ami-0a70465f88d49fa2c"
 }
 
 variable "media_volume_mount_point" {
@@ -68,19 +73,24 @@ variable "jenkins_http_port" {
   default     = 8080
 }
 
+variable "env_mysql_host" {
+  description = "The MySQL host used by Magento."
+  default     = ""
+}
+
 variable "env_mysql_database" {
   description = "The MySQL database used by Magento."
-  default     = "magento2"
+  default     = ""
 }
 
 variable "env_mysql_user" {
   description = "The MySQL user used by Magento."
-  default     = "magento2"
+  default     = ""
 }
 
 variable "env_mysql_password" {
   description = "The MySQL password used by Magento."
-  default     = "production"
+  default     = ""
 }
 
 variable "env_mage_table_prefix" {
