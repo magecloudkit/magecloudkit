@@ -70,7 +70,7 @@ data "template_file" "ecs_admin_task_container_definitions" {
     cloudwatch_logs_nginx_stream_prefix     = "web/nginx"
     cloudwatch_logs_magento_stream_prefix   = "web/magento"
     cloudwatch_logs_blackfire_stream_prefix = "web/blackfire"
-    mysql_host                              = "${aws_route53_record.db.fqdn}"
+    mysql_host                              = "${var.env_mysql_host}"
     mysql_database                          = "${var.env_mysql_database}"
     mysql_user                              = "${var.env_mysql_user}"
     mysql_password                          = "${var.env_mysql_password}"
@@ -98,7 +98,7 @@ resource "aws_lb_listener_rule" "admin_route_path_https" {
 
   condition {
     field  = "host-header"
-    values = ["birdhouse.kiwico.com"]
+    values = ["${var.admin_domain}"]
   }
 
   lifecycle {
@@ -118,7 +118,7 @@ resource "aws_lb_listener_rule" "admin_route_path_http" {
 
   condition {
     field  = "host-header"
-    values = ["birdhouse.kiwico.com"]
+    values = ["${var.admin_domain}"]
   }
 
   lifecycle {
