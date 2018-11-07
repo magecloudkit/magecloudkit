@@ -47,3 +47,8 @@ variable "jenkins_load_balancer_port" {
   description = "The port the load balancer should listen on for Jenkins Web UI requests."
   default     = 8080
 }
+
+variable "media_volume_mount_point" {
+  description = "The path where we should mount the EFS filesystem used for Magento media assets on the EC2 instances."
+  default     = "/mnt/media"
+}

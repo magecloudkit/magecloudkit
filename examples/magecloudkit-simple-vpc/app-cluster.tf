@@ -53,14 +53,16 @@ data "template_file" "user_data_ecs" {
   template = "${file("../../modules/app-cluster/aws/ecs-cluster/user-data/user-data.sh")}"
 
   vars {
-    environment = "${var.environment}"
-    cluster     = "${var.ecs_cluster_name}"
-    aws_region  = "${var.aws_region}"
+    environment  = "${var.environment}"
+    cluster_name = "${var.ecs_cluster_name}"
+    aws_region   = "${var.aws_region}"
 
-    mysql_host     = "db.magecloudkit.internal"
-    mysql_database = "magento"
-    mysql_user     = "magento"
-    mysql_password = "magento"
+    enable_efs         = 1
+    efs_file_system_id = "${module.efs.efs_filesystem_id}"
+    efs_mount_point    = "${var.media_volume_mount_point}"
+
+    # block_metadata_service blocks the aws metadata service from the ECS Tasks true / false
+    block_metadata_service = true
   }
 }
 
