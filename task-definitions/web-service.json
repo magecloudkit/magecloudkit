@@ -27,7 +27,7 @@
       "options": {
         "awslogs-group": "${cloudwatch_logs_group}",
         "awslogs-region": "${cloudwatch_logs_region}",
-        "awslogs-stream-prefix": "${cloudwatch_logs_nginx_stream_prefix}"
+        "awslogs-stream-prefix": "${cloudwatch_logs_stream_prefix}"
       }
     },
     "cpu": 0,
@@ -131,7 +131,7 @@
       "options": {
         "awslogs-group": "${cloudwatch_logs_group}",
         "awslogs-region": "${cloudwatch_logs_region}",
-        "awslogs-stream-prefix": "${cloudwatch_logs_magento_stream_prefix}"
+        "awslogs-stream-prefix": "${cloudwatch_logs_stream_prefix}"
       }
     },
     "cpu": 0,
@@ -157,7 +157,7 @@
       "options": {
         "awslogs-group": "${cloudwatch_logs_group}",
         "awslogs-region": "${cloudwatch_logs_region}",
-        "awslogs-stream-prefix": "${cloudwatch_logs_blackfire_stream_prefix}"
+        "awslogs-stream-prefix": "${cloudwatch_logs_stream_prefix}"
       }
     }
   },
@@ -181,7 +181,7 @@
       "options": {
         "awslogs-group": "${cloudwatch_logs_group}",
         "awslogs-region": "${cloudwatch_logs_region}",
-        "awslogs-stream-prefix": "${cloudwatch_logs_logdna_stream_prefix}"
+        "awslogs-stream-prefix": "${cloudwatch_logs_stream_prefix}"
       }
     },
     "volumesFrom": [{
