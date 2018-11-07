@@ -5,14 +5,8 @@ set -Eeuxo pipefail
 
 # Environment
 echo "ECS_CLUSTER=${cluster_name}" >> /etc/ecs/ecs.config
-
 echo "AWS_DEFAULT_REGION=${aws_region}" >> /etc/environment
 echo "ENVIRONMENT=${environment}" >> /etc/environment
-
-echo "MYSQL_HOST=${mysql_host}" >> /etc/environment
-echo "MYSQL_DATABASE=${mysql_database}" >> /etc/environment
-echo "MYSQL_USER=${mysql_user}" >> /etc/environment
-echo "MYSQL_PASSWORD=${mysql_password}" >> /etc/environment
 
 # Add the ECS agent iptables rules
 if [ "${block_metadata_service}" == "1" ]; then
