@@ -55,11 +55,6 @@ data "template_file" "user_data_ecs_admin" {
     cluster_name = "${var.ecs_cluster_name_admin}"
     aws_region   = "${var.aws_region}"
 
-    mysql_host     = "${aws_route53_record.db.fqdn}"
-    mysql_database = "${var.env_mysql_database}"
-    mysql_user     = "${var.env_mysql_user}"
-    mysql_password = "${var.env_mysql_password}"
-
     enable_efs         = 1
     efs_file_system_id = "${module.efs.efs_filesystem_id}"
     efs_mount_point    = "${var.media_volume_mount_point}"
