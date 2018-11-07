@@ -13,6 +13,22 @@ variable "environment" {
   default     = "production"
 }
 
+variable "env_mysql_host" {
+  description = "The MySQL host used by Magento."
+}
+
+variable "env_mysql_database" {
+  description = "The MySQL database used by Magento."
+}
+
+variable "env_mysql_user" {
+  description = "The MySQL user used by Magento."
+}
+
+variable "env_mysql_password" {
+  description = "The MySQL password used by Magento."
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # OPTIONAL PARAMETERS
 # These parameters have reasonable defaults.
@@ -71,26 +87,6 @@ variable "media_volume_mount_point" {
 variable "jenkins_http_port" {
   description = "The port to use for the Jenkins HTTP Web UI."
   default     = 8080
-}
-
-variable "env_mysql_host" {
-  description = "The MySQL host used by Magento."
-  default     = ""
-}
-
-variable "env_mysql_database" {
-  description = "The MySQL database used by Magento."
-  default     = ""
-}
-
-variable "env_mysql_user" {
-  description = "The MySQL user used by Magento."
-  default     = ""
-}
-
-variable "env_mysql_password" {
-  description = "The MySQL password used by Magento."
-  default     = ""
 }
 
 variable "env_mage_table_prefix" {
