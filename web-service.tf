@@ -36,7 +36,7 @@ module "ecs_web_service" {
   enable_autoscaling = true
 
   desired_task_count   = 8
-  desired_min_capacity = 4
+  desired_min_capacity = 8
   desired_max_capacity = 12
 
   autoscaling_properties = [
