@@ -151,7 +151,7 @@ variable "health_check_type" {
 
 variable "health_check_grace_period" {
   description = "Time, in seconds, after instance comes into service before checking health."
-  default     = 600
+  default     = 300
 }
 
 variable "instance_profile_path" {
