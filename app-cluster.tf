@@ -13,9 +13,9 @@ module "app_cluster" {
   vpc_id     = "${module.vpc.vpc_id}"
   subnet_ids = "${module.vpc.private_subnets}"
 
-  min_size         = 4
-  max_size         = 8
-  desired_capacity = 4
+  min_size         = 8
+  max_size         = 12
+  desired_capacity = 8
 
   # Allow inbound SSH access from the Bastion instance
   allowed_ssh_security_group_ids = ["${module.bastion.security_group_id}"]
