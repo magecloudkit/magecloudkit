@@ -11,10 +11,16 @@
     "privileged": false,
     "essential": true,
     "portMappings": [{
-      "protocol": "tcp",
-      "containerPort": 80,
-      "hostPort": 0
-    }],
+        "protocol": "tcp",
+        "containerPort": 80,
+        "hostPort": 0
+      },
+      {
+        "protocol": "tcp",
+        "containerPort": 8081,
+        "hostPort": 0
+      }
+    ],
     "dnsServers": [],
     "dockerSecurityOptions": [],
     "entryPoint": [],
