@@ -25,12 +25,6 @@ func TestBastionSsh(t *testing.T) {
 
 	workingDir := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/magecloudkit-simple-vpc")
 
-	// At the end of the test, delete the AMI
-	defer test_structure.RunTestStage(t, "cleanup_ami", func() {
-		awsRegion := test_structure.LoadString(t, workingDir, "awsRegion")
-		deleteAMI(t, awsRegion, workingDir)
-	})
-
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
 	defer test_structure.RunTestStage(t, "teardown", func() {
 		terraformOptions := test_structure.LoadTerraformOptions(t, workingDir)
@@ -38,16 +32,6 @@ func TestBastionSsh(t *testing.T) {
 
 		keyPair := test_structure.LoadEc2KeyPair(t, workingDir)
 		aws.DeleteEC2KeyPair(t, keyPair)
-	})
-
-	// Build the AMI for the ECS app
-	test_structure.RunTestStage(t, "build_ami", func() {
-		// Pick a random AWS region to test in. This helps ensure your code works in all regions.
-		// Note: that we limit this only to regions where EFS is supported.
-		approvedRegions := []string{"us-east-1", "us-east-2", "us-west-2", "eu-central-1", "eu-west-1", "ap-northeast-2", "ap-southeast-1", "ap-southeast-2"}
-		awsRegion := aws.GetRandomRegion(t, approvedRegions, nil)
-		test_structure.SaveString(t, workingDir, "awsRegion", awsRegion)
-		buildEcsAMI(t, awsRegion, workingDir)
 	})
 
 	// Deploy the example
@@ -87,8 +71,11 @@ func configureTerraformOptions(t *testing.T, workingDir string) (*terraform.Opti
 	projectName := strings.ToLower(fmt.Sprintf("magecloudkit-test-%s", uniqueID))
 	ecsClusterName := strings.ToLower(fmt.Sprintf("test-app-%s", uniqueID))
 
-	// Get the AWS region
-	awsRegion := test_structure.LoadString(t, workingDir, "awsRegion")
+	// Pick a random AWS region to test in. This helps ensure your code works in all regions.
+	// Note: that we limit this only to regions where EFS is supported.
+	approvedRegions := []string{"us-east-1", "us-east-2", "us-west-2", "eu-central-1", "eu-west-1", "ap-northeast-2", "ap-southeast-1", "ap-southeast-2"}
+	awsRegion := aws.GetRandomRegion(t, approvedRegions, nil)
+	test_structure.SaveString(t, workingDir, "awsRegion", awsRegion)
 
 	// Get the availability zones for the given region
 	azs := aws.GetAvailabilityZones(t, awsRegion)
@@ -96,9 +83,6 @@ func configureTerraformOptions(t *testing.T, workingDir string) (*terraform.Opti
 	// Create an EC2 KeyPair that we can use for SSH access
 	keyPairName := fmt.Sprintf("terratest-ssh-example-%s", uniqueID)
 	keyPair := aws.CreateAndImportEC2KeyPair(t, awsRegion, keyPairName)
-
-	// Load the AMI ID and Packer Options saved by the earlier build_ami stage
-	amiID := test_structure.LoadAmiId(t, workingDir)
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -109,7 +93,6 @@ func configureTerraformOptions(t *testing.T, workingDir string) (*terraform.Opti
 			"availability_zones": azs,
 			"project_name":       projectName,
 			"environment":        "test",
-			"ecs_ami":            amiID,
 			"ecs_cluster_name":   ecsClusterName,
 			"key_pair_name":      keyPairName,
 		},
