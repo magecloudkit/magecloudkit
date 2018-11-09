@@ -38,6 +38,11 @@ variable "key_pair_name" {
   default     = ""
 }
 
+variable "internal_domain" {
+  description = "The internal domain used for Route 53 service discovery."
+  default     = "magecloudkit.internal"
+}
+
 variable "jenkins_ami" {
   description = ""
   default     = ""
