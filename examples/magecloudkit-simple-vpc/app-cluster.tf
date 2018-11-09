@@ -15,11 +15,13 @@ module "app_cluster" {
 
   # To make testing easier, we allow SSH requests from any IP address here. In a production deployment, we strongly
   # recommend you limit this to the IP address ranges of known, trusted servers.
-  #allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
+  allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
 
   # Allow inbound SSH access from the Bastion instance
   allowed_ssh_security_group_ids = ["${module.bastion.security_group_id}"]
-  key_pair_name                  = "${var.key_pair_name}"
+
+  key_pair_name = "${var.key_pair_name}"
+
   # We recommend using a separate EBS Volume for the Docker data dir
   ebs_block_devices = [
     {
@@ -28,6 +30,7 @@ module "app_cluster" {
       volume_size = 50
     },
   ]
+
   # An example of custom tags
   tags = [
     {
