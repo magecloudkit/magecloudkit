@@ -1,6 +1,6 @@
 resource "aws_route53_zone" "internal" {
   name    = "${var.internal_domain}"
-  vpc     = "${module.vpc.vpc_id}"
+  vpc_id  = "${module.vpc.vpc_id}"
   comment = "${var.environment} zone"
 
   tags {
