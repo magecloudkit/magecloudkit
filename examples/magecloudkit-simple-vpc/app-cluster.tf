@@ -2,7 +2,7 @@
 # DEPLOY AN ECS CLUSTER
 # ---------------------------------------------------------------------------------------------------------------------
 
-module "ecs_cluster" {
+module "app_cluster" {
   source = "../../modules/app-cluster/aws/ecs-cluster"
 
   cluster_name  = "${var.ecs_cluster_name}"
