@@ -23,7 +23,7 @@ module "alb" {
   http_tcp_listeners       = "${list(map("port", "80", "protocol", "HTTP"))}"
   http_tcp_listeners_count = "1"
   target_groups            = "${list(map("name", "${var.project_name}-web", "backend_protocol", "HTTP", "backend_port", "80", "health_check_path", "/"))}"
-  target_groups_count      = "2"
+  target_groups_count      = "1"
   # An example of custom tags
   tags = {
     Environment = "${var.environment}"
