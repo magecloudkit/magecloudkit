@@ -15,12 +15,8 @@ module "aurora" {
   master_password         = "magento2"
   backup_retention_period = 7
   preferred_backup_window = "01:00-02:00"
+
+  # Limit access to the App servers only
+  allowed_db_security_group_count = 1
+  allowed_db_security_group_ids   = ["${module.app_cluster.security_group_id}"]
 }
-
-# Generate a random RDS master password, you can use this password by referencing: ${random_string.rds_password.result}
-#resource "random_string" "rds_password" {
-#  length           = 30
-#  special          = true
-#  override_special = "/@"
-#}
-

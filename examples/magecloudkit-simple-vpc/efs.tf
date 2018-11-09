@@ -10,13 +10,11 @@ module "efs" {
   availability_zones = "${data.aws_availability_zones.available.names}"
   subnet_ids         = "${module.vpc.persistence_subnets}"
 
-  # To make testing easier, we allow requests from any IP address here. In a production deployment, we strongly
-  # recommend you limit this to the IP address ranges of known, trusted servers.
-  allowed_inbound_from_cidr_blocks = ["0.0.0.0/0"]
+  # Limit access to the App servers only
+  allowed_inbound_security_group_count = 1
+  allowed_inbound_security_group_ids   = ["${module.app_cluster.security_group_id}"]
 
-  allowed_inbound_security_group_ids = []
-
-  # An example of custom tags
+  # Set custom tags
   tags = [
     {
       Environment = "${var.environment}"
