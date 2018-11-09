@@ -23,11 +23,6 @@ variable "aws_region" {
   default     = "eu-west-1"
 }
 
-variable "ecs_ami" {
-  description = "The ECS AMI used to run the ECS Cluster instances. This AMI is built from the ECS-AMI Packer template (See modules/app-cluster/aws/ecs-ami/ecs.json)."
-  default     = ""
-}
-
 variable "ecs_cluster_name" {
   description = "The ECS Cluster Name."
   default     = "development-app"
