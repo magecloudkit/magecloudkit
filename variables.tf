@@ -64,11 +64,6 @@ variable "ecs_cluster_name_admin" {
   default     = "production-admin"
 }
 
-variable "ecs_cluster_name_checkout" {
-  description = "The ECS cluster name for running the Magento checkout service."
-  default     = "production-checkout"
-}
-
 variable "key_pair_name" {
   description = "The name of an EC2 Key Pair that can be used to SSH to the EC2 Instances in this VPC. Set to an empty string to not associate a Key Pair."
   default     = "kiwikey"

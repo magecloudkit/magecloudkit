@@ -8,7 +8,7 @@ module "vpc" {
   region             = "${var.aws_region}"
   availability_zones = "${var.availability_zones}"
 
-  # An example of custom tags
+  # Set custom tags
   tags = [
     {
       Environment = "${var.environment}"
