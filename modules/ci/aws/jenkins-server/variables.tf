@@ -79,7 +79,7 @@ variable "allowed_ssh_cidr_blocks" {
 }
 
 variable "allowed_ssh_security_group_ids" {
-  description = "A list of security group IDs from which the EC2 Instances will allow SSH connections."
+  description = "A list of Security Group IDs from which the EC2 instances will allow SSH connections."
   type        = "list"
   default     = []
 }
