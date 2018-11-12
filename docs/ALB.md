@@ -9,12 +9,14 @@ The ALB is configured with the follow rules:
 ### HTTPS Listener
 
 | *priority* | *type* | *value* | *target arns* |
+| ---------- | ------ | ------- | ------------- |
 | `50` | `host-header` | `admin.kiwico.com` | `magecloudkit-production-admin` |
 | `0`  | | | `magecloudkit-production-web` |
 
 ### HTTP Listener
 
 | *priority* | *type* | *value* | *target arns* |
+| ---------- | ------ | ------- | ------------- |
 | `50` | `host-header` | `admin.kiwico.com` | `magecloudkit-production-admin` |
 | `0`  | | | `magecloudkit-production-web` |
 
