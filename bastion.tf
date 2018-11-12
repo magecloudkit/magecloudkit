@@ -12,8 +12,8 @@ module "bastion" {
   vpc_id    = "${module.vpc.vpc_id}"
   subnet_id = "${module.vpc.public_subnets[0]}"
 
-  # To make testing easier, we allow SSH requests from any IP address here. In a production deployment, we strongly
-  # recommend you limit this to the IP address ranges of known, trusted servers.
+  # Right now we are allowing SSH requests from any IP address here. However we recommend you lock this down
+  # to IP address ranges of known, trusted servers.
   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
 
   key_pair_name = "${var.key_pair_name}"
