@@ -127,7 +127,7 @@ resource "aws_security_group_rule" "allow_ssh_inbound_from_cidr_blocks" {
 }
 
 resource "aws_security_group_rule" "allow_ssh_inbound_from_security_group_ids" {
-  count                    = "${length(var.allowed_ssh_security_group_ids)}"
+  count                    = "${var.allowed_ssh_security_group_count}"
   type                     = "ingress"
   from_port                = "${var.ssh_port}"
   to_port                  = "${var.ssh_port}"
@@ -202,7 +202,7 @@ resource "aws_iam_role_policy_attachment" "ecs_ec2_cloudwatch_role" {
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 }
 
-# Look up the latest version of the AWS ECS Optimized AMI
+# Look up the latest version of the Amazon ECS-Optimized Amazon Linux 2 AMI
 data "aws_ami" "ecs_ami" {
   most_recent = true
 
@@ -213,6 +213,6 @@ data "aws_ami" "ecs_ami" {
 
   filter {
     name   = "name"
-    values = ["amzn-ami-${var.ami_version}-amazon-ecs-optimized*"]
+    values = ["amzn2-ami-ecs-hvm-${var.ami_version}-x86_64-ebs*"]
   }
 }
