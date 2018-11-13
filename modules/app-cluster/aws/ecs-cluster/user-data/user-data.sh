@@ -25,9 +25,6 @@ if [ "${enable_efs}" == "1" ]; then
   if ! rpm -qa | grep -qw amazon-efs-utils; then
     yum -y install amazon-efs-utils
   fi
-  if ! rpm -qa | grep -qw python27; then
-	  yum -y install python27
-  fi
 
   DIR_TGT=${efs_mount_point}/
 
