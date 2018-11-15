@@ -303,11 +303,10 @@ function createNewTaskDefJson() {
             | sed -e "s|\"image\": *\"${imageWithoutTag}\"|\"image\": \"${useImage}\"|g" \
             | jq '.taskDefinition' )
     else
-      # make sure to reset the blackfire and logdna image tag to latest
+      # make sure to reset the blackfire to latest
       DEF=$( echo "$TASK_DEFINITION" \
             | sed -e "s|\(\"image\": *\".*:\)\(.*\)\"|\1${useImage}\"|g" \
             | sed -e "s|blackfire/blackfire:${useImage}|blackfire/blackfire:latest|g" \
-            | sed -e "s|logdna/logspout:${useImage}|logdna/logspout:latest|g" \
             | jq '.taskDefinition' )
     fi
 

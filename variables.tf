@@ -98,8 +98,3 @@ variable "env_blackfire_server_token" {
   description = "The Server Token used by Blackfire.io."
   default     = "35a7ee2b9a06b34d1aaeebd7c513c74630de9be74eacb49c4d8f50b19670393d"
 }
-
-variable "env_logdna_agent_key" {
-  description = "The API key used by the LogDNA agent."
-  default     = "3f2cf0c27a503ec93b54bc4d1781c17c"
-}
