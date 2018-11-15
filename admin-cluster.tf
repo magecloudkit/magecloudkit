@@ -18,7 +18,8 @@ module "admin_cluster" {
   desired_capacity = 1
 
   # Allow inbound SSH access from the Bastion instance
-  allowed_ssh_security_group_ids = ["${module.bastion.security_group_id}"]
+  allowed_ssh_security_group_count = 1
+  allowed_ssh_security_group_ids   = ["${module.bastion.security_group_id}"]
 
   key_pair_name = "${var.key_pair_name}"
 
