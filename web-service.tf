@@ -101,11 +101,11 @@ data "template_file" "ecs_web_task_container_definitions" {
     magento_image                 = "054130723771.dkr.ecr.us-west-1.amazonaws.com/kiwico/magento"
     php_memory_limit              = "768M"
     php_pm                        = "dynamic"
-    php_pm_max_children           = "200"
-    php_pm_start_servers          = "20"
-    php_pm_min_spare_servers      = "20"
-    php_pm_max_spare_servers      = "60"
-    php_pm_max_requests           = "2000"
+    php_pm_max_children           = "25"
+    php_pm_start_servers          = "10"
+    php_pm_min_spare_servers      = "10"
+    php_pm_max_spare_servers      = "15"
+    php_pm_max_requests           = "1000"
     cloudwatch_logs_group         = "${module.ecs-cluster-logs.log_group_id}"
     cloudwatch_logs_region        = "${var.aws_region}"
     cloudwatch_logs_stream_prefix = "web"
@@ -118,6 +118,5 @@ data "template_file" "ecs_web_task_container_definitions" {
     mage_table_prefix             = "${var.env_mage_table_prefix}"
     blackfire_server_id           = "${var.env_blackfire_server_id}"
     blackfire_server_token        = "${var.env_blackfire_server_token}"
-    logdna_agent_key              = "${var.env_logdna_agent_key}"
   }
 }
