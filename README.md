@@ -4,6 +4,8 @@ Thank you for purchasing a license to use MageCloudKit.
 
 More information about MageCloudKit is available at: https://magecloudkit.com.
 
+MageCloudKit is a [Brightfame](https://brightfame.co) product.
+
 ## Getting Started
 
 The `examples` folder contains real-world, production examples of how to use MageCloudKit.
