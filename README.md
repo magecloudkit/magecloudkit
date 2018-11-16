@@ -1,21 +1,15 @@
-# MageCloudKit PoC
+# MageCloudKit
 
-This repository serves as placeholder for the next version of MageCloudKit.
-
-## v2 Design Goals
-
- * Remove the concept of environments. We'll leave this up to the customer to define which environments they want to use.
- * In reference to the point above, don't have any references to Terraform workspaces.
- * All logic should be encapsulated in modules where-ever possible. This will allow our customers to build custom architectures that suit their specific requirements.
- * A module may consist of Terraform, Packer, Bash, Python or Go code.
- * Be sure to run `terraform fmt` on all Terraform code and `packer validate` on all Packer templates.
- * Prefer MIT-licensed software where-ever possible.
+Thank you for purchasing a license to use MageCloudKit.
 
 ## Getting Started
 
-The root folder of this repository contains an oppinionated stack for launching MageCloudKit.
-
 The `examples` folder contains real-world, production examples of how to use MageCloudKit.
+
+The `modules` folder contains all of the MageCloudKit included modules.
+
+The `test` folder is used internally to test our code, but is provided as a reference for developing your
+own processes.
 
 ## Documentation
 
@@ -45,3 +39,7 @@ MageCloudKit includes the following modules:
  * `security/auto-update`
  * `security/fail2ban`
  * `storage/aws/efs`
+
+## Support
+
+Please contact: support@brightfame.co.
