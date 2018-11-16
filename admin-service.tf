@@ -52,7 +52,7 @@ resource "aws_ecs_task_definition" "admin_service_task_definition" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 data "template_file" "ecs_admin_task_container_definitions" {
-  template = "${file("./task-definitions/admin-service.json")}"
+  template = "${file("./kiwico/task-definitions/admin-service.json")}"
 
   vars {
     environment                   = "${var.environment}"

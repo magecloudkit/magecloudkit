@@ -93,7 +93,7 @@ resource "aws_ecs_task_definition" "web_service_task_definition" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 data "template_file" "ecs_web_task_container_definitions" {
-  template = "${file("./task-definitions/web-service.json")}"
+  template = "${file("./kiwico/task-definitions/web-service.json")}"
 
   vars {
     environment                   = "${var.environment}"
