@@ -74,11 +74,6 @@ function deploy_ecs_service {
   $SCRIPT_DIR/ecs-deploy.sh -c "$ecs_cluster" -n "$ecs_service" -to "$build_id" -i ignore -t "$timeout"
 }
 
-function deploy_jenkins {
-  # TODO - something for Jenkins
-  echo "Deploying Jenkins"
-}
-
 function deploy {
   local build_id
   local environment
@@ -124,8 +119,6 @@ function deploy {
 
   deploy_ecs_service "$admin_cluster" "$admin_service" "$build_id"
   deploy_ecs_service "$app_cluster" "$web_service" "$build_id"
-
-  deploy_jenkins
 
   log_info "Deployment completed successfully!"
 }
