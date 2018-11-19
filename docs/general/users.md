@@ -2,14 +2,16 @@
 
 ## Amazon IAM
 
-### MFA Tokens
+### MFA Devices
 
-For better security we recommend IAM accounts are secured using an MFA token.
+For better security we recommend IAM accounts are secured using an MFA device.
 
-You will need to use a hardware device or install a software application such as Google Authenticator on your smartphone.
-The source code for the latter is publicly available if you wish to inspect it or compile from source.
+You will need to use a hardware device or install a software application such as [Google Authenticator][1] on your smartphone.
 
-Due to an AWS security limitation IAM roles cannot assume other IAM roles without an MFA token.
+Due to an AWS security limitation IAM roles cannot assume other IAM roles without MFA enabled. Therefore you must enable MFA
+if you are using an application such as [AWS Vault][2].
+
+For more information on MFA, please refer to the AWS product page: https://aws.amazon.com/iam/details/mfa/.
 
 ## SSH Access
 
@@ -40,3 +42,6 @@ $ ssh ec2-user@172.30.0.187
 
 We recommend installing the OpenVPN software on the Bastion instance, however MageCloudKit does not include
 built-in support for this.
+
+[1]: https://support.google.com/accounts/answer/1066447
+[2]: https://github.com/99designs/aws-vault
