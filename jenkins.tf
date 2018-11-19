@@ -26,15 +26,6 @@ module "jenkins" {
   # Provide the ALB target groups
   target_group_arns = ["${module.alb_jenkins.target_group_arns}"]
 
-  # Store the Jenkins data directory on a seperate EBS volume. This allows the instances to persist data between restarts.
-  ebs_block_devices = [
-    {
-      device_name = "/dev/xvdh"
-      volume_type = "gp2"
-      volume_size = 120
-    },
-  ]
-
   # Set custom tags
   tags = [
     {
@@ -96,7 +87,7 @@ module "alb_jenkins" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# CREATE SECURITY GROUPS FOR JENKINS=
+# CREATE SECURITY GROUPS FOR JENKINS
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_security_group" "alb_jenkins" {
