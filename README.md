@@ -1,10 +1,8 @@
 # MageCloudKit
 
-Thank you for purchasing a license to use MageCloudKit.
+Thank you for purchasing a license to use Brightfame MageCloudKit.
 
 More information about MageCloudKit is available at: https://magecloudkit.com.
-
-MageCloudKit is a [Brightfame](https://brightfame.co) product.
 
 ## Getting Started
 
@@ -17,32 +15,7 @@ own processes.
 
 ## Documentation
 
-Please visit the documentation website: https://docs.magecloudkit.com.
-
-## Modules
-
-MageCloudKit includes the following modules:
-
- * `app-cluster/aws/ecs-ami`
- * `app-cluster/aws/ecs-cluster`
- * `app-cluster/aws/ecs-deploy`
- * `app-cluster/aws/ecs-roles`
- * `app-cluster/aws/ecs-service`
- * `cache/aws/redis`
- * `cache/aws/memcached`
- * `ci/aws/install-jenkins`
- * `ci/aws/jenkins-ami`
- * `ci/aws/jenkins-server`
- * `ci/helpers/install-php`
- * `database/aws/aurora`
- * `load-balancer/aws/alb`
- * `load-balancer/aws/alb-target-group`
- * `monitoring/aws/logs`
- * `network/aws/bastion`
- * `network/aws/vpc`
- * `security/auto-update`
- * `security/fail2ban`
- * `storage/aws/efs`
+Please visit the documentation website at https://docs.magecloudkit.com.
 
 ## Support
 
