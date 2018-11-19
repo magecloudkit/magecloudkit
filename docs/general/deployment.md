@@ -62,9 +62,5 @@ You can check the current deployment’s Git SHA hash by accessing the
 $ curl https://www.example.com/REVISION.txt
 ```
 
-## Maintenance Mode
-
-MageCloudKit currently does not support a dedicated maintenance mode.
-
 [1]: https://circleci.com/
 [2]: http://devdocs.magento.com/guides/v2.2/config-guide/deployment/
