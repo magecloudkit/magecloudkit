@@ -1,9 +1,5 @@
 * [Introduction](./INTRODUCTION.md)
 
-## Guides
-
- * [Getting Started](docs/guides/GETTING_STARTED.md)
-
 ## General
 
  * [Architecture](docs/general/architecture.md)
@@ -13,16 +9,16 @@
  * [Monitoring](docs/general/monitoring.md)
  * [Performance](docs/general/performance.md)
  * [Cache & Sessions](docs/general/cache.md)
- * [Scaling](docs/general/SCALING.md)
- * [Users](docs/general/USERS.md)
- * [Crons](docs/general/CRONS.md)
- * [Backups](docs/general/BACKUPS.md)
+ * [Scaling](docs/general/scaling.md)
+ * [Users](docs/general/users.md)
+ * [Crons](docs/general/crons.md)
+ * [Backups](docs/general/backups.md)
  * [Disaster Recovery](docs/general/disaster_recovery.md)
  * [Troubleshooting](docs/general/troubleshooting.md)
  * [FAQ](docs/general/faq.md)
  * [Glossary](docs/general/glossary.md)
 
-## Vendors
+## Integrating Vendors
 
  * [Cloudflare](docs/vendors/CLOUDFLARE.md)
  * [Blackfire](docs/vendors/BLACKFIRE.md)
