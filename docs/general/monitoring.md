@@ -4,9 +4,9 @@
 
 ## Alerts
 
-## Exceptions & Errors
+## Exceptions & Error Tracking
 
-adsadsasd Bugsnag.
+We recommend using either Bugsnag or New Relic.
 
 ## Logs
 

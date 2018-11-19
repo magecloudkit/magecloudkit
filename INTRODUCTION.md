@@ -25,13 +25,3 @@ Using MageCloudKit, businesses can run the world's leading Ecommerce software us
 computing. MageCloudKit is a ready-made solution that allows technical personnel to deploy scalable, high
 performance Magento stores on the AWS cloud in a matter of minutes. It is proven in production and is continuously
 maintained by DevOps experts.
-
-## Concepts
-
-### Environments
-
-### App Cluster
-
-### Apps
-
-Apps 

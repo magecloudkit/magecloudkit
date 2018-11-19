@@ -83,16 +83,12 @@ common DNS records for the database, cache and EFS filesystem.
 
 Out of the box, MageCloudKit creates the following DNS records:
 
-| Description           | Value                                         |
-| --------------------- | --------------------------------------------- |
-| Aurora Database       | db.us-east-1.magecloudkit.internal            |
-| EFS Filesystem        | media.efs.us-east-1.magecloudkit.internal     |
-| Redis Cache Cluster   | redis-cache.us-east-1.magecloudkit.internal   |
-| Redis Session Cluster | redis-session.us-east--1.magecloudkit.interal |
-
-## Security
-
- * Ubuntu Updates
+| Description           | Value                                           |
+| --------------------- | ----------------------------------------------- |
+| Aurora Database       | `db.us-east-1.magecloudkit.internal`            |
+| EFS Filesystem        | `media.efs.us-east-1.magecloudkit.internal`     |
+| Redis Cache Cluster   | `redis-cache.us-east-1.magecloudkit.internal`   |
+| Redis Session Cluster | `redis-session.us-east--1.magecloudkit.interal` |
 
 [0]: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_clusters.html
 [1]: https://aws.amazon.com/vpc/
