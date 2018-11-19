@@ -3,6 +3,7 @@
   "description": "MageCloudKit Documentation",
   "author": "Rob Morgan",
   "structure": {
+    "readme": "INTRODUCTION.md",
     "summary": "SUMMARY.md"
   },
   "plugins": ["-highlight", "prism", "github"],
