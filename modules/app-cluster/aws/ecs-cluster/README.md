@@ -2,7 +2,7 @@
 
 This module creates an ECS cluster.
 
-Features:
+## Features
 
  * Autoscaling Group for Rolling Deployments
  * CloudWatch Logs integration
