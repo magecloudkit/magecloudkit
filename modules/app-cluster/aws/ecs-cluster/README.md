@@ -11,7 +11,7 @@ Features:
 
 Sample module usage:
 
-```
+```hcl
 module "ecs_cluster" {
   source = "./modules/storage/aws/efs"
 

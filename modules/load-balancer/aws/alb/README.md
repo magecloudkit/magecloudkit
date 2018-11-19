@@ -1,6 +1,10 @@
 # ALB Load Balancer Module
 
-This module allows you to deploy an AWS ALB load balancer.
+This module allows you to deploy an Amazon ALB load balancer inside an Amazon VPC. We
+recommend you deploy load balancers inside the public subnets created by our [VPC module](../../../network/aws/vpc/README.md).
+
+This module is based on the Terraform community module available here: 
+https://github.com/terraform-aws-modules/terraform-aws-alb.
 
 ## Usage
 

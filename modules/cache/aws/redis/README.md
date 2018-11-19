@@ -1,14 +1,12 @@
 # Redis Module
 
-The Redis module is used to create an ElastiCache Redis cluster.
+The Redis module can be used to deploy a ElastiCache Redis cluster. It is particularly
+useful for storing Magento cache data and acting as a backend for queue related use cases.
 
-ElastiCache offers fully managed Redis. Seamlessly deploy, run, and scale
-popular open source compatible in-memory data stores. Build data-intensive apps
-or improve the performance of your existing apps by retrieving data from high
-throughput and low latency in-memory data stores Elastic Caches are also
-configured with security groups to provide fine-grained ingress control.
+ElastiCache is a fully managed Memcached service, making it easy to seamlessly deploy, run and
+scale popular open source compatible in-memory data stores.
 
-For more information please refer to the AWS documentation: https://docs.aws.amazon.com/elasticache/.
+For more information, please refer to the AWS product documentation: https://docs.aws.amazon.com/elasticache/.
 
 ## Usage
 

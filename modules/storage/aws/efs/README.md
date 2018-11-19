@@ -1,4 +1,4 @@
-# Amazon EFS Module
+# EFS Module
 
 The EFS module creates an [Amazon Elastic File System](https://aws.amazon.com/efs/).
 Amazon EFS provides simple, scalable, elastic file storage for use with AWS Cloud
@@ -7,6 +7,10 @@ that allows you to create and configure file systems quickly and easily. Amazon 
 is built to elastically scale on demand without disrupting applications, growing and
 shrinking automatically as you add and remove files, so your applications have the
 storage they need, when they need it.
+
+For more information please refer to the following AWS product page: https://aws.amazon.com/efs/.
+
+We recommend you deploy the EFS filesystem in the persistence subnets created by our [VPC module](../../../network/aws/vpc/README.md).
 
 ## Usage
 
