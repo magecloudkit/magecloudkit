@@ -1,0 +1,15 @@
+{
+  "gitbook": "3.2.3",
+  "description": "MageCloudKit Documentation",
+  "author": "Rob Morgan",
+  "structure": {
+    "readme": "INTRODUCTION.md",
+    "summary": "SUMMARY.md"
+  },
+  "plugins": ["-highlight", "prism", "github"],
+  "pluginsConfig": {
+    "github": {
+      "url": "https://github.com/brightfame/magecloudkit"
+    }
+  }
+}

@@ -2,7 +2,7 @@
 
 This module creates an ECS cluster.
 
-Features:
+## Features
 
  * Autoscaling Group for Rolling Deployments
  * CloudWatch Logs integration
@@ -11,7 +11,7 @@ Features:
 
 Sample module usage:
 
-```
+```hcl
 module "ecs_cluster" {
   source = "./modules/storage/aws/efs"
 

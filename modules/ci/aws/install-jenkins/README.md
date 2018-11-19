@@ -1,8 +1,7 @@
-# Install Jenkins Server
+# Install Jenkins Module
 
-A module designed to install the Jenkins software.
-This module is used to install the [Jenkins](https://jenkins.io/) open source automation
-software and all of it's dependencies on an Ubuntu 16.04 server.
+The Install Jenkins module can be used to install the [Jenkins](https://jenkins.io/) open source automation
+software, including all of it's dependencies onto a Ubuntu 16.04 server.
 
 ## Requirements
 
@@ -15,3 +14,5 @@ To run the installer, simply execute:
 ```bash
 $ ./install-jenkins
 ```
+
+**Note**: The script doesn't require any additional parameters.

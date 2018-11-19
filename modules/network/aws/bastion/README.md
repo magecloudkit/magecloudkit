@@ -13,7 +13,7 @@ For more information please refer to the AWS article: https://docs.aws.amazon.co
 
 Sample module usage:
 
-```
+```hcl
 module "bastion" {
   source = "./modules/network/aws/bastion"
 
