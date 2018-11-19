@@ -70,8 +70,13 @@
     "source": "{{template_dir}}/../",
     "destination": "/tmp/brightfame"
   },{
+    "type": "file",
+    "source": "{{template_dir}}/../../helpers/",
+    "destination": "/tmp/brightfame"
+  },{
     "type": "shell",
     "inline": [
+      "/tmp/brightfame/install-php/install-php70 --php-ini /tmp/brightfame/install-php/php.ini",
       "/tmp/brightfame/install-jenkins/install-jenkins"
     ]
   }],
