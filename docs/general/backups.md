@@ -2,7 +2,7 @@
 
 ## Database
 
-The databases are automatically backed up every hour by AWS and stored securely. By Default, they are kept for a period of 7 days.
+The databases are automatically backed up every hour by AWS and stored securely. By default, they are kept for a period of 7 days.
 This setting is configurable using the parameters provided by the `database/aws/aurora` module.
 
 **Note:** Due to Amazon security policies it is not possible to access a database backup directly. Instead you must either

@@ -43,7 +43,7 @@ are available in each of the three availability zones.
 
 Our VPC architecture is inspired by a blog post written by Ben Whaley titled "[A Reference VPC architecture][8]".
 We deploy three separate subnets for running public facing resources such as load balancers and Bastion instances,
-App Servers and then a data persistence subnet for cache and database resources.
+a private subnet for App Servers and then a data persistence subnet for cache and database resources.
 
 ## Server Roles
 
