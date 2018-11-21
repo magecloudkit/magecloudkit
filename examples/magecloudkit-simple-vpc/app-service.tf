@@ -59,6 +59,7 @@ data "template_file" "ecs_app_task_container_definitions" {
 
   vars {
     environment                   = "${var.environment}"
+    app_mage_mode                 = "production"
     nginx_image                   = "magecloudkit/nginx:latest"
     magento_image                 = "magecloudkit/magento2:latest"
     php_memory_limit              = "768M"
