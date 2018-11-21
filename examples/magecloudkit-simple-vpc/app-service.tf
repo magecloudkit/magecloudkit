@@ -32,10 +32,6 @@ module "ecs_app_service" {
   container_name  = "nginx"
   container_port  = "80"
 
-  # set autoscaling properties
-  # https://docs.aws.amazon.com/autoscaling/application/userguide/what-is-application-auto-scaling.html
-  enable_autoscaling = true
-
   desired_task_count   = 2
   desired_min_capacity = 2
   desired_max_capacity = 4

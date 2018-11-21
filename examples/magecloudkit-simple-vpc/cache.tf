@@ -34,7 +34,7 @@ module "redis_cache" {
 module "redis_session" {
   source = "../../modules/cache/aws/redis"
 
-  cluster_name = "${var.environment}-cache"
+  cluster_name = "${var.environment}-session"
   node_type    = "cache.t2.small"
 
   vpc_id     = "${module.vpc.vpc_id}"
