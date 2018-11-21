@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------------------------------------------------
-# DEPLOY THE REDIS CLUSTER
+# DEPLOY THE REDIS CACHE CLUSTER
 #
 # This cluster is used to store cache data.
 # ---------------------------------------------------------------------------------------------------------------------
@@ -26,15 +26,15 @@ module "redis_cache" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# DEPLOY THE MEMCACHED CLUSTER
+# DEPLOY THE REDIS SESSION CLUSTER
 #
 # This cluster is used to store session data.
 # ---------------------------------------------------------------------------------------------------------------------
 
-module "memcached" {
-  source = "../../modules/cache/aws/memcached"
+module "redis_session" {
+  source = "../../modules/cache/aws/redis"
 
-  cluster_name = "${var.environment}-memcached"
+  cluster_name = "${var.environment}-cache"
   node_type    = "cache.t2.small"
 
   vpc_id     = "${module.vpc.vpc_id}"

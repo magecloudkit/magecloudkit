@@ -1,0 +1,142 @@
+[{
+    "dnsSearchDomains": [],
+    "environment": [],
+    "readonlyRootFilesystem": false,
+    "name": "nginx",
+    "links": [
+      "magento:phpfpm"
+    ],
+    "mountPoints": [],
+    "image": "${nginx_image}",
+    "privileged": false,
+    "essential": true,
+    "environment": [{
+      "name": "APP_MAGE_MODE",
+      "value": "${app_mage_mode}"
+    }],
+    "portMappings": [{
+        "protocol": "tcp",
+        "containerPort": 80,
+        "hostPort": 0
+      },
+      {
+        "protocol": "tcp",
+        "containerPort": 8081,
+        "hostPort": 0
+      }
+    ],
+    "dnsServers": [],
+    "dockerSecurityOptions": [],
+    "entryPoint": [],
+    "ulimits": [],
+    "memoryReservation": 512,
+    "command": [],
+    "extraHosts": [],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${cloudwatch_logs_group}",
+        "awslogs-region": "${cloudwatch_logs_region}",
+        "awslogs-stream-prefix": "${cloudwatch_logs_stream_prefix}"
+      }
+    },
+    "cpu": 0,
+    "volumesFrom": [{
+      "readOnly": false,
+      "sourceContainer": "magento"
+    }],
+    "dockerLabels": {}
+  },
+  {
+    "dnsSearchDomains": [],
+    "readonlyRootFilesystem": false,
+    "name": "magento",
+    "image": "${magento_image}",
+    "links": [],
+    "mountPoints": [{
+      "containerPath": "/var/www/html/pub/media",
+      "sourceVolume": "media",
+      "readOnly": null
+    }],
+    "essential": true,
+    "environment": [{
+        "name": "ENVIRONMENT",
+        "value": "${environment}"
+      },
+      {
+        "name": "PHP_MEMORY_LIMIT",
+        "value": "${php_memory_limit}"
+      },
+      {
+        "name": "PHP_PM",
+        "value": "${php_pm}"
+      },
+      {
+        "name": "PHP_PM_MAX_CHILDREN",
+        "value": "${php_pm_max_children}"
+      },
+      {
+        "name": "PHP_PM_START_SERVERS",
+        "value": "${php_pm_start_servers}"
+      },
+      {
+        "name": "PHP_PM_MIN_SPARE_SERVERS",
+        "value": "${php_pm_min_spare_servers}"
+      },
+      {
+        "name": "PHP_PM_MAX_SPARE_SERVERS",
+        "value": "${php_pm_max_spare_servers}"
+      },
+      {
+        "name": "PHP_PM_MAX_REQUESTS",
+        "value": "${php_pm_max_requests}"
+      },
+      {
+        "name": "MAGE_MODE",
+        "value": "production"
+      },
+      {
+        "name": "CACHE_PREFIX",
+        "value": "1_"
+      },
+      {
+        "name": "MYSQL_HOST",
+        "value": "${mysql_host}"
+      },
+      {
+        "name": "MYSQL_DATABASE",
+        "value": "${mysql_database}"
+      },
+      {
+        "name": "MYSQL_USER",
+        "value": "${mysql_user}"
+      },
+      {
+        "name": "MYSQL_PASSWORD",
+        "value": "${mysql_password}"
+      },
+      {
+        "name": "REDIS_CACHE_HOST",
+        "value": "${redis_cache_host}"
+      },
+      {
+        "name": "REDIS_SESSION_HOST",
+        "value": "${redis_session_host}"
+      },
+      {
+        "name": "MAGE_TABLE_PREFIX",
+        "value": "${mage_table_prefix}"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${cloudwatch_logs_group}",
+        "awslogs-region": "${cloudwatch_logs_region}",
+        "awslogs-stream-prefix": "${cloudwatch_logs_stream_prefix}"
+      }
+    },
+    "cpu": 0,
+    "memoryReservation": 768
+  }
+]

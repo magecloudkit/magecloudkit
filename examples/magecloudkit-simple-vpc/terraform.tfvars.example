@@ -1,0 +1,9 @@
+env_mysql_host = "db.eu-west-1.magecloudkit.internal"
+
+env_mysql_database = "magento2"
+
+env_mysql_user = "magento2"
+
+env_mysql_password = "airei1raeque9eiX0eeNgoX3Cuthae4b"
+
+env_mage_table_prefix = "m_"
