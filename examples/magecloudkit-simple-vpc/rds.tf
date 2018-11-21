@@ -10,7 +10,7 @@ module "aurora" {
 
   cluster_identifier      = "${var.project_name}-aurora-cluster"
   cluster_instance_prefix = "${var.project_name}-aurora-cluster-instance"
-  database_name           = "${var.env_mysql_host}"
+  database_name           = "${var.env_mysql_database}"
   master_username         = "${var.env_mysql_user}"
   master_password         = "${var.env_mysql_password}"
   backup_retention_period = 7
