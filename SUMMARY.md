@@ -12,6 +12,7 @@
  * [Scaling](docs/general/scaling.md)
  * [Users](docs/general/users.md)
  * [Crons](docs/general/crons.md)
+ * [Security](docs/general/security.md)
  * [Backups](docs/general/backups.md)
  * [Disaster Recovery](docs/general/disaster_recovery.md)
  * [Troubleshooting](docs/general/troubleshooting.md)
