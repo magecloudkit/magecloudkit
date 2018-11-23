@@ -22,13 +22,11 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 resource "aws_autoscaling_group" "autoscaling_group" {
   name = "${var.cluster_name}-${aws_launch_configuration.launch_configuration.name}"
 
-  launch_configuration = "${aws_launch_configuration.launch_configuration.id}"
-  vpc_zone_identifier  = ["${var.subnet_ids}"]
-
-  min_size             = "${var.min_size}"
-  max_size             = "${var.max_size}"
-  termination_policies = ["${var.termination_policies}"]
-
+  launch_configuration      = "${aws_launch_configuration.launch_configuration.id}"
+  vpc_zone_identifier       = ["${var.subnet_ids}"]
+  min_size                  = "${var.min_size}"
+  max_size                  = "${var.max_size}"
+  termination_policies      = ["${var.termination_policies}"]
   health_check_type         = "${var.health_check_type}"
   health_check_grace_period = "${var.health_check_grace_period}"
   wait_for_capacity_timeout = "${var.wait_for_capacity_timeout}"
