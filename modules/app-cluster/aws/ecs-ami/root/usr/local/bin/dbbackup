@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# This script is used to automatically take a backup of the database and save it
-# to the current directory.
-
-mysqldump -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE | gzip -9 > dbbackup-$(date +%Y%m%d-%H%M%S).sql.gz
