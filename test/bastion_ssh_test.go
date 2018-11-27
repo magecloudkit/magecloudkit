@@ -98,7 +98,7 @@ func configureTerraformOptions(t *testing.T, workingDir string) (*terraform.Opti
 			"env_mysql_host":        fmt.Sprintf("db.%s.magecloudkit.internal", awsRegion),
 			"env_mysql_database":    "magento2",
 			"env_mysql_user":        "magento2",
-			"env_mysql_password":    strings.ToLower(random.UniqueId()),
+			"env_mysql_password":    "magento2",
 			"env_mage_table_prefix": "m_",
 		},
 	}
