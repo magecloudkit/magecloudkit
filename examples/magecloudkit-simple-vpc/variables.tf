@@ -5,12 +5,28 @@
 
 variable "project_name" {
   description = "The project name used when naming resources."
-  default     = "magecloudkit-development"
+  default     = "magecloudkit-example"
 }
 
 variable "environment" {
   description = "The environment used when naming resources."
-  default     = "development"
+  default     = "example"
+}
+
+variable "env_mysql_host" {
+  description = "The MySQL host used by Magento."
+}
+
+variable "env_mysql_database" {
+  description = "The MySQL database used by Magento."
+}
+
+variable "env_mysql_user" {
+  description = "The MySQL user used by Magento."
+}
+
+variable "env_mysql_password" {
+  description = "The MySQL password used by Magento."
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -25,7 +41,7 @@ variable "aws_region" {
 
 variable "ecs_cluster_name" {
   description = "The ECS Cluster Name."
-  default     = "development-app"
+  default     = "example-app"
 }
 
 variable "key_pair_name" {
@@ -51,4 +67,9 @@ variable "jenkins_load_balancer_port" {
 variable "media_volume_mount_point" {
   description = "The path where we should mount the EFS filesystem used for Magento media assets on the EC2 instances."
   default     = "/mnt/media"
+}
+
+variable "env_mage_table_prefix" {
+  description = "The MySQL table prefix used by Magento."
+  default     = "m_"
 }

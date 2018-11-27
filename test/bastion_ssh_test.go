@@ -89,12 +89,17 @@ func configureTerraformOptions(t *testing.T, workingDir string) (*terraform.Opti
 		TerraformDir: workingDir,
 
 		Vars: map[string]interface{}{
-			"aws_region":         awsRegion,
-			"availability_zones": azs,
-			"project_name":       projectName,
-			"environment":        "test",
-			"ecs_cluster_name":   ecsClusterName,
-			"key_pair_name":      keyPairName,
+			"aws_region":            awsRegion,
+			"availability_zones":    azs,
+			"project_name":          projectName,
+			"environment":           "test",
+			"ecs_cluster_name":      ecsClusterName,
+			"key_pair_name":         keyPairName,
+			"env_mysql_host":        fmt.Sprintf("db.%s.magecloudkit.internal", awsRegion),
+			"env_mysql_database":    "magento2",
+			"env_mysql_user":        "magento2",
+			"env_mysql_password":    strings.ToLower(random.UniqueId()),
+			"env_mage_table_prefix": "m_",
 		},
 	}
 

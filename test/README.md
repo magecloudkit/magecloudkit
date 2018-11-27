@@ -1,6 +1,9 @@
 # MageCloudKit Tests
 
-This directory contains automated tests for MageCloudKit. Most of these tests are written in [Go](https://golang.org/) and use a helper library called [Terratest](https://github.com/gruntwork-io/terratest).
+This directory contains automated tests for MageCloudKit. Most of these tests are written in [Go](https://golang.org/) and
+use a helper library called [Terratest](https://github.com/gruntwork-io/terratest).
+
+Infrastructure code without automated tests is broken. The tests allow us to expose non-trivial bugs in our modules.
 
 ## WARNING
 

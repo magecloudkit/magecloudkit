@@ -32,6 +32,57 @@ module "app_cluster" {
     },
   ]
 
+  # Autoscaling Properties
+  enable_autoscaling                        = true
+  ecs_instance_draining_lambda_function_arn = "${module.ecs_draining.lambda_function_arn}"
+
+  autoscaling_properties = [
+    {
+      type               = "CPUReservation"
+      direction          = "up"
+      evaluation_periods = 2
+      observation_period = "300"
+      statistic          = "Average"
+      threshold          = "89"
+      cooldown           = "900"
+      adjustment_type    = "ChangeInCapacity"
+      scaling_adjustment = "1"
+    },
+    {
+      type               = "CPUReservation"
+      direction          = "down"
+      evaluation_periods = 4
+      observation_period = "300"
+      statistic          = "Average"
+      threshold          = "10"
+      cooldown           = "300"
+      adjustment_type    = "ChangeInCapacity"
+      scaling_adjustment = "-1"
+    },
+    {
+      type               = "MemoryReservation"
+      direction          = "up"
+      evaluation_periods = 2
+      observation_period = "300"
+      statistic          = "Average"
+      threshold          = "50"
+      cooldown           = "900"
+      adjustment_type    = "ChangeInCapacity"
+      scaling_adjustment = "1"
+    },
+    {
+      type               = "MemoryReservation"
+      direction          = "down"
+      evaluation_periods = 4
+      observation_period = "300"
+      statistic          = "Average"
+      threshold          = "10"
+      cooldown           = "300"
+      adjustment_type    = "ChangeInCapacity"
+      scaling_adjustment = "-1"
+    },
+  ]
+
   # An example of custom tags
   tags = [
     {
@@ -64,4 +115,14 @@ data "template_file" "user_data_ecs" {
     # block_metadata_service blocks the aws metadata service from the ECS Tasks true / false
     block_metadata_service = true
   }
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY THE ECS DRAINING LAMBDA FUNCTION
+# ---------------------------------------------------------------------------------------------------------------------
+
+module "ecs_draining" {
+  source            = "../../modules/app-cluster/aws/ecs-instance-draining"
+  name              = "${var.ecs_cluster_name}"
+  retention_in_days = 3
 }

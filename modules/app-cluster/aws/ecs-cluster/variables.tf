@@ -146,7 +146,7 @@ variable "ebs_block_devices" {
 
 variable "wait_for_capacity_timeout" {
   description = "A maximum duration that Terraform should wait for ASG instances to be healthy before timing out. Setting this to '0' causes Terraform to skip all Capacity Waiting behavior."
-  default     = "10m"
+  default     = "15m"
 }
 
 variable "health_check_type" {

@@ -77,3 +77,10 @@ resource "aws_lambda_function" "drain_lambda_function" {
     ignore_changes = ["filename", "last_modified"]
   }
 }
+
+module "lambda_function_logs" {
+  source = "../../../monitoring/aws/logs"
+
+  name              = "/aws/lambda/${var.name}-lambda-ecs-drain"
+  retention_in_days = "${var.retention_in_days}"
+}

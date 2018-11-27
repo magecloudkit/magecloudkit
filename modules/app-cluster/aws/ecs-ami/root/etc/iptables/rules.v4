@@ -1,7 +1,0 @@
-*nat
-:PREROUTING ACCEPT [2:120]
-:INPUT ACCEPT [0:0]
-:OUTPUT ACCEPT [1:87]
-:POSTROUTING ACCEPT [8:507]
--A PREROUTING -d 169.254.170.2/32 -p tcp -m tcp --dport 80 -j DNAT --to-destination 127.0.0.1:51679
--A OUTPUT -d 169.254.170.2/32 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 51679
