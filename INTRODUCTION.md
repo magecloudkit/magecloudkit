@@ -2,7 +2,7 @@
 
 MageCloudKit is the High Performance Stack for running Magento on AWS. It is comprised of a set of infrastructure
 modules, real-world examples and best practises for running your store in the cloud. The infrastructure modules
-are written in Terraform, Bash and Python. Your store automatically scales in response to customer demand and
+are written in Terraform and Bash. Your store automatically scales in response to customer demand and
 by using our recommended vendors, is resilient from all the common internet threats including DDoS attacks.
 
 For more information or to purchase a license, please visit: https://magecloudkit.com.

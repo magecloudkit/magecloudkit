@@ -20,3 +20,8 @@ Please visit the documentation website at https://docs.magecloudkit.com.
 ## Support
 
 Please contact: support@brightfame.co.
+
+## Legal
+
+This repository is Brightfame intellectual property. Please do not attempt to resell or redistribute this
+software without prior permission.
