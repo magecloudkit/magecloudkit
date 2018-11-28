@@ -1,5 +1,9 @@
 * [Introduction](./INTRODUCTION.md)
 
+## Guides
+
+ * [Upgrading MageCloudKit](docs/guides/upgrading_magecloudkit.md)
+
 ## General
 
  * [Architecture](docs/general/architecture.md)
