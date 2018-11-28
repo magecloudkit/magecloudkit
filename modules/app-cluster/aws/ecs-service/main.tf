@@ -50,6 +50,11 @@ resource "aws_ecs_service" "service" {
     type  = "spread"
   }
 
+  ordered_placement_strategy {
+    field = "memory"
+    type  = "binpack"
+  }
+
   # Ignore external changes from Autoscaling
   lifecycle {
     #ignore_changes = ["desired_count"]
