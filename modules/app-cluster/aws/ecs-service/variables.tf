@@ -47,16 +47,16 @@ variable "desired_task_count" {
 }
 
 variable "enable_autoscaling" {
-  description = "Whether or not to enable ECS task based Autoscaling."
+  description = "Whether or not to enable ECS task based Auto Scaling."
   default     = false
 }
 
-variable "desired_min_capacity" {
+variable "min_capacity" {
   description = "The minimum amount of ECS tasks to run when scaling down."
   default     = "1"
 }
 
-variable "desired_max_capacity" {
+variable "max_capacity" {
   description = "The maximum amount of ECS tasks to run when scaling up."
   default     = "1"
 }

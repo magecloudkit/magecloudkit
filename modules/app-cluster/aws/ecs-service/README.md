@@ -58,9 +58,9 @@ module "ecs_web_service" {
   # https://docs.aws.amazon.com/autoscaling/application/userguide/what-is-application-auto-scaling.html
   enable_autoscaling = true
 
-  desired_task_count   = 4
-  desired_min_capacity = 4
-  desired_max_capacity = 12
+  desired_task_count = 4
+  min_capacity       = 4
+  max_capacity       = 12
 
   autoscaling_properties = [
     {

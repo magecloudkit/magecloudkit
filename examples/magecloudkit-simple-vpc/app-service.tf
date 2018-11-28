@@ -32,9 +32,9 @@ module "ecs_app_service" {
   container_name  = "nginx"
   container_port  = "80"
 
-  desired_task_count   = 2
-  desired_min_capacity = 2
-  desired_max_capacity = 4
+  desired_task_count = 2
+  min_capacity       = 2
+  max_capacity       = 4
 }
 
 resource "aws_ecs_task_definition" "app_service_task_definition" {

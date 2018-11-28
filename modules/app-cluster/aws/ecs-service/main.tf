@@ -50,11 +50,6 @@ resource "aws_ecs_service" "service" {
     type  = "spread"
   }
 
-  ordered_placement_strategy {
-    field = "memory"
-    type  = "binpack"
-  }
-
   # Ignore external changes from Autoscaling
   lifecycle {
     #ignore_changes = ["desired_count"]
@@ -73,8 +68,8 @@ resource "aws_appautoscaling_target" "target" {
   service_namespace  = "ecs"
   resource_id        = "service/${var.cluster_name}/${var.name}"
   scalable_dimension = "ecs:service:DesiredCount"
-  min_capacity       = "${var.desired_min_capacity}"
-  max_capacity       = "${var.desired_max_capacity}"
+  min_capacity       = "${var.min_capacity}"
+  max_capacity       = "${var.max_capacity}"
 }
 
 resource "aws_appautoscaling_policy" "policy" {
