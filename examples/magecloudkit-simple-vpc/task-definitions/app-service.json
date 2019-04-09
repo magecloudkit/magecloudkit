@@ -29,7 +29,7 @@
     "dockerSecurityOptions": [],
     "entryPoint": [],
     "ulimits": [],
-    "memoryReservation": 512,
+    "memoryReservation": 128,
     "command": [],
     "extraHosts": [],
     "logConfiguration": {
