@@ -17,6 +17,8 @@ high availability. This means if one zone was to fail entirely then your store w
 on the highest used resource allows great utilization by packing containers onto as few instances as possible.
 This also allows you to save money by reducing the number of instances you run.
 
+Further information about ECS task placement strategies can be found here: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-placement-strategies.html.
+
 ## Manually Scaling
 
 If you ever need to manually scale before a high traffic event such as a marketing campaign then we recommend following
