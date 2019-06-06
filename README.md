@@ -1,8 +1,17 @@
 # MageCloudKit
 
-Thank you for purchasing a license to use Brightfame MageCloudKit.
+This repository contains the source code for MageCloudKit. MageCloudKit is a high-performance stack for running
+Magento on AWS. In 2019 it was released under the Apache 2.0 open source license. More information about
+MageCloudKit is available at: https://magecloudkit.com.
 
-More information about MageCloudKit is available at: https://magecloudkit.com.
+## Supported Versions
+
+MageCloudKit has been designed for and tested with the following Magento versions:
+
+- Magento 1.9 Open Source (formely Magento Community Edition)
+- Magento 2.2 Open Source
+
+It has not been been tested with Magento 2.3 Open Source, Commerce or Enterprise editions.
 
 ## Getting Started
 
@@ -19,9 +28,8 @@ Please visit the documentation website at https://docs.magecloudkit.com.
 
 ## Support
 
-Please contact: support@brightfame.co.
+Please contact: support@brightfame.co for more information.
 
-## Legal
+## License
 
-This repository is Brightfame intellectual property. Please do not attempt to resell or redistribute this
-software without prior permission.
+MageCloudKit is licensed under the Apache 2.0 open-source license. Please see the `LICENSE` file for more information.
