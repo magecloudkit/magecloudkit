@@ -1,0 +1,62 @@
+version: 1
+
+update_configs:
+  - package_manager: "go:dep"
+    directory: "/test"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/modules/app-cluster/aws/ecs-cluster"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/modules/app-cluster/aws/ecs-instance-draining"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/modules/app-cluster/aws/ecs-roles"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/modules/app-cluster/aws/ecs-service"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/modules/cache/aws/memcached"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/modules/cache/aws/redis"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/modules/ci/aws/jenkins-server"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/modules/database/aws/aurora"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/modules/load-balancer/aws/alb"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/modules/load-balancer/aws/alb-target-group"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/modules/monitoring/aws/logs"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/modules/network/aws/bastion"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/modules/network/aws/vpc"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/modules/storage/aws/efs"
+    update_schedule: "daily"
