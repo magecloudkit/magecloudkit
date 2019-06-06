@@ -1,8 +1,12 @@
 # MageCloudKit
 
-This repository contains the source code for MageCloudKit. MageCloudKit is a high-performance stack for running
-Magento on AWS. In 2019 it was released under the Apache 2.0 open source license. More information about
-MageCloudKit is available at: https://magecloudkit.com.
+MageCloudKit is the High Performance Stack for running Magento on AWS. It is comprised of a set of infrastructure
+modules, real-world examples and best practices for running your store in the cloud. The infrastructure modules
+are written in Terraform and Bash. Your store automatically scales in response to customer demand and by using our
+recommended vendors and products, is resilient from all the common internet threats including DDoS attacks.
+
+This repository contains the source code for MageCloudKit. In 2019 it was released under the Apache 2.0 open source
+license. More information about MageCloudKit is available at: https://magecloudkit.com.
 
 ## Supported Versions
 
@@ -26,9 +30,9 @@ own processes.
 
 Please visit the documentation website at https://docs.magecloudkit.com.
 
-## Support
+## Community Support
 
-Please contact: support@brightfame.co for more information.
+Please contact: support@brightfame.co for more information on how to join the community Slack.
 
 ## License
 
