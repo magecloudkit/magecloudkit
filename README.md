@@ -30,9 +30,10 @@ own processes.
 
 Please visit the documentation website at https://docs.magecloudkit.com.
 
-## Community Support
+## Support
 
-Please contact: support@brightfame.co for more information on how to join the community Slack.
+We no longer offer any support for MageCloudKit. If you are interested in supporting this product, please
+get in touch with us directly.
 
 ## License
 
