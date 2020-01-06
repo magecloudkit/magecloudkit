@@ -5,8 +5,9 @@ modules, real-world examples and best practices for running your store in the cl
 are written in Terraform and Bash. Your store automatically scales in response to customer demand and by using our
 recommended vendors and products, is resilient from all the common internet threats including DDoS attacks.
 
-This repository contains the source code for MageCloudKit. In 2019 it was released under the Apache 2.0 open source
-license. More information about MageCloudKit is available at: https://magecloudkit.com.
+This repository contains the source code for MageCloudKit. In 2020 it was [released under the Apache 2.0 open source
+license](https://magecloudkit.com/posts/open-sourcing-magecloudkit-for-aws/). More information about MageCloudKit is
+available at: https://magecloudkit.com.
 
 ## Supported Versions
 
