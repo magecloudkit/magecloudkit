@@ -6,8 +6,9 @@ are written in Terraform and Bash. Your store automatically scales in response t
 recommended vendors and products, is resilient from all the common internet threats including DDoS attacks.
 
 This repository contains the source code for MageCloudKit. In 2020 it was [released under the Apache 2.0 open source
-license](https://magecloudkit.com/posts/open-sourcing-magecloudkit-for-aws/). More information about MageCloudKit is
-available at: https://magecloudkit.com.
+license](https://magecloudkit.com/posts/open-sourcing-magecloudkit-for-aws/).
+
+**Note:** This repository is no longer maintained, we recommend looking at alternate solutions including: https://github.com/Genaker/TerraformMagentoCloud.
 
 ## Supported Versions
 
